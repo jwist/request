@@ -14,6 +14,7 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Suggests: 
-    testthat
+    testthat,
+    covr
 URL: https://github.com/jwist/request
 BugReports: https://github.com/jwist/request/issues

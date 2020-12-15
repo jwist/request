@@ -2,6 +2,8 @@
 # request
 
 <!-- badges: start -->
+[![Codecov test coverage](https://codecov.io/gh/jwist/request/branch/master/graph/badge.svg)](https://codecov.io/gh/jwist/request?branch=master)
+[![Travis build status](https://travis-ci.com/jwist/request.svg?branch=master)](https://travis-ci.com/jwist/request)
 <!-- badges: end -->
 
 The goal of request is to ...
