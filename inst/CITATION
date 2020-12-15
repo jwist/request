@@ -1,0 +1,16 @@
+citHeader("To cite fusion in publications use:")
+
+citEntry(
+  entry    = "Article",
+  title    = request: request management for laboratory samples,
+  author   = "Wist, Julien",
+  journal  = ,
+  year     = "2020",
+  volume   = ,
+  number   = ,
+  pages    = ,
+  url      = ,
+  textVersion = paste(
+
+  )
+)
