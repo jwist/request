@@ -1,13 +1,22 @@
+#' request list class
+#'
+#' @export
 setClass("requestList",
          representation = representation(entry = "list"),
          prototype = list(entry = list()),
          contains = list("list")
 )
 
+#' adding request to list
+#'
+#' @export
 setGeneric("addRequest", function(r, entry) {
   standardGeneric("addRequest")
 })
 
+#' adding request to list
+#'
+#' @export
 setMethod("addRequest",
           c(r = "requestList", entry = "list"),
           function(r, entry) {
@@ -16,10 +25,16 @@ setMethod("addRequest",
           }
 )
 
+#' printing a request list
+#'
+#' @export
 setGeneric("printRequest", function(r, options) {
   standardGeneric("printRequest")
 })
 
+#' printing a request list
+#'
+#' @export
 setMethod("printRequest",
           c(r = "requestList", options = "list"),
           function(r, options) {

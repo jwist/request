@@ -33,6 +33,9 @@ setClass("request",
          contains = list("list")
 )
 
+#' initialize request
+#'
+#' @export
 setMethod("initialize", "request",
           function(.Object){
             if (identical(.Object@row, numeric(0))) {
@@ -46,10 +49,16 @@ setMethod("initialize", "request",
           }
 )
 
+#' filling requests
+#'
+#' @export
 setGeneric("fillRequest", function(r, request) {
   standardGeneric("fillRequest")
 })
 
+#' filling requests
+#'
+#' @export
 setMethod("fillRequest",
           c(r = "request", request = "list"),
           function(r, request) {
