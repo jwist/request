@@ -123,7 +123,7 @@ setMethod("printRequest",
               } else if (options$assay == "MSSciex") {
                 rackPos <- 1
                 smplInjVol <- 5
-                acqMethod <- "LM_RP_sMRM_13JAN2021"
+                acqMethod <- "LM_RP_sMRM_LIPIDS"
                 rackCode <- "Rack Order (Column)"
                 plateCode <- "MTP 96, 1.5mL"
                 platePos <- 1
@@ -139,7 +139,7 @@ setMethod("printRequest",
                                          "AcqMethod" = acqMethod,
                                          "PlatePos" = platePos,
                                          "VialPos" = sampleLocation,
-                                         "OutputFile" = runName,
+                                         "OutputFile" = i@runName,
                                          "Type" = i@sampleType,
                                          check.names = FALSE)
               } else {
