@@ -130,15 +130,15 @@ setMethod("printRequest",
 
                 sampleLocation <- RCToNum(row[i@row], i@column)
 
-                rlist[[j]] <- data.frame("% header=SampleName" = paste0(i@sampleID, "_", j),
-                                         "SampleId" = paste0(i@sampleID, "_", j),
+                rlist[[j]] <- data.frame(#"% header=SampleName" = paste0(i@sampleID, "_", j),
+                                         #"SampleId" = paste0(i@sampleID, "_", j),
                                          "RackCode" = rackCode,
                                          "Rackpos" = rackPos,
                                          "PlateCode" = plateCode,
                                          "SmplInjVol" = smplInjVol,
                                          "AcqMethod" = acqMethod,
                                          "PlatePos" = platePos,
-                                         "VialPos" = sampleLocation,
+                                         #"VialPos" = sampleLocation,
                                          "OutputFile" = i@runName,
                                          "Type" = i@sampleType,
                                          check.names = FALSE)
