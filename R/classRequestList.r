@@ -3,7 +3,7 @@
 #' @export
 setClass("requestList",
          representation = representation(entry = "list"),
-         prototype = list(entry = list()),
+         prototype(entry = list()),
          contains = list("list")
 )
 
@@ -120,6 +120,28 @@ setMethod("printRequest",
                                          "CONC_G" = calLev[7],
                                          "CONC_H" = calLev[8],
                                          "CONC_I" = calLev[9], check.names = FALSE)
+              } else if (options$assay == "MSSciex") {
+                rackPos <- 1
+                smplInjVol <- 5
+                acqMethod <- "LM_RP_sMRM_13JAN2021"
+                rackCode <- "Rack Order (Column)"
+                plateCode <- "MTP 96, 1.5mL"
+                platePos <- 1
+
+                sampleLocation <- RCtoNum(row[i@row], i@column)
+
+                rlist[[j]] <- data.frame("% header=SampleName" = paste0(i@sampleID, "_", j),
+                                         "SampleId" = paste0(i@sampleID, "_", j),
+                                         "RackCode" = rackCode,
+                                         "Rackpos" = rackPos,
+                                         "PlateCode" = plateCode,
+                                         "SmplInjVol" = smplInjVol,
+                                         "AcqMethod" = acqMethod,
+                                         "PlatePos" = platePos,
+                                         "VialPos" = sampleLocation,
+                                         "OutputFile" = runName,
+                                         "Type" = i@sampleType,
+                                         check.names = FALSE)
               } else {
                 rlist[[j]] <- data.frame("_sampleID" = i@sampleID,
                                          "_matrixID" = i@matrixID,
@@ -134,6 +156,7 @@ setMethod("printRequest",
               }
               df <- do.call("rbind", rlist)
             }
+
             # adding shutdown blank
             if (options$assay == "MSBruker") {
               last <- nrow(df)

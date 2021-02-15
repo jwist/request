@@ -63,3 +63,17 @@ RCToPos <- function(row, col){
   return(pos)
 }
 
+#' convert row and column to a numeric position
+#' @param row - the row or an array of rows
+#' @param col - the column or an array of columns
+#' @return the numeric position or an array of them
+#' @examples
+#' g <- getPlatePos(by = "col")
+#' RCToNum(g[,1], g[,2])
+#' @export
+RCToNum <- function(row, col){
+  pos <- RCToPos(row, col)
+  num <- posToNum(pos)
+  return(num)
+}
+

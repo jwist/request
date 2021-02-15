@@ -3,15 +3,19 @@
 #' @param names - a name or an array of
 #' @return clean name(s)
 #' @examples
-#' originalID <- c("ddd.aaa", "dd_aa", "dad*", "ddd uuu", "ddd+aaa", "ddd*yyy")
+#' originalID <- c("ddd.aaa", "ddd uuu", "ddd+aaa", "ddd*yyy", "ddd#dd", "ddd_fff")
+#' originalID <-c(originalID, "ddd$ddd", "ddd@ddd", "dd_aa", "dad*")
 #' cleanNames(originalID)
 #' @export
 cleanNames <- function(names) {
   names <- tolower(names)
-  names <-gsub("[*]$", "-S", originalID)
-  names <-gsub("[*]", "T", originalID)
-  names <-gsub("[+]", "P", originalID)
-  names <-gsub("[^A-Za-z0-9]", "-", originalID)
+  make.unique(names, sep = "#")
+  names <-gsub("[*]$", "-S", names)
+  names <-gsub("[*]", "T", names)
+  names <-gsub("[+]", "P", names)
+  # we remove all except # for replicates
+  names <-gsub("[^A-Za-z0-9\\W#]", "-", names)
+  # names <-gsub("[\\W_]", "-", names)
+  # names <-gsub("[\\W ]", "-", names)
   return(names)
 }
-

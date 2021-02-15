@@ -20,6 +20,7 @@ cleaning names for automation (no underscore is allowed as
 it is a separator in long names)
 }
 \examples{
-originalID <- c("ddd.aaa", "dd_aa", "dad*", "ddd uuu", "ddd+aaa", "ddd*yyy")
+originalID <- c("ddd.aaa", "ddd uuu", "ddd+aaa", "ddd*yyy", "ddd#dd", "ddd_fff")
+originalID <-c(originalID, "ddd$ddd", "ddd@ddd", "dd_aa", "dad*")
 cleanNames(originalID)
 }
