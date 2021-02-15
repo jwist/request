@@ -128,7 +128,7 @@ setMethod("printRequest",
                 plateCode <- "MTP 96, 1.5mL"
                 platePos <- 1
 
-                sampleLocation <- RCtoNum(row[i@row], i@column)
+                sampleLocation <- RCToNum(row[i@row], i@column)
 
                 rlist[[j]] <- data.frame("% header=SampleName" = paste0(i@sampleID, "_", j),
                                          "SampleId" = paste0(i@sampleID, "_", j),
