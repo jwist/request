@@ -42,6 +42,7 @@ setMethod("printRequest",
             for (j in 1:length(r@entry)) {
               i <- r@entry[[j]]
               row <- LETTERS[1:8]
+
               if (options$assay == "MSBruker") {
                 path <- "D:\\Data\\AA Methods\\Amino Acid\\"
                 methSet <- "D:\\Methods\\Amino Acid VALIDATED\\Amino acid MethodSet VALIDATED.m"
@@ -121,24 +122,30 @@ setMethod("printRequest",
                                          "CONC_H" = calLev[8],
                                          "CONC_I" = calLev[9], check.names = FALSE)
               } else if (options$assay == "MSSciex") {
+
                 rackPos <- 1
                 smplInjVol <- 5
                 acqMethod <- "LM_RP_sMRM_LIPIDS"
                 rackCode <- "Rack Order (Column)"
-                plateCode <- "MTP 96, 1.5mL"
+                plateCode <- "MTP 96"
                 platePos <- 1
 
-                sampleLocation <- RCToNum(row[i@row], i@column)
+                if (i@row > 0){
+                  sampleLocation <- RCToNum(i@row, i@column)
+                } else {
+                  sampleLocation <- "NA"
+                }
 
-                rlist[[j]] <- data.frame(#"% header=SampleName" = paste0(i@sampleID, "_", j),
-                                         #"SampleId" = paste0(i@sampleID, "_", j),
+
+                rlist[[j]] <- data.frame("% header=SampleName" = paste0(i@sampleID, "_", j),
+                                         "SampleId" = paste0(i@sampleID, "_", j),
                                          "RackCode" = rackCode,
                                          "Rackpos" = rackPos,
                                          "PlateCode" = plateCode,
                                          "SmplInjVol" = smplInjVol,
                                          "AcqMethod" = acqMethod,
                                          "PlatePos" = platePos,
-                                         #"VialPos" = sampleLocation,
+                                         "VialPos" = sampleLocation,
                                          "OutputFile" = i@runName,
                                          "Type" = i@sampleType,
                                          check.names = FALSE)

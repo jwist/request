@@ -3,15 +3,18 @@
 #' @param boxDim - the dimension of the box (row, column)
 #' @return a data.frame with row and column positions
 #' @export
-posToRC <- function(pos, boxDim = c(8, 10)) {
+posToRC <- function(pos, boxDim = c(8, 12), collapse = FALSE) {
   rowIdx <- LETTERS[1:boxDim[1]]
   row <- col <- c()
   for (i in pos) {
     row <- c(row, as.numeric(which(rowIdx == substr(i, 1, 1))))
     col <- c(col, as.numeric(substr(i, 2, nchar(i))))
   }
-
-  return(data.frame(row=row, col=col))
+  if (collapse) {
+    return(paste0("R", row, "C", col))
+  } else {
+    return(data.frame(row=row, col=col))
+  }
 }
 
 #' convert position to numeric position
@@ -22,7 +25,7 @@ posToRC <- function(pos, boxDim = c(8, 10)) {
 #' @examples
 #' posToNum(c("B2", "C3"), boxDim = c(10,10))
 #' @export
-posToNum <- function(pos, boxDim = c(8, 10)) {
+posToNum <- function(pos, boxDim = c(8, 12)) {
   rc <- posToRC(pos, boxDim)
   num <- (rc$row - 1) * boxDim[2] + rc$col
   return(num)
@@ -71,9 +74,39 @@ RCToPos <- function(row, col){
 #' g <- getPlatePos(by = "col")
 #' RCToNum(g[,1], g[,2])
 #' @export
-RCToNum <- function(row, col){
+RCToNum <- function(row, col, boxDim = c(8, 12)){
   pos <- RCToPos(row, col)
-  num <- posToNum(pos)
+  num <- posToNum(pos, boxDim)
   return(num)
 }
 
+findEmptyPositions <- function(positions, boxDim = c(8, 10)) {
+  g <- getPlatePos(boxDim, by = "col")
+  whole <- RCToPos(g[,1], g[,2])
+  diff <- setdiff(whole, positions)
+  return(diff)
+}
+
+findEmptyPositionsOn <- function(selectedSamples, plate) {
+  plate <- plate
+  F <- selectedSamples$plateID == plate
+  positions <- paste0(LETTERS[selectedSamples$newRow[F]], selectedSamples$newCol[F])
+  return(findEmptyPositions(positions))
+}
+
+findAllEmptyPositions <- function(selectedSamples) {
+  emptyPositions <- data.frame()
+  for (plate in levels(factor(selectedSamples$plateID))) {
+    F <- selectedSamples$plateID == plate
+    positions <- selectedSamples$wellPos[F]
+    empty <- findEmptyPositions(positions)
+    empty <- data.frame(position = empty, plateID = rep(plate, length(empty)))
+    emptyPositions <- rbind(emptyPositions, empty)
+  }
+  return(emptyPositions)
+}
+
+findFirstEmptyPosition <- function(selectedSamples) {
+  pos <- findAllEmptyPositions(selectedSamples)
+  return(pos[1,])
+}
