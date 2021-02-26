@@ -25,24 +25,22 @@ setClass("request",
                                          options = "list"),
          validity = function(object) {
            if (identical(object@row, numeric(0))) {
-             "invalid row number"
+             "invalid number of rows"
            } else {
              TRUE
            }
-         },
-         contains = list("list")
+         }
 )
+
+# use validObject(new("request")) to check validity of object
 
 #' initialize request
 #'
 #' @export
 setMethod("initialize", "request",
           function(.Object){
-            if (identical(.Object@row, numeric(0))) {
-              "invalid row number"
-            }
-            .Object@sampleType = "Sample"
-            .Object@projectName = "covid19"
+            .Object@sampleType = "sample"
+            .Object@projectName = "project"
             .Object@platePosition = 1
             .Object@options = list()
             return(.Object)
@@ -70,6 +68,9 @@ setMethod("fillRequest",
             }
             if ("sampleType" %in% names(request)){
               r@sampleType <- request$sampleType
+            }
+            if ("platePosition" %in% names(request)){
+              r@platePosition <- request$platePosition
             }
             if ("runName" %in% names(request)){
               r@runName <- request$runName

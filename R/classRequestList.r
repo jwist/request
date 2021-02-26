@@ -44,13 +44,9 @@ setMethod("printRequest",
               row <- LETTERS[1:8]
 
               if (options$assay == "MSBruker") {
-                path <- "D:\\Data\\AA Methods\\Amino Acid\\"
+                # path <- "D:\\Data\\AA Methods\\Amino Acid\\"
+                path <- paste0("D:\\lims\\", i@projectName, "\\Amino Acid\\")
                 methSet <- "D:\\Methods\\Amino Acid VALIDATED\\Amino acid MethodSet VALIDATED.m"
-                # sepMeth <- paste0(path, "Amino_Acid_Methodset_v3.m?HyStar_LC")
-                # injMeth <- paste0(path, "Amino_Acid_Methodset_v3.m?HyStar_Autosampler")
-                # MSMeth <- paste0(path, "Amino_Acid_Methodset_v3.m?microTOFQImpactControl")
-                # procMeth <- paste0(path, "Amino_Acid_Methodset_v3.m?DataAnalysis")
-
                 calLev <- switch(i@sampleID,
                                  "Cal 9" = 1,
                                  "Cal 8" = 2,
@@ -67,13 +63,9 @@ setMethod("printRequest",
                                  "QC 1" = 300)
                 if (is.null(calLev)) { calLev <- 0}
 
-                rlist[[j]] <- data.frame("Vial" = paste0(2, ":", row[i@row], ",", i@column),
+                rlist[[j]] <- data.frame("Vial" = paste0(i@platePosition, ":", row[i@row], ",", i@column),
                                          "Sample ID" = paste0(runName, "_", i@sampleID, "_", j),
                                          "Method Set" = methSet,
-                                         #"Separation Method" = sepMeth,
-                                         #"Injection Method" = injMeth,
-                                         #"MS Method" = MSMeth,
-                                         #"Processing Method" = procMeth,
                                          "Sample Type" = i@sampleType,
                                          "Calib. Level" = calLev,
                                          "Inj." = 1,
@@ -91,7 +83,7 @@ setMethod("printRequest",
                 } else if (i@row == -1) {
                   sampleLocation <- "V:4"
                 } else {
-                  sampleLocation <- paste0(2, ":", row[i@row], ",", i@column)
+                  sampleLocation <- paste0(i@platePosition, ":", row[i@row], ",", i@column)
                 }
 
                 if ("conc" %in% names(i@options)){
@@ -136,7 +128,6 @@ setMethod("printRequest",
                   sampleLocation <- "NA"
                 }
 
-
                 rlist[[j]] <- data.frame("% header=SampleName" = paste0(i@sampleID, "_", j),
                                          "SampleId" = paste0(i@sampleID, "_", j),
                                          "RackCode" = rackCode,
@@ -149,6 +140,24 @@ setMethod("printRequest",
                                          "OutputFile" = i@runName,
                                          "Type" = i@sampleType,
                                          check.names = FALSE)
+              } else if (options$assay == "MS_URPP") {
+                path <- paste0("D:\\lims\\", i@projectName, "\\URPP\\")
+                methSet <- "D:\\Methods\\URPP\\URPP VALIDATED.m"
+                if (i@row == 0){
+                  col <- (i@column %% 4) + 1
+                  sampleLocation <- paste0("V:", col)
+                } else {
+                  sampleLocation <- paste0(i@platePosition, ":", row[i@row], ",", i@column)
+                }
+                rlist[[j]] <- data.frame("Vial" = sampleLocation,
+                                         "Sample ID" = paste0(runName, "_", i@sampleID, "_", j),
+                                         "Method Set" = methSet,
+                                         "Sample Type" = i@sampleType,
+                                         "Calib. Level" = 0,
+                                         "Inj." = 1,
+                                         "Volume" = 2,
+                                         "Data Path" = path,
+                                         "Run Automated Processing" = "true", check.names = FALSE)
               } else {
                 rlist[[j]] <- data.frame("_sampleID" = i@sampleID,
                                          "_matrixID" = i@matrixID,
@@ -176,10 +185,6 @@ setMethod("printRequest",
               procMeth <- ""
               df$`Sample ID`[last] <- paste0(runName, "_Blank Shutdown_", j)
               df$`Method Set`[last] <- methSet
-              #df$`Separation Method`[last] <- sepMeth
-              #df$`Injection Method`[last] <- injMeth
-              #df$`MS Method`[last] <- MSMeth
-              #df$`Processing Method`[last] <- procMeth
             } else if (options$assay == "MSWaters") {
               last <- nrow(df)
               print(last)
