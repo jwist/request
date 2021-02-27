@@ -6,6 +6,11 @@
 \usage{
 fillRequest(r, request)
 }
+\arguments{
+\item{r}{the request}
+
+\item{request}{the parameters to fill}
+}
 \description{
 filling requests
 }

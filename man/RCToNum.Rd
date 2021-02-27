@@ -4,7 +4,7 @@
 \alias{RCToNum}
 \title{convert row and column to a numeric position}
 \usage{
-RCToNum(row, col)
+RCToNum(row, col, boxDim = c(8, 12))
 }
 \arguments{
 \item{row}{\itemize{

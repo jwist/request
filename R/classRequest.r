@@ -1,11 +1,17 @@
 #' An S4 class for request
 #'
-#' @slot .Data the data matrix
-#' @slot varName a vector containing the name of each variable
-#' @slot obsDescr a data.frame containing experimental
-#' conditions and a field called sampleID that MUST be unique.
-#' @slot type type can be NMR, MSU, MST, ANN
-#' @return a dataElement
+#' @slot sampleID sampleID
+#' @slot sampleType sample type
+#' @slot matrixID id of sample matrix
+#' @slot methodID id of the method
+#' @slot deviceID id of the device
+#' @slot projectName name of the project
+#' @slot cohortName name of the cohort
+#' @slot platePosition position of the plate
+#' @slot row row of the sample
+#' @slot column column of the sample
+#' @slot options options
+#' @return a object with request
 #' @examples
 #'
 #' new("request")
@@ -13,12 +19,12 @@
 #' @export
 setClass("request",
          representation = representation(sampleID = "character",
-                                         matrixID = "numeric",
-                                         runName = "character",
                                          sampleType = "character",
+                                         matrixID = "numeric",
                                          methodID = "numeric",
                                          deviceID = "numeric",
                                          projectName = "character",
+                                         runName = "character",
                                          platePosition = "numeric",
                                          row = "numeric",
                                          column = "numeric",
@@ -35,8 +41,7 @@ setClass("request",
 # use validObject(new("request")) to check validity of object
 
 #' initialize request
-#'
-#' @export
+#' @param .Object the request object
 setMethod("initialize", "request",
           function(.Object){
             .Object@sampleType = "sample"
@@ -48,14 +53,16 @@ setMethod("initialize", "request",
 )
 
 #' filling requests
-#'
+#' @param r the request
+#' @param request the parameters to fill
 #' @export
 setGeneric("fillRequest", function(r, request) {
   standardGeneric("fillRequest")
 })
 
 #' filling requests
-#'
+#' @param r the request
+#' @param request the parameters to fill
 #' @export
 setMethod("fillRequest",
           c(r = "request", request = "list"),

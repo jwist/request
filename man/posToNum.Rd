@@ -4,7 +4,7 @@
 \alias{posToNum}
 \title{convert position to numeric position}
 \usage{
-posToNum(pos, boxDim = c(8, 10))
+posToNum(pos, boxDim = c(8, 12))
 }
 \arguments{
 \item{pos}{\itemize{

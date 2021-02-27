@@ -1,4 +1,9 @@
-
+#' print html layout of plates
+#' @param selectedSamples - the list of sample to process
+#' @return an html table
+#' @export
+#' @importFrom htmlTable addHtmlTableStyle htmlTable
+#' @importFrom magrittr %>%
 printLayout <- function(selectedSamples) {
   cat("<p style=\"page-break-before: always\">")
   plateList <- levels(factor(selectedSamples$plateID))

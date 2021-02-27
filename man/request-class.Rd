@@ -5,7 +5,7 @@
 \alias{request-class}
 \title{An S4 class for request}
 \value{
-a dataElement
+a object with request
 }
 \description{
 An S4 class for request
@@ -13,14 +13,27 @@ An S4 class for request
 \section{Slots}{
 
 \describe{
-\item{\code{.Data}}{the data matrix}
+\item{\code{sampleID}}{sampleID}
 
-\item{\code{varName}}{a vector containing the name of each variable}
+\item{\code{sampleType}}{sample type}
 
-\item{\code{obsDescr}}{a data.frame containing experimental
-conditions and a field called sampleID that MUST be unique.}
+\item{\code{matrixID}}{id of sample matrix}
 
-\item{\code{type}}{type can be NMR, MSU, MST, ANN}
+\item{\code{methodID}}{id of the method}
+
+\item{\code{deviceID}}{id of the device}
+
+\item{\code{projectName}}{name of the project}
+
+\item{\code{cohortName}}{name of the cohort}
+
+\item{\code{platePosition}}{position of the plate}
+
+\item{\code{row}}{row of the sample}
+
+\item{\code{column}}{column of the sample}
+
+\item{\code{options}}{options}
 }}
 
 \examples{

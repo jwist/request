@@ -6,6 +6,11 @@
 \usage{
 \S4method{fillRequest}{request,list}(r, request)
 }
+\arguments{
+\item{r}{the request}
+
+\item{request}{the parameters to fill}
+}
 \description{
 filling requests
 }

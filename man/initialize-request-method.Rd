@@ -6,6 +6,9 @@
 \usage{
 \S4method{initialize}{request}(.Object)
 }
+\arguments{
+\item{.Object}{the request object}
+}
 \description{
 initialize request
 }

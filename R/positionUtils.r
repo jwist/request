@@ -1,6 +1,7 @@
 #' convert A1 position to row and column
 #' @param pos - an array of positions
 #' @param boxDim - the dimension of the box (row, column)
+#' @param collapse - if TRUE, will collapse the output into a single string
 #' @return a data.frame with row and column positions
 #' @export
 posToRC <- function(pos, boxDim = c(8, 12), collapse = FALSE) {

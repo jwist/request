@@ -64,7 +64,7 @@ setMethod("printRequest",
                 if (is.null(calLev)) { calLev <- 0}
 
                 rlist[[j]] <- data.frame("Vial" = paste0(i@platePosition, ":", row[i@row], ",", i@column),
-                                         "Sample ID" = paste0(runName, "_", i@sampleID, "_", j),
+                                         "Sample ID" = paste0(i@runName, "_", i@sampleID, "_", j),
                                          "Method Set" = methSet,
                                          "Sample Type" = i@sampleType,
                                          "Calib. Level" = calLev,
@@ -93,7 +93,7 @@ setMethod("printRequest",
                 }
 
                 rlist[[j]] <- data.frame("Index" = "",
-                                         "FILE_NAME" = paste0(runName,
+                                         "FILE_NAME" = paste0(i@runName,
                                                               "_",
                                                               gsub("\\.", "_", i@sampleID), "_",
                                                               j),
@@ -150,7 +150,7 @@ setMethod("printRequest",
                   sampleLocation <- paste0(i@platePosition, ":", row[i@row], ",", i@column)
                 }
                 rlist[[j]] <- data.frame("Vial" = sampleLocation,
-                                         "Sample ID" = paste0(runName, "_", i@sampleID, "_", j),
+                                         "Sample ID" = paste0(i@runName, "_", i@sampleID, "_", j),
                                          "Method Set" = methSet,
                                          "Sample Type" = i@sampleType,
                                          "Calib. Level" = 0,
@@ -183,7 +183,7 @@ setMethod("printRequest",
               injMeth <- paste0(path, "A1B1_600ulmin_10min_shutdown.m?HyStar_Autosampler")
               MSMeth <- ""
               procMeth <- ""
-              df$`Sample ID`[last] <- paste0(runName, "_Blank Shutdown_", j)
+              df$`Sample ID`[last] <- paste0(i@runName, "_Blank Shutdown_", j)
               df$`Method Set`[last] <- methSet
             } else if (options$assay == "MSWaters") {
               last <- nrow(df)
@@ -192,7 +192,7 @@ setMethod("printRequest",
               df$`INLET_FILE`[last] <- inletFile
               df$`FILE_TEXT`[last] <- "Blank Shutdown"
               df$`TYPE`[last] <- "Blank"
-              df$FILE_NAME[last] <- paste0(runName, "_BlankShutdown")
+              df$FILE_NAME[last] <- paste0(i@runName, "_BlankShutdown")
             }
 
             return(df)

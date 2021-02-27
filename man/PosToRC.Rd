@@ -4,7 +4,7 @@
 \alias{posToRC}
 \title{convert A1 position to row and column}
 \usage{
-posToRC(pos, boxDim = c(8, 10))
+posToRC(pos, boxDim = c(8, 12), collapse = FALSE)
 }
 \arguments{
 \item{pos}{\itemize{

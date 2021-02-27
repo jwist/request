@@ -1,4 +1,9 @@
-
+#' print html layout of plates to help sample splitting
+#' @param selectedSamples - the list of sample to process
+#' @return an html table
+#' @export
+#' @importFrom htmlTable addHtmlTableStyle htmlTable
+#' @importFrom magrittr %>%
 printLayoutHelper <- function(selectedSamples) {
   cat("<p style=\"page-break-before: always\">")
 

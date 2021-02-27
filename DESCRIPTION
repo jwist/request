@@ -18,3 +18,8 @@ Suggests:
     covr
 URL: https://github.com/jwist/request
 BugReports: https://github.com/jwist/request/issues
+Imports: 
+    htmlTable,
+    crayon,
+    methods,
+    magrittr
