@@ -7,3 +7,11 @@
 \description{
 request list class
 }
+\section{Slots}{
+
+\describe{
+\item{\code{entry}}{\itemize{
+\item a list of requests
+}}
+}}
+

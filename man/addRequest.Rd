@@ -6,6 +6,15 @@
 \usage{
 addRequest(r, entry)
 }
+\arguments{
+\item{r}{\itemize{
+\item the request list
+}}
+
+\item{entry}{\itemize{
+\item the new request
+}}
+}
 \description{
 adding request to list
 }

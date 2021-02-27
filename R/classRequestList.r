@@ -1,5 +1,5 @@
 #' request list class
-#'
+#' @slot entry - a list of requests
 #' @export
 setClass("requestList",
          representation = representation(entry = "list"),
@@ -8,14 +8,16 @@ setClass("requestList",
 )
 
 #' adding request to list
-#'
+#' @param r - the request list
+#' @param entry - the new request
 #' @export
 setGeneric("addRequest", function(r, entry) {
   standardGeneric("addRequest")
 })
 
 #' adding request to list
-#'
+#' @param r - the request list
+#' @param entry - the new request
 #' @export
 setMethod("addRequest",
           c(r = "requestList", entry = "list"),
@@ -26,14 +28,16 @@ setMethod("addRequest",
 )
 
 #' printing a request list
-#'
+#' @param r - the request list
+#' @param options - options
 #' @export
 setGeneric("printRequest", function(r, options) {
   standardGeneric("printRequest")
 })
 
 #' printing a request list
-#'
+#' @param r - the request list
+#' @param options - options
 #' @export
 setMethod("printRequest",
           c(r = "requestList", options = "list"),

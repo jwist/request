@@ -6,7 +6,7 @@
 #' @slot methodID id of the method
 #' @slot deviceID id of the device
 #' @slot projectName name of the project
-#' @slot cohortName name of the cohort
+#' @slot runName name of the cohort
 #' @slot platePosition position of the plate
 #' @slot row row of the sample
 #' @slot column column of the sample

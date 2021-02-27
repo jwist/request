@@ -14,14 +14,14 @@ RCToNum(row, col, boxDim = c(8, 12))
 \item{col}{\itemize{
 \item the column or an array of columns
 }}
+
+\item{boxDim}{\itemize{
+\item the dimension of the box (row, column)
+}}
 }
 \value{
 the numeric position or an array of them
 }
 \description{
 convert row and column to a numeric position
-}
-\examples{
-g <- getPlatePos(by = "col")
-RCToNum(g[,1], g[,2])
 }

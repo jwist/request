@@ -25,7 +25,7 @@ An S4 class for request
 
 \item{\code{projectName}}{name of the project}
 
-\item{\code{cohortName}}{name of the cohort}
+\item{\code{runName}}{name of the cohort}
 
 \item{\code{platePosition}}{position of the plate}
 

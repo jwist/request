@@ -4,15 +4,15 @@
 \alias{posToRC}
 \title{convert A1 position to row and column}
 \usage{
-posToRC(pos, boxDim = c(8, 12), collapse = FALSE)
+posToRC(pos, collapse = FALSE)
 }
 \arguments{
 \item{pos}{\itemize{
 \item an array of positions
 }}
 
-\item{boxDim}{\itemize{
-\item the dimension of the box (row, column)
+\item{collapse}{\itemize{
+\item if TRUE, will collapse the output into a single string
 }}
 }
 \value{

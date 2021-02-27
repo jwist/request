@@ -4,7 +4,6 @@
 .DS_Store
 .lintr
 .Rbuildignore
-.travis.yml
 codecov.yml
 *.Rproj
 data/*

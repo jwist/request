@@ -21,7 +21,3 @@ the position or an array of positions
 \description{
 convert row and column to a position
 }
-\examples{
-g <- getPlatePos(by = "col")
-RCToPos(g[,1], g[,2])
-}

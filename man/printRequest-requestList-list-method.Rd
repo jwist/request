@@ -6,6 +6,15 @@
 \usage{
 \S4method{printRequest}{requestList,list}(r, options)
 }
+\arguments{
+\item{r}{\itemize{
+\item the request list
+}}
+
+\item{options}{\itemize{
+\item options
+}}
+}
 \description{
 printing a request list
 }
