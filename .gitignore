@@ -7,7 +7,5 @@
 codecov.yml
 *.Rproj
 data/*
-*.rda
-*.Rda
 
 .RData
