@@ -89,6 +89,7 @@ numToPos <- function(num, boxDim = c(8, 12)){
 #' find empty positions
 #' @param positions - the position or an array of positions
 #' @param boxDim - the dimension of the box (row, column)
+#' @param by - the margin
 #' @return empty positions
 #' @export
 findEmptyPositions <- function(positions, boxDim = c(8, 10), by = "col") {
