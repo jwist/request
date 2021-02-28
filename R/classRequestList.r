@@ -180,7 +180,7 @@ setMethod("printRequest",
             # adding shutdown blank
             if (options$assay == "MSBruker") {
               last <- nrow(df)
-              print(last)
+              cat(crayon::blue("request >> classRequestList >> ", last, " samples were added \n"))
               path <- "D:\\Methods\\System startup\\LC Methods\\"
               methSet <- "D:\\Methods\\Amino Acid VALIDATED\\Amino acid LC method SHUTDOWN.m"
               sepMeth <- paste0(path, "A1B1_600ulmin_10min_shutdown.m?HyStar_LC")
@@ -191,7 +191,7 @@ setMethod("printRequest",
               df$`Method Set`[last] <- methSet
             } else if (options$assay == "MSWaters") {
               last <- nrow(df)
-              print(last)
+              cat(crayon::blue("request >> classRequestList >> ", last, " samples were added \n"))
               inletFile <- "AAA end"
               df$`INLET_FILE`[last] <- inletFile
               df$`FILE_TEXT`[last] <- "Blank Shutdown"

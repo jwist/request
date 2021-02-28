@@ -86,10 +86,14 @@ numToPos <- function(num, boxDim = c(8, 12)){
   return(pos)
 }
 
-findEmptyPositions <- function(positions, boxDim = c(8, 10)) {
-  g <- getPlatePos(boxDim, by = "col")
-  whole <- RCToPos(g[,1], g[,2])
-  diff <- setdiff(whole, positions)
+#' find empty positions
+#' @param positions - the position or an array of positions
+#' @param boxDim - the dimension of the box (row, column)
+#' @return empty positions
+#' @export
+findEmptyPositions <- function(positions, boxDim = c(8, 10), by = "col") {
+  g <- getPlatePos(boxDim, by = by)
+  diff <- setdiff(g, positions)
   return(diff)
 }
 
@@ -112,7 +116,3 @@ findAllEmptyPositions <- function(selectedSamples) {
   return(emptyPositions)
 }
 
-findFirstEmptyPosition <- function(selectedSamples) {
-  pos <- findAllEmptyPositions(selectedSamples)
-  return(pos[1,])
-}
