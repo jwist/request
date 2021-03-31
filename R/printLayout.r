@@ -14,7 +14,7 @@ printLayout <- function(selectedSamples) {
     ss <- ss[F,]
     # F <- sort(position[,1], index.return = TRUE)$ix
     # ss <- ss[F,]
-    vec <- c(paste0( "", ss$sourceID, "",
+    vec <- c(paste0( "", ss$tubeLabel, "",
                      "<br>", "<b>", ss$plateName, "</b> ",
                      ss$tubePos, "(" , ss$wellPos, ")<br>"),
              rep(NA, 80 - nrow(ss)))

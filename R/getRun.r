@@ -17,7 +17,7 @@ getRun <- function(selectedSamples,
                    cohortName,
                    projectName,
                    options = list()) {
-  types <- c("NMR", "MS-TRY", "MS-AA", "MS-URPP", "MS-LIPIDS")
+  types <- c("NMR", "MS-TRY", "MS-AA", "MS-URPP", "MS-LIPIDS", "MS-MRMS")
   choice <- which(type == types)
 
   cat(crayon::blue("request >> getRUN >> running: ", types[choice], "\n"))
@@ -44,7 +44,8 @@ getRun <- function(selectedSamples,
          runMS_TRY(selectedSamples, runName, projectName, matrixID, deviceID, methodID, date),
          runMS_AA(selectedSamples, runName, projectName, matrixID, deviceID, methodID, date),
          runMS_URPP(selectedSamples, runName, projectName, matrixID, deviceID, methodID, date),
-         runMS_LIPIDS(selectedSamples, runName, projectName, matrixID, deviceID, methodID, date))
+         runMS_LIPIDS(selectedSamples, runName, projectName, matrixID, deviceID, methodID, date),
+         runMS_MRMS(selectedSamples, runName, projectName, matrixID, deviceID, methodID, date))
 }
 
 #' write run file for MS-TRY
@@ -111,25 +112,27 @@ runMS_TRY <- function(selectedSamples, runName, projectName, matrixID, deviceID,
     rl <- addRequest(rl, list(cal8, cal7, cal6, cal5, cal4, cal3, cal2, cal1))
     rl <- addRequest(rl, list(doubleBlk))
 
-    qcList <- list(LTR, QC4, QC2, QC1, QC5, QC6, QC3, LTR)
+    qcList <- list(QC4, QC2, QC1, QC5, QC6, QC3)
     for (i in 1:length(rows)) {
-      rlist <- fillRequest(r, request = c(runParam, "sampleType" = "Analyte" ,"sampleID" = paste0(sampleID[i], "_", sourceID[i]), "row" = as.numeric(rows[i]), "column" = as.numeric(columns[i])))
-
-      if (i %% 10 == 0) {
-        rl <- addRequest(rl, list(rlist, qcList[[(i/10) %% 9]], doubleBlk))
+      rlist <- fillRequest(r, request = c(runParam, "sampleType" = "Analyte" ,"sampleID" = paste0(sampleID[i], "_", tubeLabel[i]), "row" = as.numeric(rows[i]), "column" = as.numeric(columns[i])))
+      if ((i - 1) %% floor(length(rows)/6) == 0) {
+        rl <- addRequest(rl, list(qcList[[(((i - 1)/(floor(length(rows)/6))) %% length(qcList)) + 1]], doubleBlk, rlist))
       } else {
         rl <- addRequest(rl, list(rlist))
       }
+      if (i %% (length(rows)/4) == 0) {
+        rl <- addRequest(rl, list(rlist, LTR))
+      }
     }
-    if (length(sampleID) < 60){
-      rl <- addRequest(rl, list(qcList[[6]], doubleBlk))
-    }
-    if (length(sampleID) < 70){
-      rl <- addRequest(rl, list(qcList[[(70/10) %% 9]], doubleBlk))
-    }
-    if (length(sampleID) < 80){
-      rl <- addRequest(rl, list(LTR, doubleBlk))
-    }
+    # if (length(sampleID) < 60){
+    #   rl <- addRequest(rl, list(qcList[[6]], doubleBlk))
+    # }
+    # if (length(sampleID) < 70){
+    #   rl <- addRequest(rl, list(qcList[[(70/10) %% 9]], doubleBlk))
+    # }
+    # if (length(sampleID) < 80){
+    #   rl <- addRequest(rl, list(LTR, doubleBlk))
+    # }
     ### footer
     rl <- addRequest(rl, list(doubleBlk))
     rl <- addRequest(rl, list(cal8, cal7, cal6, cal5, cal4, cal3, cal2, cal1))
@@ -182,7 +185,8 @@ runMS_AA <- function(selectedSamples, runName, projectName, matrixID, deviceID, 
                      "methodID" = methodID,
                      "deviceID" = deviceID,
                      "matrixID" = matrixID,
-                     "platePosition" = plateCounter)
+                     "platePosition" = plateCounter,
+                     "sampleType" = "Sample")
 
     rl <- new("requestList")
 
@@ -212,7 +216,7 @@ runMS_AA <- function(selectedSamples, runName, projectName, matrixID, deviceID, 
 
     qcList <- list(LTR, QC3, QC1, QC2, QC4, LTR)
     for (i in 1:length(rows)) {
-      rlist <- fillRequest(r, request = c(runParam, "sampleID" = paste0(sampleID[i], "_", sourceID[i]), "row" = rows[i], "column" = columns[i]))
+      rlist <- fillRequest(r, request = c(runParam, "sampleID" = paste0(sampleID[i], "_", tubeLabel[i]), "row" = rows[i], "column" = columns[i]))
 
       if (i %% 8 == 0) {
         rl <- addRequest(rl, list(rlist, qcList[[((i/8) %% 6) + 1]]))
@@ -232,6 +236,93 @@ runMS_AA <- function(selectedSamples, runName, projectName, matrixID, deviceID, 
     run <- printRequest(rl, list("assay" = "MSBruker"))
     saveRun(run, currentRunName)
     plateCounter <- plateCounter + 1
+    req <- c(req, list(requestList = rl, run = run))
+  }
+  return(req)
+}
+
+#' write run file for MS MRMS
+#' @param selectedSamples - the selected samples for run
+#' @param runName - the name of the run
+#' @param projectName - the name of the project
+#' @param matrixID - the id of the sample matrix
+#' @param deviceID - the id of the device
+#' @param methodID - the id of the method
+#' @param date - the date of the run
+#' @return void
+runMS_MRMS <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, date) {
+  plateList <- levels(factor(selectedSamples$plateID))
+  req <- list()
+  for (plate in plateList) {
+
+    currentRunName <- paste(runName,
+                            plate,
+                            date,
+                            sep = "_")
+
+    plateNames <- selectedSamples$plateID
+
+    sampleID <- selectedSamples$sampleID[plateNames == plate]
+    sourceID <- selectedSamples$sourceID[plateNames == plate]
+    positions <- selectedSamples$wellPos[plateNames == plate]
+    RC <- posToRC(positions)
+    columns <- RC$col
+    rows <- RC$row
+
+    r <- new("request")
+    runParam <- list("runName" = currentRunName,
+                     "projectName" = projectName,
+                     "methodID" = methodID,
+                     "deviceID" = deviceID,
+                     "matrixID" = matrixID,
+                     "sampleType" = "Sample")
+
+    rl <- new("requestList")
+
+    pqc1 <- fillRequest(r, request = c(runParam, "sampleID" = "PQC_Burnin1", "row" = 1, "column" = 1, "platePosition" =2, "sampleType" = "standard"))
+    pqc2 <- fillRequest(r, request = c(runParam, "sampleID" = "PQC_Burnin2", "row" = 2, "column" = 1, "platePosition" =2, "sampleType" = "standard"))
+    pqc3 <- fillRequest(r, request = c(runParam, "sampleID" = "PQC_Burnin3", "row" = 3, "column" = 1, "platePosition" =2, "sampleType" = "standard"))
+    pqc4 <- fillRequest(r, request = c(runParam, "sampleID" = "PQC_Burnin4", "row" = 4, "column" = 1, "platePosition" =2, "sampleType" = "standard"))
+    pqc5 <- fillRequest(r, request = c(runParam, "sampleID" = "PQC_Burnin5", "row" = 5, "column" = 1, "platePosition" =2, "sampleType" = "standard"))
+    pqc6 <- fillRequest(r, request = c(runParam, "sampleID" = "PQC_Burnin6", "row" = 6, "column" = 1, "platePosition" =2, "sampleType" = "standard"))
+    pqc7 <- fillRequest(r, request = c(runParam, "sampleID" = "PQC_Burnin7", "row" = 7, "column" = 1, "platePosition" =2, "sampleType" = "standard"))
+    pqc8 <- fillRequest(r, request = c(runParam, "sampleID" = "PQC_Burnin8", "row" = 8, "column" = 1, "platePosition" =2, "sampleType" = "standard"))
+    LTR <- fillRequest(r, request = c(runParam, "sampleID" = "PLASMA LTR", "row" = 8, "column" = 12))
+
+    casib1 <- fillRequest(r, request = c(runParam, "sampleID" = "CASI_Burnin1", "row" = 5, "column" = 4, "platePosition" =2, "sampleType" = "standard"))
+    casib2 <- fillRequest(r, request = c(runParam, "sampleID" = "CASI_Burnin2", "row" = 6, "column" = 4, "platePosition" =2, "sampleType" = "standard"))
+    casib3 <- fillRequest(r, request = c(runParam, "sampleID" = "CASI_Burnin3", "row" = 7, "column" = 4, "platePosition" =2, "sampleType" = "standard"))
+    casib4 <- fillRequest(r, request = c(runParam, "sampleID" = "CASI_Burnin4", "row" = 8, "column" = 4, "platePosition" =2, "sampleType" = "standard"))
+    ### header
+    rl <- addRequest(rl, list(pqc1,
+                              pqc2,
+                              pqc3,
+                              pqc4,
+                              pqc5,
+                              LTR <- setPosition(LTR, "A11"),
+                              LTR <- setPosition(LTR, "B11"),
+                              pqc6,
+                              pqc7,
+                              pqc8))
+
+
+    for (i in 1:length(rows)) {
+      rlist <- fillRequest(r, request = c(runParam, "sampleID" = paste0(sampleID[i], "_", tubeLabel[i]), "row" = rows[i], "column" = columns[i]))
+
+      if ((i - 1) %% 10 == 0) {
+        pqc <- fillRequest(r, request = c(runParam, "sampleID" = "PQC", "row" = ((i - 1) %/% 10) + 1, "column" = 12, "platePosition" =1, "sampleType" = "pqc"))
+        rl <- addRequest(rl, list(pqc, rlist))
+      } else {
+        rl <- addRequest(rl, list(rlist))
+      }
+    }
+    ### footer
+    rl <- addRequest(rl, list(pqc,
+                              LTR <- setPosition(LTR, "C11"),
+                              LTR <- setPosition(LTR, "D11")))
+
+    run <- printRequest(rl, list("assay" = "MS_MRMS"))
+    saveRun(run, currentRunName)
     req <- c(req, list(requestList = rl, run = run))
   }
   return(req)
@@ -300,7 +391,7 @@ runMS_URPP <- function(selectedSamples, runName, projectName, matrixID, deviceID
     LTR@column <- 3
     rl <- addRequest(rl, list(LTR))
     for (i in 1:length(rows)) {
-      rlist <- fillRequest(r, request = c(runParam, "sampleID" = paste0(sampleID[i], "_", sourceID[i]), "row" = rows[i], "column" = columns[i]))
+      rlist <- fillRequest(r, request = c(runParam, "sampleID" = paste0(sampleID[i], "_", tubeLabel[i]), "row" = rows[i], "column" = columns[i]))
 
       if (i %% 8 == 0) {
         LTR@column <- i %/% 8
@@ -382,7 +473,7 @@ runMS_LIPIDS <- function(selectedSamples, runName, projectName, matrixID, device
 
     counter <- 1
     for (i in 1:length(rows)) {
-      rlist <- fillRequest(r, request = c(runParam, "sampleType" = "Unknown" ,"sampleID" = paste0(sampleID[i], "_", sourceID[i]), "row" = as.numeric(rows[i]), "column" = as.numeric(columns[i])))
+      rlist <- fillRequest(r, request = c(runParam, "sampleType" = "Unknown" ,"sampleID" = paste0(sampleID[i], "_", tubeLabel[i]), "row" = as.numeric(rows[i]), "column" = as.numeric(columns[i])))
 
       if (i %% 10 == 0) {
         LTR <- fillRequest(r, request = c(runParam, "sampleID" = "PLASMA LTR", "row" = counter, "column" = 11, "sampleType" = "Unknown"))
@@ -432,7 +523,7 @@ runNMR <- function(selectedSamples, runName, projectName, matrixID, deviceID, me
 
     plateLength <- length(positions)
 
-    plate1S <- data.frame("_sampleID" = paste0(sampleID, "_", sourceID),
+    plate1S <- data.frame("_sampleID" = paste0(sampleID, "_", tubeLabel),
                           "_matrixID" = rep(matrixID, plateLength),
                           "_runName" = rep(currentRunName, plateLength),
                           "_sampleType" = rep("S", plateLength),
@@ -479,6 +570,7 @@ saveRun <- function(run, runName){
               file = file,
               sep = "\t",
               dec = ".",
-              row.names = FALSE)
+              row.names = FALSE,
+              quote = FALSE)
   cat(crayon::green("request >> getRUN >> ", file, " written\n"))
 }

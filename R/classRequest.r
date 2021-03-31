@@ -104,3 +104,27 @@ setMethod("fillRequest",
             return(r)
           }
 )
+
+
+#' set position of requests
+#' @param r the request
+#' @param position the parameters to fill
+#' @export
+setGeneric("setPosition", function(r, position) {
+  standardGeneric("setPosition")
+})
+
+
+#' set position of requests
+#' @param r the request
+#' @param position the parameters to fill
+#' @export
+setMethod("setPosition",
+          c(r = "request", position = "character"),
+          function(r, position) {
+            RC <- posToRC(position)
+            r@row <- as.numeric(RC[1])
+            r@column <- as.numeric(RC[2])
+            return(r)
+          }
+)

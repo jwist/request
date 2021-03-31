@@ -73,7 +73,7 @@ setMethod("printRequest",
                                          "Sample Type" = i@sampleType,
                                          "Calib. Level" = calLev,
                                          "Inj." = 1,
-                                         "Volume" = 2,
+                                         "Volume [µl]" = 2,
                                          "Data Path" = path,
                                          "Run Automated Processing" = "true", check.names = FALSE)
               } else if (options$assay == "MSWaters") {
@@ -162,6 +162,18 @@ setMethod("printRequest",
                                          "Volume" = 2,
                                          "Data Path" = path,
                                          "Run Automated Processing" = "true", check.names = FALSE)
+              } else if (options$assay == "MS_MRMS") {
+                # path <- "D:\\Data\\AA Methods\\Amino Acid\\"
+                path <- paste0("D:\\lims\\", i@projectName, "\\MRMSP\\")
+                methSet <- "D:\\Methods\\FIA_Methods\\200802_Hexakis_Lockmass.m"
+
+                rlist[[j]] <- data.frame("Vial" = paste0(1, ":", i@platePosition, ":", RCToNum(i@row, i@column)),
+                                         "Sample ID" = paste0(i@runName, "_", i@sampleID, "_", j),
+                                         "Method Set" = methSet,
+                                         "Sample Type" = i@sampleType,
+                                         "Volume [µl]" = 20,
+                                         "Data Path" = path,
+                                         "Result Path" = "", check.names = FALSE)
               } else {
                 rlist[[j]] <- data.frame("_sampleID" = i@sampleID,
                                          "_matrixID" = i@matrixID,

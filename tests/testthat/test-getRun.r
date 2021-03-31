@@ -33,3 +33,10 @@ test_that("get run for lipids", {
   nmr <- testSet$lipids
   expect_equal(run, nmr)
 })
+
+test_that("get run for MRMS", {
+  run <- getRun(testSet$selectedSamples, "MS-MRMS", 1, 27, 28, "cambridgeFollowUP", "covid19", options = list(date = "280221"))
+  nmr <- testSet$lipids
+  expect_equal(run, nmr)
+})
+

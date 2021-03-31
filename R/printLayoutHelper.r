@@ -12,7 +12,7 @@ printLayoutHelper <- function(selectedSamples) {
     fi <- selectedSamples$boxName == box
     mat <- data.frame(oldRC = selectedSamples$tubeRC[fi],
                       oldPos = selectedSamples$tubePosition[fi],
-                      sourceID = selectedSamples$sourceID[fi],
+                      tubeLabel = selectedSamples$tubeLabel[fi],
                       plateName = selectedSamples$plateID[fi],
                       position = selectedSamples$wellPos[fi],
                       RC = selectedSamples$wellRC[fi])
