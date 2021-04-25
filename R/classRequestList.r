@@ -162,18 +162,90 @@ setMethod("printRequest",
                                          "Volume" = 2,
                                          "Data Path" = path,
                                          "Run Automated Processing" = "true", check.names = FALSE)
-              } else if (options$assay == "MS_MRMS") {
+              } else if (options$assay == "MS_MRMSP") {
                 # path <- "D:\\Data\\AA Methods\\Amino Acid\\"
                 path <- paste0("D:\\lims\\", i@projectName, "\\MRMSP\\")
                 methSet <- "D:\\Methods\\FIA_Methods\\200802_Hexakis_Lockmass.m"
+                sepMeth <- "D:\\Methods\\FIA_Methods\\201217_LC_method.m"
+                msMeth <- "D:\\Methods\\FIA_Methods\\201217_MRMS_POS.m"
 
                 rlist[[j]] <- data.frame("Vial" = paste0(1, ":", i@platePosition, ":", RCToNum(i@row, i@column)),
                                          "Sample ID" = paste0(i@runName, "_", i@sampleID, "_", j),
                                          "Method Set" = methSet,
+                                         "Separation Method" = sepMeth,
+                                         "MS Method" =  msMeth,
                                          "Sample Type" = i@sampleType,
                                          "Volume [µl]" = 20,
                                          "Data Path" = path,
                                          "Result Path" = "", check.names = FALSE)
+              } else if (options$assay == "MS_MRMSN") {
+                # path <- "D:\\Data\\AA Methods\\Amino Acid\\"
+                path <- paste0("D:\\lims\\", i@projectName, "\\MRMSN\\")
+                methSet <- "D:\\Methods\\FIA_Methods\\200802_Hexakis_Lockmass.m"
+                sepMeth <- "D:\\Methods\\FIA_Methods\\201217_LC_method.m"
+                msMeth <- "D:\\Methods\\FIA_Methods\\201217_MRMS_NEG.m"
+
+                rlist[[j]] <- data.frame("Vial" = paste0(1, ":", i@platePosition, ":", RCToNum(i@row, i@column)),
+                                         "Sample ID" = paste0(i@runName, "_", i@sampleID, "_", j),
+                                         "Method Set" = methSet,
+                                         "Separation Method" = sepMeth,
+                                         "MS Method" = msMeth,
+                                         "Sample Type" = i@sampleType,
+                                         "Volume [µl]" = 20,
+                                         "Data Path" = path,
+                                         "Result Path" = "", check.names = FALSE)
+              } else if (options$assay == "TIMS_LIPIDS_N") {
+                path <- paste0("D:\\lims\\", i@projectName, "\\TIMS_LIPIDS_N\\")
+                methSet <- ""
+                sepMeth <- "D:\\Methods\\CORTECS\ T3\ Lipidomics\\2020\ 0921_CORTECS\ T3_A2B2_Lipidomics_400uLmin_15min_PLNO_v1.m"
+                msMeth <- "D:\\Methods\\CRC-lipid_CSH_C18\\2020 0831-4D-Lipidomics_ANPC_v1.m"
+                procMeth <- "D:\\Data\\NaFA\ pos\ recal\ readout.m"
+                injMeth <- "Standard"
+
+                if (i@platePosition == 0){
+                  sampleLocation <- paste0("V:", i@row)
+                } else {
+                  sampleLocation <- paste0(i@platePosition, ":", row[i@row], ",", i@column)
+                }
+
+                rlist[[j]] <- data.frame("Vial" = sampleLocation,
+                                         "Sample ID" = paste0(i@runName, "_", i@sampleID, "_", j),
+                                         "Method Set" = methSet,
+                                         "Separation Method" = sepMeth,
+                                         "Injection Method" = injMeth,
+                                         "MS Method" = msMeth,
+                                         "Processing Method" = procMeth,
+                                         "Sample Type" = i@sampleType,
+                                         "Inj." = 1,
+                                         "Volume [µl]" = 7.5,
+                                         "Data Path" = path,
+                                         "Run Automated Processing" = "TRUE", check.names = FALSE)
+              } else if (options$assay == "TIMS_LIPIDS_P") {
+                path <- paste0("D:\\lims\\", i@projectName, "\\TIMS_LIPIDS_P\\")
+                methSet <- ""
+                sepMeth <- "D:\\Methods\\CORTECS\ T3\ Lipidomics\\2020\ 0921_CORTECS\ T3_A2B2_Lipidomics_400uLmin_15min_PLNO_v1.m"
+                msMeth <- "D:\\Methods\\CRC-lipid_CSH_C18\\2020 0831-4D-Lipidomics_ANPC_v1.m"
+                procMeth <- "D:\\Data\\NaFA\ pos\ recal\ readout.m"
+                injMeth <- "Standard"
+
+                if (i@platePosition == 0){
+                  sampleLocation <- paste0("V:", i@row)
+                } else {
+                  sampleLocation <- paste0(i@platePosition, ":", row[i@row], ",", i@column)
+                }
+
+                rlist[[j]] <- data.frame("Vial" = sampleLocation,
+                                         "Sample ID" = paste0(i@runName, "_", i@sampleID, "_", j),
+                                         "Method Set" = methSet,
+                                         "Separation Method" = sepMeth,
+                                         "Injection Method" = injMeth,
+                                         "MS Method" = msMeth,
+                                         "Processing Method" = procMeth,
+                                         "Sample Type" = i@sampleType,
+                                         "Inj." = 1,
+                                         "Volume [µl]" = 7.5,
+                                         "Data Path" = path,
+                                         "Run Automated Processing" = "TRUE", check.names = FALSE)
               } else {
                 rlist[[j]] <- data.frame("_sampleID" = i@sampleID,
                                          "_matrixID" = i@matrixID,

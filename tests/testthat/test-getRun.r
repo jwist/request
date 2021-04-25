@@ -34,9 +34,26 @@ test_that("get run for lipids", {
   expect_equal(run, nmr)
 })
 
-test_that("get run for MRMS", {
-  run <- getRun(testSet$selectedSamples, "MS-MRMS", 1, 27, 28, "cambridgeFollowUP", "covid19", options = list(date = "280221"))
-  nmr <- testSet$lipids
+test_that("get run for MRMSN", {
+  run <- getRun(testSet$selectedSamples, "MS-MRMSN", 1, 27, 29, "cambridgeFollowUP", "covid19", options = list(date = "280221"))
+  nmr <- testSet$mrmsn
   expect_equal(run, nmr)
 })
 
+test_that("get run for MRMSP", {
+  run <- getRun(testSet$selectedSamples, "MS-MRMSP", 1, 27, 28, "cambridgeFollowUP", "covid19", options = list(date = "280221"))
+  nmr <- testSet$mrmsp
+  expect_equal(run, nmr)
+})
+
+test_that("get run for TIMS-LIPIDS-P", {
+  run <- getRun(testSet$selectedSamples, "TIMS-LIPIDS-P", 1, 25, 30, "cambridgeFollowUP", "covid19", options = list(date = "280221"))
+  nmr <- testSet$timsLipidsP
+  expect_equal(run, nmr)
+})
+
+test_that("get run for TIMS-LIPIDS-N", {
+  run <- getRun(testSet$selectedSamples, "TIMS-LIPIDS-N", 1, 25, 31, "cambridgeFollowUP", "covid19", options = list(date = "280221"))
+  nmr <- testSet$timsLipidsN
+  expect_equal(run, nmr)
+})
