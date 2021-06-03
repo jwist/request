@@ -4,7 +4,7 @@
 \alias{printLayout}
 \title{print html layout of plates}
 \usage{
-printLayout(selectedSamples)
+printLayout(selectedSamples, boxDim = c(8, 10))
 }
 \arguments{
 \item{selectedSamples}{\itemize{

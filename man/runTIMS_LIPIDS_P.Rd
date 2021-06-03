@@ -11,6 +11,7 @@ runTIMS_LIPIDS_P(
   matrixID,
   deviceID,
   methodID,
+  LTR_NAME,
   date
 )
 }

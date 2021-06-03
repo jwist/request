@@ -11,6 +11,7 @@ runNMR(
   matrixID,
   deviceID,
   methodID,
+  LTR_NAME,
   date
 )
 }

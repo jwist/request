@@ -11,6 +11,7 @@ runMS_LIPIDS(
   matrixID,
   deviceID,
   methodID,
+  LTR_NAME,
   date
 )
 }
