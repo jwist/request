@@ -66,7 +66,6 @@ setMethod("printRequest",
                                  "QC 2" = 75,
                                  "QC 1" = 300)
                 if (is.null(calLev)) { calLev <- 0}
-
                 rlist[[j]] <- data.frame("Vial" = paste0(i@platePosition, ":", row[i@row], ",", i@column),
                                          "Sample ID" = paste0(i@runName, "_", i@sampleID, "_", j),
                                          "Method Set" = methSet,
@@ -163,7 +162,6 @@ setMethod("printRequest",
                                          "Data Path" = path,
                                          "Run Automated Processing" = "true", check.names = FALSE)
               } else if (options$assay == "MS_MRMSP") {
-                # path <- "D:\\Data\\AA Methods\\Amino Acid\\"
                 path <- paste0("D:\\lims\\", i@projectName, "\\MRMSP\\")
                 methSet <- "D:\\Methods\\FIA_Methods\\200802_Hexakis_Lockmass.m"
                 sepMeth <- "D:\\Methods\\FIA_Methods\\201217_LC_method.m"

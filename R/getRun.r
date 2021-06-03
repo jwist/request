@@ -41,6 +41,8 @@ getRun <- function(selectedSamples,
                    deviceName,
                    sep = "_")
 
+  LTR_NAME <- paste0("LTR_", matrixName)
+
   if ("date" %in% names(options)) {
     date <- options$date
   } else {
@@ -48,15 +50,15 @@ getRun <- function(selectedSamples,
   }
 
   switch(choice,
-         runNMR(selectedSamples, runName, projectName, matrixID, deviceID, methodID, date),
-         runMS_TRY(selectedSamples, runName, projectName, matrixID, deviceID, methodID, date),
-         runMS_AA(selectedSamples, runName, projectName, matrixID, deviceID, methodID, date),
-         runMS_URPP(selectedSamples, runName, projectName, matrixID, deviceID, methodID, date),
-         runMS_LIPIDS(selectedSamples, runName, projectName, matrixID, deviceID, methodID, date),
-         runMS_MRMSP(selectedSamples, runName, projectName, matrixID, deviceID, methodID, date),
-         runMS_MRMSN(selectedSamples, runName, projectName, matrixID, deviceID, methodID, date),
-         runTIMS_LIPIDS_P(selectedSamples, runName, projectName, matrixID, deviceID, methodID, date),
-         runTIMS_LIPIDS_N(selectedSamples, runName, projectName, matrixID, deviceID, methodID, date))
+         runNMR(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date),
+         runMS_TRY(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date),
+         runMS_AA(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date),
+         runMS_URPP(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date),
+         runMS_LIPIDS(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date),
+         runMS_MRMSP(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date),
+         runMS_MRMSN(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date),
+         runTIMS_LIPIDS_P(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date),
+         runTIMS_LIPIDS_N(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date))
 }
 
 #' write run file for MS-TRY
@@ -68,7 +70,7 @@ getRun <- function(selectedSamples,
 #' @param methodID - the id of the method
 #' @param date - the date of the run
 #' @return void
-runMS_TRY <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, date) {
+runMS_TRY <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
 
   plateList <- levels(factor(selectedSamples$plateID))
 
@@ -110,29 +112,35 @@ runMS_TRY <- function(selectedSamples, runName, projectName, matrixID, deviceID,
     cal6 <- fillRequest(r, request = c(runParam, "sampleID" = "Cal 6", "row" = 3, "column" = 11, "sampleType" = "Standard", "options" = list(list("conc" = c(0.8,	1.6,	3.2,	4,	8,	16,	80,	400,	800)))))
     cal7 <- fillRequest(r, request = c(runParam, "sampleID" = "Cal 7", "row" = 2, "column" = 11, "sampleType" = "Standard", "options" = list(list("conc" = c(0.4,	0.8,	1.6,	2,	4,	8,	40,	200,	400)))))
     cal8 <- fillRequest(r, request = c(runParam, "sampleID" = "Cal 8", "row" = 1, "column" = 11, "sampleType" = "Standard", "options" = list(list("conc" = c(0.2,	0.4,	0.8,	1,	2,	4,	20,	100,	200)))))
-    QC6 <- fillRequest(r, request = c(runParam, "sampleID" = "QC 6", "row" = 2, "column" = 12, "sampleType" = "QC", "options" = list(list("conc" = c(0.4, 0.8, 1.6, 2, 4 ,8, 40, 200, 400)))))
+    #QC6 <- fillRequest(r, request = c(runParam, "sampleID" = "QC 6", "row" = 2, "column" = 12, "sampleType" = "QC", "options" = list(list("conc" = c(0.4, 0.8, 1.6, 2, 4 ,8, 40, 200, 400)))))
     QC5 <- fillRequest(r, request = c(runParam, "sampleID" = "QC 5", "row" = 3, "column" = 12, "sampleType" = "QC", "options" = list(list("conc" = c(0.8, 1.6, 3.2, 4, 8, 16, 80, 400, 800)))))
     QC4 <- fillRequest(r, request = c(runParam, "sampleID" = "QC 4", "row" = 4, "column" = 12, "sampleType" = "QC", "options" = list(list("conc" = c(2, 4, 8, 10, 20, 40, 200, 1000, 2000)))))
     QC3 <- fillRequest(r, request = c(runParam, "sampleID" = "QC 3", "row" = 5, "column" = 12, "sampleType" = "QC", "options" = list(list("conc" = c(8, 16, 32, 40, 80, 160, 800, 4000, 8000)))))
     QC2 <- fillRequest(r, request = c(runParam, "sampleID" = "QC 2", "row" = 6, "column" = 12, "sampleType" = "QC", "options" = list(list("conc" = c(16, 32, 64, 80, 160, 320, 1600, 8000, 16000)))))
-    QC1 <- fillRequest(r, request = c(runParam, "sampleID" = "QC 1", "row" = 7, "column" = 12, "sampleType" = "QC", "options" = list(list("conc" = c(20, 40, 80, 100, 200, 400, 2000, 10000, 20000)))))
-    LTR <- fillRequest(r, request = c(runParam, "sampleID" = "PLASMA LTR", "row" = 1, "column" = 12, "sampleType" = "Analyte"))
+    #QC1 <- fillRequest(r, request = c(runParam, "sampleID" = "QC 1", "row" = 7, "column" = 12, "sampleType" = "QC", "options" = list(list("conc" = c(20, 40, 80, 100, 200, 400, 2000, 10000, 20000)))))
+    LTR <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 1, "column" = 12, "sampleType" = "Analyte"))
 
     ### header
     rl <- addRequest(rl, list(doubleBlk, mixTest, doubleBlk))
     rl <- addRequest(rl, list(cal8, cal7, cal6, cal5, cal4, cal3, cal2, cal1))
     rl <- addRequest(rl, list(doubleBlk))
 
-    qcList <- list(QC4, QC2, QC1, QC5, QC6, QC3)
+    qcList <- list(QC4, QC2, QC5, QC3)
     for (i in 1:length(rows)) {
       rlist <- fillRequest(r, request = c(runParam, "sampleType" = "Analyte" ,"sampleID" = paste0(sampleID[i], "_", tubeLabel[i]), "row" = as.numeric(rows[i]), "column" = as.numeric(columns[i])))
-      if ((i - 1) %% floor(length(rows)/6) == 0) {
-        rl <- addRequest(rl, list(qcList[[(((i - 1)/(floor(length(rows)/6))) %% length(qcList)) + 1]], doubleBlk, rlist))
+      if (i %% floor(length(rows)/4) == 0) {
+        rl <- addRequest(rl, list(rlist))
       } else {
         rl <- addRequest(rl, list(rlist))
       }
-      if (i %% (length(rows)/4) == 0) {
-        rl <- addRequest(rl, list(rlist, LTR))
+      if (i %% floor(length(rows)/4) == 0) {
+        rl <- addRequest(rl, list(rlist, qcList[[(((i - 1)/(floor(length(rows)/4))) %% length(qcList)) + 1]], doubleBlk, LTR))
+        j <- i %/% floor(length(rows)/4)
+        if (j %% 2 == 0) {
+          LTR <- setPosition(LTR, "A12")
+        } else {
+          LTR <- setPosition(LTR, "H12")
+        }
       }
     }
     # if (length(sampleID) < 60){
@@ -168,7 +176,7 @@ runMS_TRY <- function(selectedSamples, runName, projectName, matrixID, deviceID,
 #' @param methodID - the id of the method
 #' @param date - the date of the run
 #' @return void
-runMS_AA <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, date) {
+runMS_AA <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
 
   plateList <- levels(factor(selectedSamples$plateID))
 
@@ -196,8 +204,7 @@ runMS_AA <- function(selectedSamples, runName, projectName, matrixID, deviceID, 
                      "methodID" = methodID,
                      "deviceID" = deviceID,
                      "matrixID" = matrixID,
-                     "platePosition" = plateCounter,
-                     "sampleType" = "Sample")
+                     "platePosition" = plateCounter)
 
     rl <- new("requestList")
 
@@ -216,7 +223,7 @@ runMS_AA <- function(selectedSamples, runName, projectName, matrixID, deviceID, 
     QC3 <- fillRequest(r, request = c(runParam, "sampleID" = "QC 3", "row" = 3, "column" = 12, "sampleType" = "QC"))
     QC2 <- fillRequest(r, request = c(runParam, "sampleID" = "QC 2", "row" = 4, "column" = 12, "sampleType" = "QC"))
     QC1 <- fillRequest(r, request = c(runParam, "sampleID" = "QC 1", "row" = 5, "column" = 12, "sampleType" = "QC"))
-    LTR <- fillRequest(r, request = c(runParam, "sampleID" = "PLASMA LTR", "row" = 8, "column" = 12))
+    LTR <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 8, "column" = 12))
 
     ### header
     rl <- addRequest(rl, list(doubleBlk, QC1, doubleBlk,singleBlk))
@@ -225,18 +232,36 @@ runMS_AA <- function(selectedSamples, runName, projectName, matrixID, deviceID, 
     rl <- addRequest(rl, list(QC4, QC3, QC2, QC1))
     rl <- addRequest(rl, list(doubleBlk, LTR))
 
-    qcList <- list(LTR, QC3, QC1, QC2, QC4, LTR)
+    # qcList <- list(LTR, QC3, QC1, QC2, QC4, LTR)
+    # for (i in 1:length(rows)) {
+    #   rlist <- fillRequest(r, request = c(runParam, "sampleID" = paste0(sampleID[i], "_", tubeLabel[i]), "row" = rows[i], "column" = columns[i]))
+    #
+    #   if (i %% 8 == 0) {
+    #     rl <- addRequest(rl, list(rlist, qcList[[((i/8) %% 6) + 1]]))
+    #   } else {
+    #     rl <- addRequest(rl, list(rlist))
+    #   }
+    # }
+    # if (length(rows) < 80){
+    #   rl <- addRequest(rl, list(LTR))
+    # }
+    qcList <- list(QC3, QC1, QC2, QC4)
     for (i in 1:length(rows)) {
-      rlist <- fillRequest(r, request = c(runParam, "sampleID" = paste0(sampleID[i], "_", tubeLabel[i]), "row" = rows[i], "column" = columns[i]))
-
-      if (i %% 8 == 0) {
-        rl <- addRequest(rl, list(rlist, qcList[[((i/8) %% 6) + 1]]))
+      rlist <- fillRequest(r, request = c(runParam, "sampleType" = "Sample", "sampleID" = paste0(sampleID[i], "_", tubeLabel[i]), "row" = as.numeric(rows[i]), "column" = as.numeric(columns[i])))
+      if (i %% floor(length(rows)/4) == 0) {
+        rl <- addRequest(rl, list(rlist))
       } else {
         rl <- addRequest(rl, list(rlist))
       }
-    }
-    if (length(rows) < 80){
-      rl <- addRequest(rl, list(LTR))
+      if (i %% floor(length(rows)/4) == 0) {
+        rl <- addRequest(rl, list(rlist, qcList[[(((i - 1)/(floor(length(rows)/4))) %% length(qcList)) + 1]], doubleBlk, LTR))
+        j <- i %/% floor(length(rows)/4)
+        # if (j %% 2 == 0) {
+        #   LTR <- setPosition(LTR, "A12")
+        # } else {
+        #   LTR <- setPosition(LTR, "H12")
+        # }
+      }
     }
     ### footer
     rl <- addRequest(rl, list(doubleBlk, LTR))
@@ -261,7 +286,7 @@ runMS_AA <- function(selectedSamples, runName, projectName, matrixID, deviceID, 
 #' @param methodID - the id of the method
 #' @param date - the date of the run
 #' @return void
-runMS_MRMSP <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, date) {
+runMS_MRMSP <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
   plateList <- levels(factor(selectedSamples$plateID))
   req <- list()
   for (plate in plateList) {
@@ -298,7 +323,7 @@ runMS_MRMSP <- function(selectedSamples, runName, projectName, matrixID, deviceI
     pqc6 <- fillRequest(r, request = c(runParam, "sampleID" = "PQC_Burnin6", "row" = 6, "column" = 1, "platePosition" =2, "sampleType" = "standard"))
     pqc7 <- fillRequest(r, request = c(runParam, "sampleID" = "PQC_Burnin7", "row" = 7, "column" = 1, "platePosition" =2, "sampleType" = "standard"))
     pqc8 <- fillRequest(r, request = c(runParam, "sampleID" = "PQC_Burnin8", "row" = 8, "column" = 1, "platePosition" =2, "sampleType" = "standard"))
-    LTR <- fillRequest(r, request = c(runParam, "sampleID" = "PLASMA LTR", "row" = 8, "column" = 12))
+    LTR <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 8, "column" = 12))
 
     casib1 <- fillRequest(r, request = c(runParam, "sampleID" = "CASI_Burnin1", "row" = 5, "column" = 4, "platePosition" =2, "sampleType" = "standard"))
     casib2 <- fillRequest(r, request = c(runParam, "sampleID" = "CASI_Burnin2", "row" = 6, "column" = 4, "platePosition" =2, "sampleType" = "standard"))
@@ -348,7 +373,7 @@ runMS_MRMSP <- function(selectedSamples, runName, projectName, matrixID, deviceI
 #' @param methodID - the id of the method
 #' @param date - the date of the run
 #' @return void
-runMS_MRMSN <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, date) {
+runMS_MRMSN <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
   plateList <- levels(factor(selectedSamples$plateID))
   req <- list()
   for (plate in plateList) {
@@ -385,7 +410,7 @@ runMS_MRMSN <- function(selectedSamples, runName, projectName, matrixID, deviceI
     pqc6 <- fillRequest(r, request = c(runParam, "sampleID" = "PQC_Burnin6", "row" = 6, "column" = 1, "platePosition" =2, "sampleType" = "standard"))
     pqc7 <- fillRequest(r, request = c(runParam, "sampleID" = "PQC_Burnin7", "row" = 7, "column" = 1, "platePosition" =2, "sampleType" = "standard"))
     pqc8 <- fillRequest(r, request = c(runParam, "sampleID" = "PQC_Burnin8", "row" = 8, "column" = 1, "platePosition" =2, "sampleType" = "standard"))
-    LTR <- fillRequest(r, request = c(runParam, "sampleID" = "PLASMA LTR", "row" = 8, "column" = 12))
+    LTR <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 8, "column" = 12))
 
     casib1 <- fillRequest(r, request = c(runParam, "sampleID" = "CASI_Burnin1", "row" = 5, "column" = 4, "platePosition" =2, "sampleType" = "standard"))
     casib2 <- fillRequest(r, request = c(runParam, "sampleID" = "CASI_Burnin2", "row" = 6, "column" = 4, "platePosition" =2, "sampleType" = "standard"))
@@ -435,7 +460,7 @@ runMS_MRMSN <- function(selectedSamples, runName, projectName, matrixID, deviceI
 #' @param methodID - the id of the method
 #' @param date - the date of the run
 #' @return void
-runTIMS_LIPIDS_P <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, date) {
+runTIMS_LIPIDS_P <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
   plateList <- levels(factor(selectedSamples$plateID))
   req <- list()
   for (plate in plateList) {
@@ -465,7 +490,7 @@ runTIMS_LIPIDS_P <- function(selectedSamples, runName, projectName, matrixID, de
     rl <- new("requestList")
 
     pqc1 <- fillRequest(r, request = c(runParam, "sampleID" = "PQC", "row" = 1, "column" = 12, "platePosition" = 1, "sampleType" = "standard"))
-    LTR <- fillRequest(r, request = c(runParam, "sampleID" = "PLASMA LTR", "row" = 3, "column" = 1, "platePosition" = 0))
+    LTR <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 3, "column" = 1, "platePosition" = 0))
     sblk <- fillRequest(r, request = c(runParam, "sampleID" = "Blank", "row" = 2, "column" = 1, "platePosition" = 0, "sampleType" = "standard"))
     blk <- fillRequest(r, request = c(runParam, "sampleID" = "Double Blank", "row" = 1, "column" = 1, "platePosition" = 0, "sampleType" = "standard"))
 
@@ -508,7 +533,7 @@ runTIMS_LIPIDS_P <- function(selectedSamples, runName, projectName, matrixID, de
 }
 
 
-runTIMS_LIPIDS_N <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, date) {
+runTIMS_LIPIDS_N <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
   plateList <- levels(factor(selectedSamples$plateID))
   req <- list()
   for (plate in plateList) {
@@ -538,7 +563,7 @@ runTIMS_LIPIDS_N <- function(selectedSamples, runName, projectName, matrixID, de
     rl <- new("requestList")
 
     pqc1 <- fillRequest(r, request = c(runParam, "sampleID" = "PQC", "row" = 1, "column" = 12, "platePosition" = 1, "sampleType" = "standard"))
-    LTR <- fillRequest(r, request = c(runParam, "sampleID" = "PLASMA LTR", "row" = 3, "column" = 1, "platePosition" = 0))
+    LTR <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 3, "column" = 1, "platePosition" = 0))
     sblk <- fillRequest(r, request = c(runParam, "sampleID" = "Blank", "row" = 2, "column" = 1, "platePosition" = 0, "sampleType" = "standard"))
     blk <- fillRequest(r, request = c(runParam, "sampleID" = "Double Blank", "row" = 1, "column" = 1, "platePosition" = 0, "sampleType" = "standard"))
 
@@ -589,7 +614,7 @@ runTIMS_LIPIDS_N <- function(selectedSamples, runName, projectName, matrixID, de
 #' @param methodID - the id of the method
 #' @param date - the date of the run
 #' @return void
-runMS_URPP <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, date) {
+runMS_URPP <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
 
   plateList <- levels(factor(selectedSamples$plateID))
 
@@ -624,7 +649,7 @@ runMS_URPP <- function(selectedSamples, runName, projectName, matrixID, deviceID
     doubleBlk <- fillRequest(r, request = c(runParam, "sampleID" = "Double Blank", "row" = 7, "column" = 12, "sampleType" = "Blank"))
     singleBlk <- fillRequest(r, request = c(runParam, "sampleID" = "Single Blank", "row" = 6, "column" = 12, "sampleType" = "Blank"))
     QC <- fillRequest(r, request = c(runParam, "sampleID" = "QC 1", "row" = 5, "column" = 12, "sampleType" = "QC"))
-    LTR <- fillRequest(r, request = c(runParam, "sampleID" = "PLASMA LTR", "row" = 0, "column" = 0))
+    LTR <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 0, "column" = 0))
     LTR_cond <- fillRequest(r, request = c(runParam, "sampleID" = "LTR cond", "row" = 8, "column" = 12, "sampleType" = "QC"))
 
     ### header
@@ -673,7 +698,7 @@ runMS_URPP <- function(selectedSamples, runName, projectName, matrixID, deviceID
 #' @param methodID - the id of the method
 #' @param date - the date of the run
 #' @return void
-runMS_LIPIDS <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, date) {
+runMS_LIPIDS <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
 
   plateList <- levels(factor(selectedSamples$plateID))
 
@@ -728,7 +753,7 @@ runMS_LIPIDS <- function(selectedSamples, runName, projectName, matrixID, device
       rlist <- fillRequest(r, request = c(runParam, "sampleType" = "Unknown" ,"sampleID" = paste0(sampleID[i], "_", tubeLabel[i]), "row" = as.numeric(rows[i]), "column" = as.numeric(columns[i])))
 
       if (i %% 10 == 0) {
-        LTR <- fillRequest(r, request = c(runParam, "sampleID" = "PLASMA LTR", "row" = counter, "column" = 11, "sampleType" = "Unknown"))
+        LTR <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = counter, "column" = 11, "sampleType" = "Unknown"))
         rl <- addRequest(rl, list(rlist, LTR))
         counter <- counter + 1
       } else {
@@ -753,7 +778,7 @@ runMS_LIPIDS <- function(selectedSamples, runName, projectName, matrixID, device
 #' @param methodID - the id of the method
 #' @param date - the date of the run
 #' @return a list
-runNMR <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, date) {
+runNMR <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
   LTR <- 4
 
   plateList <- levels(factor(selectedSamples$plateID))

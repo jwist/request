@@ -19,3 +19,18 @@ cleanNames <- function(names) {
   # names <-gsub("[\\W ]", "-", names)
   return(names)
 }
+
+
+# cleanNames <- function(names) {
+#   # names <- tolower(names)
+#   make.unique(names, sep = "#")
+#   names <-gsub("[*]$", "-S", names)
+#   names <-gsub("[*]", "T", names)
+#   names <-gsub("[+]", "P", names)
+#   # we remove all except # for replicates
+#   names <-gsub(" ", "_", names)
+#   names <-gsub("[^A-Za-z0-9\\W#]", "_", names)
+#   # names <-gsub("[\\W_]", "-", names)
+#   # names <-gsub("[\\W ]", "-", names)
+#   return(names)
+# }

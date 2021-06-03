@@ -105,12 +105,12 @@ findEmptyPositionsOn <- function(selectedSamples, plate) {
   return(findEmptyPositions(positions))
 }
 
-findAllEmptyPositions <- function(selectedSamples) {
+findAllEmptyPositions <- function(selectedSamples, boxDim = c(8, 10), by = "col") {
   emptyPositions <- data.frame()
   for (plate in levels(factor(selectedSamples$plateID))) {
     F <- selectedSamples$plateID == plate
     positions <- selectedSamples$wellPos[F]
-    empty <- findEmptyPositions(positions)
+    empty <- findEmptyPositions(positions, boxDim = boxDim, by = by)
     empty <- data.frame(position = empty, plateID = rep(plate, length(empty)))
     emptyPositions <- rbind(emptyPositions, empty)
   }
