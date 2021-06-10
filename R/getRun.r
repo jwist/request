@@ -811,7 +811,7 @@ runNMR <- function(selectedSamples, runName, projectName, matrixID, deviceID, me
                           "row" = rows,
                           "column" = columns, check.names = FALSE)
 
-    plate1LTR <- data.frame("_sampleID" = rep("LTR_PLASMA", LTR),
+    plate1LTR <- data.frame("_sampleID" = rep(LTR_NAME, LTR),
                             "_matrixID" = rep(matrixID, LTR),
                             "_runName" = rep(currentRunName, LTR),
                             "_sampleType" = rep("LTR", LTR),
