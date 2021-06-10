@@ -98,11 +98,11 @@ findEmptyPositions <- function(positions, boxDim = c(8, 10), by = "col") {
   return(diff)
 }
 
-findEmptyPositionsOn <- function(selectedSamples, plate) {
+findEmptyPositionsOn <- function(selectedSamples, plate, boxDim = c(8, 10), by = "col") {
   plate <- plate
   F <- selectedSamples$plateID == plate
   positions <- paste0(LETTERS[selectedSamples$newRow[F]], selectedSamples$newCol[F])
-  return(findEmptyPositions(positions))
+  return(findEmptyPositions(positions, boxDim = boxDim, by = by))
 }
 
 findAllEmptyPositions <- function(selectedSamples, boxDim = c(8, 10), by = "col") {
