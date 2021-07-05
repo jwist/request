@@ -66,7 +66,15 @@ setMethod("printRequest",
                                  "QC 2" = 75,
                                  "QC 1" = 300)
                 if (is.null(calLev)) { calLev <- 0}
-                rlist[[j]] <- data.frame("Vial" = paste0(i@platePosition, ":", row[i@row], ",", i@column),
+
+                if (i@row == 0){
+                  sampleLocation <- "V:1"
+                } else if (i@row == -1) {
+                  sampleLocation <- "V:4"
+                } else {
+                  sampleLocation <- paste0(i@platePosition, ":", row[i@row], ",", i@column)
+                }
+                rlist[[j]] <- data.frame("Vial" = sampleLocation,
                                          "Sample ID" = paste0(i@runName, "_", i@sampleID, "_", j),
                                          "Method Set" = methSet,
                                          "Sample Type" = i@sampleType,
@@ -142,6 +150,30 @@ setMethod("printRequest",
                                          "VialPos" = sampleLocation,
                                          "OutputFile" = i@runName,
                                          "Type" = i@sampleType,
+                                         check.names = FALSE)
+              } else if (options$assay == "MS_EICOS") {
+                rackPos <- 1
+                smplInjVol <- 5
+                acqMethod <- "Eicosanoids_Quantitation-2021"
+                rackCode <- "Rack Order (Column)"
+                plateCode <- "MTP 96"
+                platePos <- 1
+
+                if (i@row > 0){
+                  sampleLocation <- RCToNum(i@row, i@column)
+                } else {
+                  sampleLocation <- 20001
+                }
+
+                rlist[[j]] <- data.frame("SampleName" = paste0(i@sampleID, "_", j),
+                                         "Rack Code" = rackCode,
+                                         "Rack position" = rackPos,
+                                         "Plate Code" = plateCode,
+                                         "PlatePos" = platePos,
+                                         "VialPos" = sampleLocation,
+                                         "Acquisition Method" = acqMethod,
+                                         "Data File" = i@runName,
+                                         "Injection Volume" = smplInjVol,
                                          check.names = FALSE)
               } else if (options$assay == "MS_URPP") {
                 path <- paste0("D:\\lims\\", i@projectName, "\\URPP\\")
