@@ -220,21 +220,23 @@ runMS_AA <- function(selectedSamples, runName, projectName, matrixID, deviceID, 
     cal3 <- fillRequest(r, request = c(runParam, "sampleID" = "Cal 3", "row" = 6, "column" = 11, "sampleType" = "Calibrant"))
     cal2 <- fillRequest(r, request = c(runParam, "sampleID" = "Cal 2", "row" = 7, "column" = 11, "sampleType" = "Calibrant"))
     cal1 <- fillRequest(r, request = c(runParam, "sampleID" = "Cal 1", "row" = 8, "column" = 11, "sampleType" = "Calibrant"))
-    QC4 <- fillRequest(r, request = c(runParam, "sampleID" = "QC 4", "row" = 2, "column" = 12, "sampleType" = "QC"))
-    QC3 <- fillRequest(r, request = c(runParam, "sampleID" = "QC 3", "row" = 3, "column" = 12, "sampleType" = "QC"))
-    QC2 <- fillRequest(r, request = c(runParam, "sampleID" = "QC 2", "row" = 4, "column" = 12, "sampleType" = "QC"))
-    QC1 <- fillRequest(r, request = c(runParam, "sampleID" = "QC 1", "row" = 5, "column" = 12, "sampleType" = "QC"))
-    LTR <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 8, "column" = 12))
-    LTR2 <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 1, "column" = 12))
+    QC4 <- fillRequest(r, request = c(runParam, "sampleID" = "QC 4", "row" = 1, "column" = 12, "sampleType" = "QC"))
+    QC3 <- fillRequest(r, request = c(runParam, "sampleID" = "QC 3", "row" = 2, "column" = 12, "sampleType" = "QC"))
+    QC2 <- fillRequest(r, request = c(runParam, "sampleID" = "QC 2", "row" = 3, "column" = 12, "sampleType" = "QC"))
+    QC1 <- fillRequest(r, request = c(runParam, "sampleID" = "QC 1", "row" = 4, "column" = 12, "sampleType" = "QC"))
+    LTR <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 5, "column" = 12))
+    LTR2 <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 6, "column" = 12))
+    LTR3 <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 7, "column" = 12))
+    LTR4 <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 8, "column" = 12))
 
     ### header
     rl <- addRequest(rl, list(doubleBlk, QC1, doubleBlk))
     rl <- addRequest(rl, list(cal8, cal7, cal6, cal5, cal4, cal3, cal2, cal1))
     rl <- addRequest(rl, list(doubleBlk))
     rl <- addRequest(rl, list(QC4, QC3, QC2, QC1))
-    rl <- addRequest(rl, list(doubleBlk, LTR))
+    rl <- addRequest(rl, list(LTR, doubleBlk, LTR))
 
-    qcList <- list(QC4, LTR2, QC1, LTR, QC3, LTR, LTR2, QC2)
+    qcList <- list(QC4, LTR2, QC1, LTR2, QC3, LTR3, LTR3, QC2)
     chunkSize <- floor(length(rows)/8)
     for (i in 1:length(rows)) {
       rlist <- fillRequest(r, request = c(runParam,
@@ -251,8 +253,8 @@ runMS_AA <- function(selectedSamples, runName, projectName, matrixID, deviceID, 
       }
     }
     ### footer
-    rl <- addRequest(rl, list(doubleBlk, LTR))
-    rl <- addRequest(rl, list(doubleBlk))
+    rl <- addRequest(rl, list(doubleBlk, LTR4))
+    rl <- addRequest(rl, list(doubleBlk, LTR4))
     rl <- addRequest(rl, list(cal8, cal7, cal6, cal5, cal4, cal3, cal2, cal1))
     rl <- addRequest(rl, list(doubleBlk, doubleBlk))
 
