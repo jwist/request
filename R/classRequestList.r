@@ -123,6 +123,46 @@ setMethod("printRequest",
                                          "CONC_G" = calLev[7],
                                          "CONC_H" = calLev[8],
                                          "CONC_I" = calLev[9], check.names = FALSE)
+              } else if (options$assay == "MS-BILE") {
+                msFile <- "Bile_acids_2021-ver5"
+                msTunFile <- "BileAcidsTune-2_0kv"
+                inletFile <- "BileAcids_2021-ver2"
+                injVol <- 10
+
+                if (i@row == 0){
+                  sampleLocation <- "V:1"
+                } else if (i@row == -1) {
+                  sampleLocation <- "V:4"
+                } else {
+                  sampleLocation <- paste0(i@platePosition, ":", row[i@row], ",", i@column)
+                }
+
+                calLev <- switch(i@sampleID,
+                                 "Cal 8" = 0.5,
+                                 "Cal 7" = 2,
+                                 "Cal 6" = 10,
+                                 "Cal 5" = 50,
+                                 "Cal 4" = 150,
+                                 "Cal 3" = 600,
+                                 "Cal 2" = 1200,
+                                 "Cal 1" = 2000,
+                                 "QC 4" = 5,
+                                 "QC 3" = 80,
+                                 "QC 2" = 800,
+                                 "QC 1" = 2000)
+                if (is.null(calLev)) { calLev <- 0}
+
+                rlist[[j]] <- data.frame("File Name" = paste0(i@runName,
+                                                              "_",
+                                                              gsub("\\.", "_", i@sampleID), "_",
+                                                              j),
+                                         "Inlet File" = inletFile,
+                                         "MS Tune File" = msTunFile,
+                                         "MS File" = msFile,
+                                         "Bottle" = sampleLocation,
+                                         "Injection Volume" = injVol,
+                                         "Sample Type" = i@sampleType,
+                                         "CONC_A" = calLev, check.names = FALSE)
               } else if (options$assay == "MSSciex") {
 
                 rackPos <- 1
@@ -300,7 +340,7 @@ setMethod("printRequest",
               injMeth <- paste0(path, "A1B1_600ulmin_10min_shutdown.m?HyStar_Autosampler")
               MSMeth <- ""
               procMeth <- ""
-              df$`Sample ID`[last] <- paste0(i@runName, "_Blank Shutdown_", j)
+              df$`Sample ID`[last] <- paste0(i@runName, "_Blank Shutdown_", last)
               df$`Method Set`[last] <- methSet
             } else if (options$assay == "MSWaters") {
               last <- nrow(df)
@@ -309,7 +349,14 @@ setMethod("printRequest",
               df$`INLET_FILE`[last] <- inletFile
               df$`FILE_TEXT`[last] <- "Blank Shutdown"
               df$`TYPE`[last] <- "Blank"
-              df$FILE_NAME[last] <- paste0(i@runName, "_BlankShutdown")
+              df$FILE_NAME[last] <- paste0(i@runName, "_BlankShutdown_", last)
+            } else if (options$assay == "MS-BILE") {
+              last <- nrow(df)
+              cat(crayon::blue("request >> classRequestList >> ", last, " samples were added \n"))
+              df$`File Name`[last] <- paste0(i@runName, "_BlankShutdown_", last)
+            } else {
+              last <- nrow(df)
+              cat(crayon::blue("request >> classRequestList >> ", last, " samples were added \n"))
             }
 
             return(df)
