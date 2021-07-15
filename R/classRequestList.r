@@ -170,7 +170,7 @@ setMethod("printRequest",
                 acqMethod <- "LM_RP_sMRM_LIPIDS"
                 rackCode <- "Rack Order (Column)"
                 plateCode <- "MTP 96"
-                platePos <- 1
+                platePos <- i@platePosition
 
                 if (i@row > 0){
                   sampleLocation <- RCToNum(i@row, i@column)
@@ -196,7 +196,7 @@ setMethod("printRequest",
                 acqMethod <- "Eicosanoids_Quantitation-2021"
                 rackCode <- "Rack Order (Column)"
                 plateCode <- "MTP 96"
-                platePos <- 1
+                platePos <- i@platePosition
 
                 if (i@row > 0){
                   sampleLocation <- RCToNum(i@row, i@column)

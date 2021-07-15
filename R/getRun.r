@@ -78,7 +78,7 @@ runMS_TRY <- function(selectedSamples, runName, projectName, matrixID, deviceID,
 
   plateList <- levels(factor(selectedSamples$plateID))
 
-  plateCounter <- 1
+  plateCounter <- 0
   req <- list()
   for (plate in plateList) {
 
@@ -102,24 +102,24 @@ runMS_TRY <- function(selectedSamples, runName, projectName, matrixID, deviceID,
                      "methodID" = methodID,
                      "deviceID" = deviceID,
                      "matrixID" = matrixID,
-                     "platePosition" = plateCounter)
+                     "platePosition" =  1 + plateCounter %% 2)
     rl <- new("requestList")
 
     doubleBlk <- fillRequest(r, request = c(runParam, "sampleID" = "Double Blank", "row" = 0, "column" = 0, "sampleType" = "Blank"))
     singleBlk <- fillRequest(r, request = c(runParam, "sampleID" = "Single Blank", "row" = 8, "column" = 12, "sampleType" = "Blank"))
     mixTest <- fillRequest(r, request = c(runParam, "sampleID" = "mix test", "row" = -1, "column" = 12, "sampleType" = "Analyte"))
-    cal1 <- fillRequest(r, request = c(runParam, "sampleID" = "Cal 1", "row" = 8, "column" = 11, "sampleType" = "Standard", "options" = list(list("conc" = c(20,	40,	80,	100,	200,	400,	2000,	10000,	20000)))))
-    cal2 <- fillRequest(r, request = c(runParam, "sampleID" = "Cal 2", "row" = 7, "column" = 11, "sampleType" = "Standard", "options" = list(list("conc" = c(10,	20,	40,	50,	100,	200,	1000,	5000,	10000)))))
-    cal3 <- fillRequest(r, request = c(runParam, "sampleID" = "Cal 3", "row" = 6, "column" = 11, "sampleType" = "Standard", "options" = list(list("conc" = c(5,	10,	20,	25,	50,	100,	500,	2500, 5000)))))
-    cal4 <- fillRequest(r, request = c(runParam, "sampleID" = "Cal 4", "row" = 5, "column" = 11, "sampleType" = "Standard", "options" = list(list("conc" = c(3,	6,	12,	15,	30,	60,	300,	1500,	3000)))))
-    cal5 <- fillRequest(r, request = c(runParam, "sampleID" = "Cal 5", "row" = 4, "column" = 11, "sampleType" = "Standard", "options" = list(list("conc" = c(2,	4,	8,	10,	20,	40,	200,	1000,	2000)))))
-    cal6 <- fillRequest(r, request = c(runParam, "sampleID" = "Cal 6", "row" = 3, "column" = 11, "sampleType" = "Standard", "options" = list(list("conc" = c(0.8,	1.6,	3.2,	4,	8,	16,	80,	400,	800)))))
-    cal7 <- fillRequest(r, request = c(runParam, "sampleID" = "Cal 7", "row" = 2, "column" = 11, "sampleType" = "Standard", "options" = list(list("conc" = c(0.4,	0.8,	1.6,	2,	4,	8,	40,	200,	400)))))
-    cal8 <- fillRequest(r, request = c(runParam, "sampleID" = "Cal 8", "row" = 1, "column" = 11, "sampleType" = "Standard", "options" = list(list("conc" = c(0.2,	0.4,	0.8,	1,	2,	4,	20,	100,	200)))))
-    QC4 <- fillRequest(r, request = c(runParam, "sampleID" = "QC 4", "row" = 1, "column" = 12, "sampleType" = "QC", "options" = list(list("conc" = c(2, 4, 8, 10, 20, 40, 200, 1000, 2000)))))
-    QC3 <- fillRequest(r, request = c(runParam, "sampleID" = "QC 3", "row" = 2, "column" = 12, "sampleType" = "QC", "options" = list(list("conc" = c(8, 16, 32, 40, 80, 160, 800, 4000, 8000)))))
-    QC2 <- fillRequest(r, request = c(runParam, "sampleID" = "QC 2", "row" = 3, "column" = 12, "sampleType" = "QC", "options" = list(list("conc" = c(16, 32, 64, 80, 160, 320, 1600, 8000, 16000)))))
-    QC1 <- fillRequest(r, request = c(runParam, "sampleID" = "QC 1", "row" = 4, "column" = 12, "sampleType" = "QC", "options" = list(list("conc" = c(20, 40, 80, 100, 200, 400, 2000, 10000, 20000)))))
+    cal1 <- fillRequest(r, request = c(runParam, "sampleID" = "CAL01", "row" = 8, "column" = 11, "sampleType" = "Standard", "options" = list(list("conc" = c(20,	40,	80,	100,	200,	400,	2000,	10000,	20000)))))
+    cal2 <- fillRequest(r, request = c(runParam, "sampleID" = "CAL02", "row" = 7, "column" = 11, "sampleType" = "Standard", "options" = list(list("conc" = c(10,	20,	40,	50,	100,	200,	1000,	5000,	10000)))))
+    cal3 <- fillRequest(r, request = c(runParam, "sampleID" = "CAL03", "row" = 6, "column" = 11, "sampleType" = "Standard", "options" = list(list("conc" = c(5,	10,	20,	25,	50,	100,	500,	2500, 5000)))))
+    cal4 <- fillRequest(r, request = c(runParam, "sampleID" = "CAL04", "row" = 5, "column" = 11, "sampleType" = "Standard", "options" = list(list("conc" = c(3,	6,	12,	15,	30,	60,	300,	1500,	3000)))))
+    cal5 <- fillRequest(r, request = c(runParam, "sampleID" = "CAL05", "row" = 4, "column" = 11, "sampleType" = "Standard", "options" = list(list("conc" = c(2,	4,	8,	10,	20,	40,	200,	1000,	2000)))))
+    cal6 <- fillRequest(r, request = c(runParam, "sampleID" = "CAL06", "row" = 3, "column" = 11, "sampleType" = "Standard", "options" = list(list("conc" = c(0.8,	1.6,	3.2,	4,	8,	16,	80,	400,	800)))))
+    cal7 <- fillRequest(r, request = c(runParam, "sampleID" = "CAL07", "row" = 2, "column" = 11, "sampleType" = "Standard", "options" = list(list("conc" = c(0.4,	0.8,	1.6,	2,	4,	8,	40,	200,	400)))))
+    cal8 <- fillRequest(r, request = c(runParam, "sampleID" = "CAL08", "row" = 1, "column" = 11, "sampleType" = "Standard", "options" = list(list("conc" = c(0.2,	0.4,	0.8,	1,	2,	4,	20,	100,	200)))))
+    QC4 <- fillRequest(r, request = c(runParam, "sampleID" = "QC04", "row" = 1, "column" = 12, "sampleType" = "QC", "options" = list(list("conc" = c(2, 4, 8, 10, 20, 40, 200, 1000, 2000)))))
+    QC3 <- fillRequest(r, request = c(runParam, "sampleID" = "QC03", "row" = 2, "column" = 12, "sampleType" = "QC", "options" = list(list("conc" = c(8, 16, 32, 40, 80, 160, 800, 4000, 8000)))))
+    QC2 <- fillRequest(r, request = c(runParam, "sampleID" = "QC02", "row" = 3, "column" = 12, "sampleType" = "QC", "options" = list(list("conc" = c(16, 32, 64, 80, 160, 320, 1600, 8000, 16000)))))
+    QC1 <- fillRequest(r, request = c(runParam, "sampleID" = "QC01", "row" = 4, "column" = 12, "sampleType" = "QC", "options" = list(list("conc" = c(20, 40, 80, 100, 200, 400, 2000, 10000, 20000)))))
     LTR <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 5, "column" = 12, "sampleType" = "Sample"))
     LTR2 <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 6, "column" = 12, "sampleType" = "Sample"))
     LTR3 <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 7, "column" = 12, "sampleType" = "Sample"))
@@ -174,7 +174,7 @@ runMS_BILE <- function(selectedSamples, runName, projectName, matrixID, deviceID
 
   plateList <- levels(factor(selectedSamples$plateID))
 
-  plateCounter <- 1
+  plateCounter <- 0
   req <- list()
   for (plate in plateList) {
 
@@ -198,22 +198,22 @@ runMS_BILE <- function(selectedSamples, runName, projectName, matrixID, deviceID
                      "methodID" = methodID,
                      "deviceID" = deviceID,
                      "matrixID" = matrixID,
-                     "platePosition" = plateCounter)
+                     "platePosition" = 1 + (plateCounter %% 2))
     rl <- new("requestList")
 
     doubleBlk <- fillRequest(r, request = c(runParam, "sampleID" = "Double Blank", "row" = 0, "column" = 0, "sampleType" = "Blank"))
-    cal1 <- fillRequest(r, request = c(runParam, "sampleID" = "Cal 1", "row" = 8, "column" = 11, "sampleType" = "Standard", "options" = list(list("conc" = c(20,	40,	80,	100,	200,	400,	2000,	10000,	20000)))))
-    cal2 <- fillRequest(r, request = c(runParam, "sampleID" = "Cal 2", "row" = 7, "column" = 11, "sampleType" = "Standard", "options" = list(list("conc" = c(10,	20,	40,	50,	100,	200,	1000,	5000,	10000)))))
-    cal3 <- fillRequest(r, request = c(runParam, "sampleID" = "Cal 3", "row" = 6, "column" = 11, "sampleType" = "Standard", "options" = list(list("conc" = c(5,	10,	20,	25,	50,	100,	500,	2500, 5000)))))
-    cal4 <- fillRequest(r, request = c(runParam, "sampleID" = "Cal 4", "row" = 5, "column" = 11, "sampleType" = "Standard", "options" = list(list("conc" = c(3,	6,	12,	15,	30,	60,	300,	1500,	3000)))))
-    cal5 <- fillRequest(r, request = c(runParam, "sampleID" = "Cal 5", "row" = 4, "column" = 11, "sampleType" = "Standard", "options" = list(list("conc" = c(2,	4,	8,	10,	20,	40,	200,	1000,	2000)))))
-    cal6 <- fillRequest(r, request = c(runParam, "sampleID" = "Cal 6", "row" = 3, "column" = 11, "sampleType" = "Standard", "options" = list(list("conc" = c(0.8,	1.6,	3.2,	4,	8,	16,	80,	400,	800)))))
-    cal7 <- fillRequest(r, request = c(runParam, "sampleID" = "Cal 7", "row" = 2, "column" = 11, "sampleType" = "Standard", "options" = list(list("conc" = c(0.4,	0.8,	1.6,	2,	4,	8,	40,	200,	400)))))
-    cal8 <- fillRequest(r, request = c(runParam, "sampleID" = "Cal 8", "row" = 1, "column" = 11, "sampleType" = "Standard", "options" = list(list("conc" = c(0.2,	0.4,	0.8,	1,	2,	4,	20,	100,	200)))))
-    QC4 <- fillRequest(r, request = c(runParam, "sampleID" = "QC 4", "row" = 1, "column" = 12, "sampleType" = "QC", "options" = list(list("conc" = c(2, 4, 8, 10, 20, 40, 200, 1000, 2000)))))
-    QC3 <- fillRequest(r, request = c(runParam, "sampleID" = "QC 3", "row" = 2, "column" = 12, "sampleType" = "QC", "options" = list(list("conc" = c(8, 16, 32, 40, 80, 160, 800, 4000, 8000)))))
-    QC2 <- fillRequest(r, request = c(runParam, "sampleID" = "QC 2", "row" = 3, "column" = 12, "sampleType" = "QC", "options" = list(list("conc" = c(16, 32, 64, 80, 160, 320, 1600, 8000, 16000)))))
-    QC1 <- fillRequest(r, request = c(runParam, "sampleID" = "QC 1", "row" = 4, "column" = 12, "sampleType" = "QC", "options" = list(list("conc" = c(20, 40, 80, 100, 200, 400, 2000, 10000, 20000)))))
+    cal1 <- fillRequest(r, request = c(runParam, "sampleID" = "CAL01", "row" = 8, "column" = 11, "sampleType" = "Standard", "options" = list(list("conc" = c(20,	40,	80,	100,	200,	400,	2000,	10000,	20000)))))
+    cal2 <- fillRequest(r, request = c(runParam, "sampleID" = "CAL02", "row" = 7, "column" = 11, "sampleType" = "Standard", "options" = list(list("conc" = c(10,	20,	40,	50,	100,	200,	1000,	5000,	10000)))))
+    cal3 <- fillRequest(r, request = c(runParam, "sampleID" = "CAL03", "row" = 6, "column" = 11, "sampleType" = "Standard", "options" = list(list("conc" = c(5,	10,	20,	25,	50,	100,	500,	2500, 5000)))))
+    cal4 <- fillRequest(r, request = c(runParam, "sampleID" = "CAL04", "row" = 5, "column" = 11, "sampleType" = "Standard", "options" = list(list("conc" = c(3,	6,	12,	15,	30,	60,	300,	1500,	3000)))))
+    cal5 <- fillRequest(r, request = c(runParam, "sampleID" = "CAL05", "row" = 4, "column" = 11, "sampleType" = "Standard", "options" = list(list("conc" = c(2,	4,	8,	10,	20,	40,	200,	1000,	2000)))))
+    cal6 <- fillRequest(r, request = c(runParam, "sampleID" = "CAL06", "row" = 3, "column" = 11, "sampleType" = "Standard", "options" = list(list("conc" = c(0.8,	1.6,	3.2,	4,	8,	16,	80,	400,	800)))))
+    cal7 <- fillRequest(r, request = c(runParam, "sampleID" = "CAL07", "row" = 2, "column" = 11, "sampleType" = "Standard", "options" = list(list("conc" = c(0.4,	0.8,	1.6,	2,	4,	8,	40,	200,	400)))))
+    cal8 <- fillRequest(r, request = c(runParam, "sampleID" = "CAL08", "row" = 1, "column" = 11, "sampleType" = "Standard", "options" = list(list("conc" = c(0.2,	0.4,	0.8,	1,	2,	4,	20,	100,	200)))))
+    QC4 <- fillRequest(r, request = c(runParam, "sampleID" = "QC04", "row" = 1, "column" = 12, "sampleType" = "QC", "options" = list(list("conc" = c(2, 4, 8, 10, 20, 40, 200, 1000, 2000)))))
+    QC3 <- fillRequest(r, request = c(runParam, "sampleID" = "QC03", "row" = 2, "column" = 12, "sampleType" = "QC", "options" = list(list("conc" = c(8, 16, 32, 40, 80, 160, 800, 4000, 8000)))))
+    QC2 <- fillRequest(r, request = c(runParam, "sampleID" = "QC02", "row" = 3, "column" = 12, "sampleType" = "QC", "options" = list(list("conc" = c(16, 32, 64, 80, 160, 320, 1600, 8000, 16000)))))
+    QC1 <- fillRequest(r, request = c(runParam, "sampleID" = "QC01", "row" = 4, "column" = 12, "sampleType" = "QC", "options" = list(list("conc" = c(20, 40, 80, 100, 200, 400, 2000, 10000, 20000)))))
     LTR <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 5, "column" = 12, "sampleType" = "Sample"))
     LTR2 <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 6, "column" = 12, "sampleType" = "Sample"))
     LTR3 <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 7, "column" = 12, "sampleType" = "Sample"))
@@ -268,7 +268,7 @@ runMS_AA <- function(selectedSamples, runName, projectName, matrixID, deviceID, 
 
   plateList <- levels(factor(selectedSamples$plateID))
 
-  plateCounter <- 1
+  plateCounter <- 0
   req <- list()
   for (plate in plateList) {
 
@@ -298,19 +298,19 @@ runMS_AA <- function(selectedSamples, runName, projectName, matrixID, deviceID, 
 
     doubleBlk <- fillRequest(r, request = c(runParam, "sampleID" = "Double Blank", "row" = 0, "column" = 12, "sampleType" = "Blank"))
     singleBlk <- fillRequest(r, request = c(runParam, "sampleID" = "Single Blank", "row" = 0, "column" = 12, "sampleType" = "Blank"))
-    cal9 <- fillRequest(r, request = c(runParam, "sampleID" = "Cal 9", "row" = 1, "column" = 12, "sampleType" = "Calibrant"))
-    cal8 <- fillRequest(r, request = c(runParam, "sampleID" = "Cal 8", "row" = 1, "column" = 11, "sampleType" = "Calibrant"))
-    cal7 <- fillRequest(r, request = c(runParam, "sampleID" = "Cal 7", "row" = 2, "column" = 11, "sampleType" = "Calibrant"))
-    cal6 <- fillRequest(r, request = c(runParam, "sampleID" = "Cal 6", "row" = 3, "column" = 11, "sampleType" = "Calibrant"))
-    cal5 <- fillRequest(r, request = c(runParam, "sampleID" = "Cal 5", "row" = 4, "column" = 11, "sampleType" = "Calibrant"))
-    cal4 <- fillRequest(r, request = c(runParam, "sampleID" = "Cal 4", "row" = 5, "column" = 11, "sampleType" = "Calibrant"))
-    cal3 <- fillRequest(r, request = c(runParam, "sampleID" = "Cal 3", "row" = 6, "column" = 11, "sampleType" = "Calibrant"))
-    cal2 <- fillRequest(r, request = c(runParam, "sampleID" = "Cal 2", "row" = 7, "column" = 11, "sampleType" = "Calibrant"))
-    cal1 <- fillRequest(r, request = c(runParam, "sampleID" = "Cal 1", "row" = 8, "column" = 11, "sampleType" = "Calibrant"))
-    QC4 <- fillRequest(r, request = c(runParam, "sampleID" = "QC 4", "row" = 1, "column" = 12, "sampleType" = "QC"))
-    QC3 <- fillRequest(r, request = c(runParam, "sampleID" = "QC 3", "row" = 2, "column" = 12, "sampleType" = "QC"))
-    QC2 <- fillRequest(r, request = c(runParam, "sampleID" = "QC 2", "row" = 3, "column" = 12, "sampleType" = "QC"))
-    QC1 <- fillRequest(r, request = c(runParam, "sampleID" = "QC 1", "row" = 4, "column" = 12, "sampleType" = "QC"))
+    cal9 <- fillRequest(r, request = c(runParam, "sampleID" = "CAL09", "row" = 1, "column" = 12, "sampleType" = "Calibrant"))
+    cal8 <- fillRequest(r, request = c(runParam, "sampleID" = "CAL08", "row" = 1, "column" = 11, "sampleType" = "Calibrant"))
+    cal7 <- fillRequest(r, request = c(runParam, "sampleID" = "CAL07", "row" = 2, "column" = 11, "sampleType" = "Calibrant"))
+    cal6 <- fillRequest(r, request = c(runParam, "sampleID" = "CAL06", "row" = 3, "column" = 11, "sampleType" = "Calibrant"))
+    cal5 <- fillRequest(r, request = c(runParam, "sampleID" = "CAL05", "row" = 4, "column" = 11, "sampleType" = "Calibrant"))
+    cal4 <- fillRequest(r, request = c(runParam, "sampleID" = "CAL04", "row" = 5, "column" = 11, "sampleType" = "Calibrant"))
+    cal3 <- fillRequest(r, request = c(runParam, "sampleID" = "CAL03", "row" = 6, "column" = 11, "sampleType" = "Calibrant"))
+    cal2 <- fillRequest(r, request = c(runParam, "sampleID" = "CAL02", "row" = 7, "column" = 11, "sampleType" = "Calibrant"))
+    cal1 <- fillRequest(r, request = c(runParam, "sampleID" = "CAL01", "row" = 8, "column" = 11, "sampleType" = "Calibrant"))
+    QC4 <- fillRequest(r, request = c(runParam, "sampleID" = "QC04", "row" = 1, "column" = 12, "sampleType" = "QC"))
+    QC3 <- fillRequest(r, request = c(runParam, "sampleID" = "QC03", "row" = 2, "column" = 12, "sampleType" = "QC"))
+    QC2 <- fillRequest(r, request = c(runParam, "sampleID" = "QC02", "row" = 3, "column" = 12, "sampleType" = "QC"))
+    QC1 <- fillRequest(r, request = c(runParam, "sampleID" = "QC01", "row" = 4, "column" = 12, "sampleType" = "QC"))
     LTR <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 5, "column" = 12, "sampleType" = "Sample"))
     LTR2 <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 6, "column" = 12, "sampleType" = "Sample"))
     LTR3 <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 7, "column" = 12, "sampleType" = "Sample"))
@@ -539,7 +539,7 @@ runMS_MRMSN <- function(selectedSamples, runName, projectName, matrixID, deviceI
 runMS_EICOS <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
   plateList <- levels(factor(selectedSamples$plateID))
 
-  plateCounter <- 1
+  plateCounter <- 0
   req <- list()
   for (plate in plateList) {
 
@@ -561,19 +561,20 @@ runMS_EICOS <- function(selectedSamples, runName, projectName, matrixID, deviceI
     runParam <- list("runName" = runName,
                      "methodID" = methodID,
                      "deviceID" = deviceID,
-                     "matrixID" = matrixID)
+                     "matrixID" = matrixID,
+                     "platePosition" = 1 + (plateCounter %% 2))
 
     rl <- new("requestList")
 
     conc <- list("a" = 1)
-    conditioning1 <- fillRequest(r, request = c(runParam, "sampleID" = "CALIBRATION01", "row" = 1, "column" = 11, "sampleType" = "Standard"))
-    conditioning2 <- fillRequest(r, request = c(runParam, "sampleID" = "CALIBRATION02", "row" = 2, "column" = 11, "sampleType" = "Standard"))
-    conditioning3 <- fillRequest(r, request = c(runParam, "sampleID" = "CALIBRATION03", "row" = 3, "column" = 11, "sampleType" = "Standard"))
-    conditioning4 <- fillRequest(r, request = c(runParam, "sampleID" = "CALIBRATION04", "row" = 4, "column" = 11, "sampleType" = "Standard"))
-    conditioning5 <- fillRequest(r, request = c(runParam, "sampleID" = "CALIBRATION05", "row" = 5, "column" = 11, "sampleType" = "Standard"))
-    conditioning6 <- fillRequest(r, request = c(runParam, "sampleID" = "CALIBRATION06", "row" = 6, "column" = 11, "sampleType" = "Standard"))
-    conditioning7 <- fillRequest(r, request = c(runParam, "sampleID" = "CALIBRATION07", "row" = 7, "column" = 11, "sampleType" = "Standard"))
-    conditioning8 <- fillRequest(r, request = c(runParam, "sampleID" = "CALIBRATION08", "row" = 8, "column" = 11, "sampleType" = "Standard"))
+    CAL1 <- fillRequest(r, request = c(runParam, "sampleID" = "CAL01", "row" = 1, "column" = 11, "sampleType" = "Standard"))
+    CAL2 <- fillRequest(r, request = c(runParam, "sampleID" = "CAL02", "row" = 2, "column" = 11, "sampleType" = "Standard"))
+    CAL3 <- fillRequest(r, request = c(runParam, "sampleID" = "CAL03", "row" = 3, "column" = 11, "sampleType" = "Standard"))
+    CAL4 <- fillRequest(r, request = c(runParam, "sampleID" = "CAL04", "row" = 4, "column" = 11, "sampleType" = "Standard"))
+    CAL5 <- fillRequest(r, request = c(runParam, "sampleID" = "CAL05", "row" = 5, "column" = 11, "sampleType" = "Standard"))
+    CAL6 <- fillRequest(r, request = c(runParam, "sampleID" = "CAL06", "row" = 6, "column" = 11, "sampleType" = "Standard"))
+    CAL7 <- fillRequest(r, request = c(runParam, "sampleID" = "CAL07", "row" = 7, "column" = 11, "sampleType" = "Standard"))
+    CAL8 <- fillRequest(r, request = c(runParam, "sampleID" = "CAL08", "row" = 8, "column" = 11, "sampleType" = "Standard"))
     QC1 <- fillRequest(r, request = c(runParam, "sampleID" = "QC01", "row" = 1, "column" = 12, "sampleType" = "Standard"))
     QC2 <- fillRequest(r, request = c(runParam, "sampleID" = "QC02", "row" = 2, "column" = 12, "sampleType" = "Standard"))
     QC3 <- fillRequest(r, request = c(runParam, "sampleID" = "QC03", "row" = 3, "column" = 12, "sampleType" = "Standard"))
@@ -585,41 +586,41 @@ runMS_EICOS <- function(selectedSamples, runName, projectName, matrixID, deviceI
     LTR4 <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 8, "column" = 12))
     ### header
     rl <- addRequest(rl, list(doubleBlk,
-                              conditioning1,
-                              conditioning2,
-                              conditioning3,
-                              conditioning4,
-                              conditioning5,
-                              conditioning6,
-                              conditioning7,
-                              conditioning8,
+                              CAL8,
+                              CAL7,
+                              CAL6,
+                              CAL5,
+                              CAL4,
+                              CAL3,
+                              CAL2,
+                              CAL1,
                               doubleBlk,
-                              QC1,
-                              QC2,
-                              QC3,
+                              LTR1,
                               QC4,
-                              doubleBlk))
-    qcList <- list(QC1, QC2, QC3, QC4)
-    ltrList <- list(LTR1, LTR2, LTR3, LTR4)
-    counter <- 1
+                              QC3,
+                              QC2,
+                              QC1,
+                              doubleBlk,
+                              LTR1))
+
+    qcList <- list(QC4, LTR2, QC1, LTR2, QC3, LTR3, LTR3, QC2)
+    chunkSize <- floor(length(rows)/8)
     for (i in 1:length(rows)) {
-      rlist <- fillRequest(r, request = c(runParam, "sampleType" = "Unknown",
+      rlist <- fillRequest(r, request = c(runParam,
+                                          "sampleType" = "Sample",
                                           "sampleID" = paste0(sampleID[i], "_", tubeLabel[i]),
                                           "row" = as.numeric(rows[i]),
                                           "column" = as.numeric(columns[i])))
-      if (i %% floor(length(rows)/4) == 0) {
-        j <- i %/% floor(length(rows)/4)
-        rl <- addRequest(rl, list(rlist, qcList[[j]], ltrList[[j]]))
-        # if (j %% 2 == 0) {
-        #   LTR <- setPosition(LTR, "A11")
-        # } else {
-        #   LTR <- setPosition(LTR, "H11")
-        # }
+      if (i %% chunkSize == 0) {
+        rl <- addRequest(rl,
+                         list(rlist,
+                              qcList[[(((i - 1)/(chunkSize)) %% length(qcList)) + 1]]))
       } else {
         rl <- addRequest(rl, list(rlist))
       }
     }
-    rl <- addRequest(rl, list(doubleBlk))
+    # footer
+    rl <- addRequest(rl, list(LTR4, LTR4, doubleBlk))
     run <- printRequest(rl, list("assay" = "MS_EICOS"))
     saveRun(run, currentRunName)
     plateCounter <- plateCounter + 1
@@ -887,7 +888,7 @@ runMS_LIPIDS <- function(selectedSamples, runName, projectName, matrixID, device
 
   plateList <- levels(factor(selectedSamples$plateID))
 
-  plateCounter <- 1
+  plateCounter <- 0
   req <- list()
   for (plate in plateList) {
 
@@ -909,29 +910,30 @@ runMS_LIPIDS <- function(selectedSamples, runName, projectName, matrixID, device
     runParam <- list("runName" = currentRunName,
                      "methodID" = methodID,
                      "deviceID" = deviceID,
-                     "matrixID" = matrixID)
+                     "matrixID" = matrixID,
+                     "platePosition" = 1 + (plateCounter %% 2))
 
     rl <- new("requestList")
 
     conc <- list("a" = 1)
-    conditioning1 <- fillRequest(r, request = c(runParam, "sampleID" = "conditioning1", "row" = 1, "column" = 12, "sampleType" = "Standard"))
-    conditioning2 <- fillRequest(r, request = c(runParam, "sampleID" = "conditioning2", "row" = 2, "column" = 12, "sampleType" = "Standard"))
-    conditioning3 <- fillRequest(r, request = c(runParam, "sampleID" = "conditioning3", "row" = 3, "column" = 12, "sampleType" = "Standard"))
-    conditioning4 <- fillRequest(r, request = c(runParam, "sampleID" = "conditioning4", "row" = 4, "column" = 12, "sampleType" = "Standard"))
-    conditioning5 <- fillRequest(r, request = c(runParam, "sampleID" = "conditioning5", "row" = 5, "column" = 12, "sampleType" = "Standard"))
-    conditioning6 <- fillRequest(r, request = c(runParam, "sampleID" = "conditioning6", "row" = 6, "column" = 12, "sampleType" = "Standard"))
-    conditioning7 <- fillRequest(r, request = c(runParam, "sampleID" = "conditioning7", "row" = 7, "column" = 12, "sampleType" = "Standard"))
-    conditioning8 <- fillRequest(r, request = c(runParam, "sampleID" = "conditioning8", "row" = 8, "column" = 12, "sampleType" = "Standard"))
+    COND1 <- fillRequest(r, request = c(runParam, "sampleID" = "COND01", "row" = 1, "column" = 12, "sampleType" = "Standard"))
+    COND2 <- fillRequest(r, request = c(runParam, "sampleID" = "COND02", "row" = 2, "column" = 12, "sampleType" = "Standard"))
+    COND3 <- fillRequest(r, request = c(runParam, "sampleID" = "COND03", "row" = 3, "column" = 12, "sampleType" = "Standard"))
+    COND4 <- fillRequest(r, request = c(runParam, "sampleID" = "COND04", "row" = 4, "column" = 12, "sampleType" = "Standard"))
+    COND5 <- fillRequest(r, request = c(runParam, "sampleID" = "COND05", "row" = 5, "column" = 12, "sampleType" = "Standard"))
+    COND6 <- fillRequest(r, request = c(runParam, "sampleID" = "COND06", "row" = 6, "column" = 12, "sampleType" = "Standard"))
+    COND7 <- fillRequest(r, request = c(runParam, "sampleID" = "COND07", "row" = 7, "column" = 12, "sampleType" = "Standard"))
+    COND8 <- fillRequest(r, request = c(runParam, "sampleID" = "COND08", "row" = 8, "column" = 12, "sampleType" = "Standard"))
 
     ### header
-    rl <- addRequest(rl, list(conditioning1,
-                              conditioning2,
-                              conditioning3,
-                              conditioning4,
-                              conditioning5,
-                              conditioning6,
-                              conditioning7,
-                              conditioning8))
+    rl <- addRequest(rl, list(COND1,
+                              COND2,
+                              COND3,
+                              COND4,
+                              COND5,
+                              COND6,
+                              COND7,
+                              COND8))
 
     counter <- 1
     for (i in 1:length(rows)) {
