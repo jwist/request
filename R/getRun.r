@@ -916,14 +916,14 @@ runMS_LIPIDS <- function(selectedSamples, runName, projectName, matrixID, device
     rl <- new("requestList")
 
     conc <- list("a" = 1)
-    COND1 <- fillRequest(r, request = c(runParam, "sampleID" = "COND01", "row" = 1, "column" = 12, "sampleType" = "Standard"))
-    COND2 <- fillRequest(r, request = c(runParam, "sampleID" = "COND02", "row" = 2, "column" = 12, "sampleType" = "Standard"))
-    COND3 <- fillRequest(r, request = c(runParam, "sampleID" = "COND03", "row" = 3, "column" = 12, "sampleType" = "Standard"))
-    COND4 <- fillRequest(r, request = c(runParam, "sampleID" = "COND04", "row" = 4, "column" = 12, "sampleType" = "Standard"))
-    COND5 <- fillRequest(r, request = c(runParam, "sampleID" = "COND05", "row" = 5, "column" = 12, "sampleType" = "Standard"))
-    COND6 <- fillRequest(r, request = c(runParam, "sampleID" = "COND06", "row" = 6, "column" = 12, "sampleType" = "Standard"))
-    COND7 <- fillRequest(r, request = c(runParam, "sampleID" = "COND07", "row" = 7, "column" = 12, "sampleType" = "Standard"))
-    COND8 <- fillRequest(r, request = c(runParam, "sampleID" = "COND08", "row" = 8, "column" = 12, "sampleType" = "Standard"))
+    COND1 <- fillRequest(r, request = c(runParam, "sampleID" = "COND01", "row" = 1, "column" = 11, "sampleType" = "Standard"))
+    COND2 <- fillRequest(r, request = c(runParam, "sampleID" = "COND02", "row" = 2, "column" = 11, "sampleType" = "Standard"))
+    COND3 <- fillRequest(r, request = c(runParam, "sampleID" = "COND03", "row" = 3, "column" = 11, "sampleType" = "Standard"))
+    COND4 <- fillRequest(r, request = c(runParam, "sampleID" = "COND04", "row" = 4, "column" = 11, "sampleType" = "Standard"))
+    COND5 <- fillRequest(r, request = c(runParam, "sampleID" = "COND05", "row" = 5, "column" = 11, "sampleType" = "Standard"))
+    COND6 <- fillRequest(r, request = c(runParam, "sampleID" = "COND06", "row" = 6, "column" = 11, "sampleType" = "Standard"))
+    COND7 <- fillRequest(r, request = c(runParam, "sampleID" = "COND07", "row" = 7, "column" = 11, "sampleType" = "Standard"))
+    COND8 <- fillRequest(r, request = c(runParam, "sampleID" = "COND08", "row" = 8, "column" = 11, "sampleType" = "Standard"))
 
     ### header
     rl <- addRequest(rl, list(COND1,
@@ -935,12 +935,12 @@ runMS_LIPIDS <- function(selectedSamples, runName, projectName, matrixID, device
                               COND7,
                               COND8))
 
-    counter <- 1
+    counter <- 0
     for (i in 1:length(rows)) {
       rlist <- fillRequest(r, request = c(runParam, "sampleType" = "Unknown" ,"sampleID" = paste0(sampleID[i], "_", tubeLabel[i]), "row" = as.numeric(rows[i]), "column" = as.numeric(columns[i])))
 
       if (i %% 10 == 0) {
-        LTR <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = counter, "column" = 11, "sampleType" = "Unknown"))
+        LTR <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 5 + counter %% 4, "column" = 12, "sampleType" = "Unknown"))
         rl <- addRequest(rl, list(rlist, LTR))
         counter <- counter + 1
       } else {

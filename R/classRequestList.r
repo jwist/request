@@ -156,12 +156,12 @@ setMethod("printRequest",
                                                               "_",
                                                               gsub("\\.", "_", i@sampleID), "_",
                                                               j),
-                                         "Inlet File" = inletFile,
-                                         "MS Tune File" = msTunFile,
-                                         "MS File" = msFile,
-                                         "Bottle" = sampleLocation,
-                                         "Injection Volume" = injVol,
-                                         "Sample Type" = i@sampleType,
+                                         "INLET_FILE" = inletFile,
+                                         "MS_TUNE_FILE" = msTunFile,
+                                         "MS_FILE" = msFile,
+                                         "SAMPLE_LOCATION" = sampleLocation,
+                                         "INJ_VOL" = injVol,
+                                         "TYPE" = i@sampleType,
                                          "CONC_A" = calLev, check.names = FALSE)
               } else if (options$assay == "MSSciex") {
 
