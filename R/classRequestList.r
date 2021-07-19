@@ -52,18 +52,16 @@ setMethod("printRequest",
                 path <- paste0("D:\\lims\\", i@projectName, "\\Amino Acid\\")
                 methSet <- "D:\\Methods\\Amino Acid VALIDATED\\Amino acid MethodSet VALIDATED.m"
                 calLev <- switch(i@sampleID,
-                                 "Cal 8" = 1,
-                                 "Cal 7" = 2,
-                                 "Cal 6" = 4,
-                                 "Cal 5" = 10,
-                                 "Cal 4" = 20,
-                                 "Cal 3" = 100,
-                                 "Cal 2" = 200,
-                                 "Cal 1" = 400,
-                                 "QC 4" = 3,
-                                 "QC 3" = 15,
-                                 "QC 2" = 75,
-                                 "QC 1" = 300)
+                                 "CAL06" = 4,
+                                 "CAL05" = 10,
+                                 "CAL04" = 20,
+                                 "CAL03" = 100,
+                                 "CAL02" = 200,
+                                 "CAL01" = 400,
+                                 "QC04" = 3,
+                                 "QC03" = 15,
+                                 "QC02" = 75,
+                                 "QC01" = 300)
                 if (is.null(calLev)) { calLev <- 0}
 
                 if (i@row == 0){
@@ -79,7 +77,8 @@ setMethod("printRequest",
                                          "Sample Type" = i@sampleType,
                                          "Calib. Level" = calLev,
                                          "Inj." = 1,
-                                         "Volume [µl]" = 2,
+                                         #"Volume [µl]" = 2,
+                                         "Volume" = 2,
                                          "Data Path" = path,
                                          "Run Automated Processing" = "true", check.names = FALSE)
               } else if (options$assay == "MSWaters") {
@@ -138,18 +137,18 @@ setMethod("printRequest",
                 }
 
                 calLev <- switch(i@sampleID,
-                                 "Cal 8" = 0.5,
-                                 "Cal 7" = 2,
-                                 "Cal 6" = 10,
-                                 "Cal 5" = 50,
-                                 "Cal 4" = 150,
-                                 "Cal 3" = 600,
-                                 "Cal 2" = 1200,
-                                 "Cal 1" = 2000,
-                                 "QC 4" = 5,
-                                 "QC 3" = 80,
-                                 "QC 2" = 800,
-                                 "QC 1" = 2000)
+                                 "CAL08" = 0.5,
+                                 "CAL07" = 2,
+                                 "CAL06" = 10,
+                                 "CAL05" = 50,
+                                 "CAL04" = 150,
+                                 "CAL03" = 600,
+                                 "CAL02" = 1200,
+                                 "CAL01" = 2000,
+                                 "QC04" = 5,
+                                 "QC03" = 80,
+                                 "QC02" = 800,
+                                 "QC01" = 2000)
                 if (is.null(calLev)) { calLev <- 0}
 
                 rlist[[j]] <- data.frame("File Name" = paste0(i@runName,

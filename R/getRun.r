@@ -72,6 +72,7 @@ getRun <- function(selectedSamples,
 #' @param matrixID - the id of the sample matrix
 #' @param deviceID - the id of the device
 #' @param methodID - the id of the method
+#' @param LTR_NAME - the name of LTR sample
 #' @param date - the date of the run
 #' @return void
 runMS_TRY <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
@@ -168,6 +169,7 @@ runMS_TRY <- function(selectedSamples, runName, projectName, matrixID, deviceID,
 #' @param matrixID - the id of the sample matrix
 #' @param deviceID - the id of the device
 #' @param methodID - the id of the method
+#' @param LTR_NAME - the name of LTR sample
 #' @param date - the date of the run
 #' @return void
 runMS_BILE <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
@@ -262,6 +264,7 @@ runMS_BILE <- function(selectedSamples, runName, projectName, matrixID, deviceID
 #' @param matrixID - the id of the sample matrix
 #' @param deviceID - the id of the device
 #' @param methodID - the id of the method
+#' @param LTR_NAME - the name of LTR sample
 #' @param date - the date of the run
 #' @return void
 runMS_AA <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
@@ -360,6 +363,7 @@ runMS_AA <- function(selectedSamples, runName, projectName, matrixID, deviceID, 
 #' @param matrixID - the id of the sample matrix
 #' @param deviceID - the id of the device
 #' @param methodID - the id of the method
+#' @param LTR_NAME - the name of LTR sample
 #' @param date - the date of the run
 #' @return void
 runMS_MRMSP <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
@@ -447,6 +451,7 @@ runMS_MRMSP <- function(selectedSamples, runName, projectName, matrixID, deviceI
 #' @param matrixID - the id of the sample matrix
 #' @param deviceID - the id of the device
 #' @param methodID - the id of the method
+#' @param LTR_NAME - the name of LTR sample
 #' @param date - the date of the run
 #' @return void
 runMS_MRMSN <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
@@ -534,6 +539,7 @@ runMS_MRMSN <- function(selectedSamples, runName, projectName, matrixID, deviceI
 #' @param matrixID - the id of the sample matrix
 #' @param deviceID - the id of the device
 #' @param methodID - the id of the method
+#' @param LTR_NAME - the name of LTR sample
 #' @param date - the date of the run
 #' @return void
 runMS_EICOS <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
@@ -636,6 +642,7 @@ runMS_EICOS <- function(selectedSamples, runName, projectName, matrixID, deviceI
 #' @param matrixID - the id of the sample matrix
 #' @param deviceID - the id of the device
 #' @param methodID - the id of the method
+#' @param LTR_NAME - the name of LTR sample
 #' @param date - the date of the run
 #' @return void
 runTIMS_LIPIDS_P <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
@@ -717,6 +724,7 @@ runTIMS_LIPIDS_P <- function(selectedSamples, runName, projectName, matrixID, de
 #' @param matrixID - the id of the sample matrix
 #' @param deviceID - the id of the device
 #' @param methodID - the id of the method
+#' @param LTR_NAME - the name of LTR sample
 #' @param date - the date of the run
 #' @return void
 runTIMS_LIPIDS_N <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
@@ -798,6 +806,7 @@ runTIMS_LIPIDS_N <- function(selectedSamples, runName, projectName, matrixID, de
 #' @param matrixID - the id of the sample matrix
 #' @param deviceID - the id of the device
 #' @param methodID - the id of the method
+#' @param LTR_NAME - the name of LTR sample
 #' @param date - the date of the run
 #' @return void
 runMS_URPP <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
@@ -882,6 +891,7 @@ runMS_URPP <- function(selectedSamples, runName, projectName, matrixID, deviceID
 #' @param matrixID - the id of the sample matrix
 #' @param deviceID - the id of the device
 #' @param methodID - the id of the method
+#' @param LTR_NAME - the name of LTR sample
 #' @param date - the date of the run
 #' @return void
 runMS_LIPIDS <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
