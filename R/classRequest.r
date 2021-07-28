@@ -44,7 +44,6 @@ setClass("request",
 #' @param .Object the request object
 setMethod("initialize", "request",
           function(.Object){
-            .Object@sampleType = "sample"
             .Object@projectName = "project"
             .Object@platePosition = 1
             .Object@options = list()

@@ -121,10 +121,10 @@ runMS_TRY <- function(selectedSamples, runName, projectName, matrixID, deviceID,
     QC3 <- fillRequest(r, request = c(runParam, "sampleID" = "QC03", "row" = 2, "column" = 12, "sampleType" = "QC", "options" = list(list("conc" = c(8, 16, 32, 40, 80, 160, 800, 4000, 8000)))))
     QC2 <- fillRequest(r, request = c(runParam, "sampleID" = "QC02", "row" = 3, "column" = 12, "sampleType" = "QC", "options" = list(list("conc" = c(16, 32, 64, 80, 160, 320, 1600, 8000, 16000)))))
     QC1 <- fillRequest(r, request = c(runParam, "sampleID" = "QC01", "row" = 4, "column" = 12, "sampleType" = "QC", "options" = list(list("conc" = c(20, 40, 80, 100, 200, 400, 2000, 10000, 20000)))))
-    LTR <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 5, "column" = 12, "sampleType" = "Sample"))
-    LTR2 <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 6, "column" = 12, "sampleType" = "Sample"))
-    LTR3 <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 7, "column" = 12, "sampleType" = "Sample"))
-    LTR4 <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 8, "column" = 12, "sampleType" = "Sample"))
+    LTR <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 5, "column" = 12, "sampleType" = "Analyte"))
+    LTR2 <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 6, "column" = 12, "sampleType" = "Analyte"))
+    LTR3 <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 7, "column" = 12, "sampleType" = "Analyte"))
+    LTR4 <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 8, "column" = 12, "sampleType" = "Analyte"))
 
     ### header
     rl <- addRequest(rl, list(doubleBlk, mixTest, doubleBlk))
@@ -135,7 +135,7 @@ runMS_TRY <- function(selectedSamples, runName, projectName, matrixID, deviceID,
     chunkSize <- floor(length(rows)/8)
     for (i in 1:length(rows)) {
       rlist <- fillRequest(r, request = c(runParam,
-                                          "sampleType" = "Sample",
+                                          "sampleType" = "Analyte",
                                           "sampleID" = paste0(sampleID[i], "_", tubeLabel[i]),
                                           "row" = as.numeric(rows[i]),
                                           "column" = as.numeric(columns[i])))
@@ -216,10 +216,10 @@ runMS_BILE <- function(selectedSamples, runName, projectName, matrixID, deviceID
     QC3 <- fillRequest(r, request = c(runParam, "sampleID" = "QC03", "row" = 2, "column" = 12, "sampleType" = "QC", "options" = list(list("conc" = c(8, 16, 32, 40, 80, 160, 800, 4000, 8000)))))
     QC2 <- fillRequest(r, request = c(runParam, "sampleID" = "QC02", "row" = 3, "column" = 12, "sampleType" = "QC", "options" = list(list("conc" = c(16, 32, 64, 80, 160, 320, 1600, 8000, 16000)))))
     QC1 <- fillRequest(r, request = c(runParam, "sampleID" = "QC01", "row" = 4, "column" = 12, "sampleType" = "QC", "options" = list(list("conc" = c(20, 40, 80, 100, 200, 400, 2000, 10000, 20000)))))
-    LTR <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 5, "column" = 12, "sampleType" = "Sample"))
-    LTR2 <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 6, "column" = 12, "sampleType" = "Sample"))
-    LTR3 <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 7, "column" = 12, "sampleType" = "Sample"))
-    LTR4 <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 8, "column" = 12, "sampleType" = "Sample"))
+    LTR <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 5, "column" = 12, "sampleType" = "Analyte"))
+    LTR2 <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 6, "column" = 12, "sampleType" = "Analyte"))
+    LTR3 <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 7, "column" = 12, "sampleType" = "Analyte"))
+    LTR4 <- fillRequest(r, request = c(runParam, "sampleID" = LTR_NAME, "row" = 8, "column" = 12, "sampleType" = "Analyte"))
 
     ### header
     rl <- addRequest(rl, list(doubleBlk))
@@ -230,7 +230,7 @@ runMS_BILE <- function(selectedSamples, runName, projectName, matrixID, deviceID
     chunkSize <- floor(length(rows)/8)
     for (i in 1:length(rows)) {
       rlist <- fillRequest(r, request = c(runParam,
-                                          "sampleType" = "Sample",
+                                          "sampleType" = "Analyte",
                                           "sampleID" = paste0(sampleID[i], "_", tubeLabel[i]),
                                           "row" = as.numeric(rows[i]),
                                           "column" = as.numeric(columns[i])))

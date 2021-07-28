@@ -40,6 +40,10 @@ runTIMS_LIPIDS_N(
 \item the id of the method
 }}
 
+\item{LTR_NAME}{\itemize{
+\item the name of LTR sample
+}}
+
 \item{date}{\itemize{
 \item the date of the run
 }}

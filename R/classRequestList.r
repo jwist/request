@@ -52,6 +52,8 @@ setMethod("printRequest",
                 path <- paste0("D:\\lims\\", i@projectName, "\\Amino Acid\\")
                 methSet <- "D:\\Methods\\Amino Acid VALIDATED\\Amino acid MethodSet VALIDATED.m"
                 calLev <- switch(i@sampleID,
+                                 "CAL08" = 1,
+                                 "CAL07" = 2,
                                  "CAL06" = 4,
                                  "CAL05" = 10,
                                  "CAL04" = 20,
