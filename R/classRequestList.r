@@ -50,7 +50,10 @@ setMethod("printRequest",
               if (options$assay == "MSBruker") {
                 # path <- "D:\\Data\\AA Methods\\Amino Acid\\"
                 path <- paste0("D:\\lims\\", i@projectName, "\\Amino Acid\\")
-                methSet <- "D:\\Methods\\Amino Acid VALIDATED\\Amino acid MethodSet VALIDATED.m"
+                # methSet <- "D:\\Methods\\Amino Acid VALIDATED\\Amino acid MethodSet VALIDATED.m"
+                sepMeth <- "Amino acid MethodSet VALIDATED"
+                MSMeth <- "Amino acid MethodSet VALIDATED"
+                procMeth <- "NaFA pos recal readout"
                 calLev <- switch(i@sampleID,
                                  "CAL08" = 1,
                                  "CAL07" = 2,
@@ -75,7 +78,10 @@ setMethod("printRequest",
                 }
                 rlist[[j]] <- data.frame("Vial" = sampleLocation,
                                          "Sample ID" = paste0(i@runName, "_", i@sampleID, "_", j),
-                                         "Method Set" = methSet,
+                                         # "Method Set" = methSet,
+                                         "Separation Method" = sepMeth,
+                                         "MS Method" = MSMeth,
+                                         "Processing Method" = procMeth,
                                          "Sample Type" = i@sampleType,
                                          "Calib. Level" = calLev,
                                          "Inj." = 1,
@@ -124,6 +130,50 @@ setMethod("printRequest",
                                          "CONC_G" = calLev[7],
                                          "CONC_H" = calLev[8],
                                          "CONC_I" = calLev[9], check.names = FALSE)
+              } else if (options$assay == "MS-TRYE") {
+                methodName <- "Tryptophan_method_optimization"
+                injVol <- 20
+
+                # if (i@row == 0){
+                #   sampleLocation <- "V:1"
+                # } else if (i@row == -1) {
+                #   sampleLocation <- "V:4"
+                # } else {
+                  sampleLocation <- RCToPos(i@row, i@column) #paste0(i@platePosition, ":", row[i@row], ",", i@column)
+                # }
+                if (i@platePosition == 1) {
+                  plateLocation <- "Left"
+                } else if (i@platePosition == 2) {
+                  plateLocation <- "Right"
+                }
+
+                calLev <- switch(i@sampleID,
+                                 "CAL08" = 1,
+                                 "CAL07" = 2,
+                                 "CAL06" = 4,
+                                 "CAL05" = 10,
+                                 "CAL04" = 20,
+                                 "CAL03" = 100,
+                                 "CAL02" = 200,
+                                 "CAL01" = 400,
+                                 "QC04" = 3,
+                                 "QC03" = 15,
+                                 "QC02" = 75,
+                                 "QC01" = 300)
+                if (is.null(calLev)) { calLev <- 0}
+
+                rlist[[j]] <- data.frame("Sample Position" = sampleLocation,
+                                         "Sample Name" = paste0(i@runName,
+                                                              "_",
+                                                              gsub("\\.", "_", i@sampleID), "_",
+                                                              j),
+                                         "Sample Type" = i@sampleType,
+                                         "Concentration Level" = calLev,
+                                         "Injection Volume" = injVol,
+                                         "Method Name" = methodName,
+                                         "Plate" = plateLocation,
+                                         "Comment" = NA,
+                                         "Dilution" = 1, check.names = FALSE)
               } else if (options$assay == "MS-BILE") {
                 msFile <- "Bile_acids_2021-ver5"
                 msTunFile <- "BileAcidsTune-2_0kv"
@@ -164,9 +214,46 @@ setMethod("printRequest",
                                          "INJ_VOL" = injVol,
                                          "TYPE" = i@sampleType,
                                          "CONC_A" = calLev, check.names = FALSE)
+              } else if (options$assay == "MS-Q300") {
+                msFile <- "Q300-ver1"
+                msTunFile <- "Q300_20210316"
+                inletFile <- "20210209-Q300-1"
+                injVol <- 5
+
+                if (i@row == 0){
+                  sampleLocation <- "V:1"
+                } else if (i@row == -1) {
+                  sampleLocation <- "V:4"
+                } else {
+                  sampleLocation <- paste0(i@platePosition, ":", row[i@row], ",", i@column)
+                }
+
+                calLev <- switch(i@sampleID,
+                                 "CAL08" = NA,
+                                 "CAL07" = NA,
+                                 "CAL06" = NA,
+                                 "CAL05" = NA,
+                                 "CAL04" = NA,
+                                 "CAL03" = NA,
+                                 "CAL02" = NA,
+                                 "CAL01" = NA)
+
+                if (is.null(calLev)) { calLev <- 0}
+
+                rlist[[j]] <- data.frame("File Name" = paste0(i@runName,
+                                                              "_",
+                                                              gsub("\\.", "_", i@sampleID), "_",
+                                                              j),
+                                         "INLET_FILE" = inletFile,
+                                         "MS_TUNE_FILE" = msTunFile,
+                                         "MS_FILE" = msFile,
+                                         "SAMPLE_LOCATION" = sampleLocation,
+                                         "INJ_VOL" = injVol,
+                                         "TYPE" = i@sampleType,
+                                         "CONC_A" = calLev, check.names = FALSE)
               } else if (options$assay == "MSSciex") {
 
-                rackPos <- 1
+                rackPos <- i@platePosition
                 smplInjVol <- 5
                 acqMethod <- "LM_RP_sMRM_LIPIDS"
                 rackCode <- "Rack Order (Column)"
@@ -175,8 +262,10 @@ setMethod("printRequest",
 
                 if (i@row > 0){
                   sampleLocation <- RCToNum(i@row, i@column)
+                } else if (i@row == -1) {
+                  sampleLocation <- "20001"
                 } else {
-                  sampleLocation <- "NA"
+                  sampleLocation <- NA
                 }
 
                 rlist[[j]] <- data.frame("% header=SampleName" = paste0(i@sampleID, "_", j),
@@ -337,12 +426,12 @@ setMethod("printRequest",
               cat(crayon::blue("request >> classRequestList >> ", last, " samples were added \n"))
               path <- "D:\\Methods\\System startup\\LC Methods\\"
               methSet <- "D:\\Methods\\Amino Acid VALIDATED\\Amino acid LC method SHUTDOWN.m"
-              sepMeth <- paste0(path, "A1B1_600ulmin_10min_shutdown.m?HyStar_LC")
+              sepMeth <- paste0(path, "Amino acid LC method SHUTDOWN.m")
               injMeth <- paste0(path, "A1B1_600ulmin_10min_shutdown.m?HyStar_Autosampler")
               MSMeth <- ""
               procMeth <- ""
               df$`Sample ID`[last] <- paste0(i@runName, "_Blank Shutdown_", last)
-              df$`Method Set`[last] <- methSet
+              df$`Separation Method`[last] <- sepMeth
             } else if (options$assay == "MSWaters") {
               last <- nrow(df)
               cat(crayon::blue("request >> classRequestList >> ", last, " samples were added \n"))
