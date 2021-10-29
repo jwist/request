@@ -24,7 +24,7 @@ printLayout <- function(selectedSamples, boxDim = c(8, 10), by = "row", chk = FA
     vec <- c(paste0( "", ss$tubeLabel, "",
                      "<br>", "<b>", ss$plateName, "</b> ",
                      ss$tubePos, "(" , ss$wellPos, ")<br>"),
-             rep(NA, 80 - nrow(ss)))
+             rep(NA, boxDim[1]*boxDim[2] - nrow(ss)))
 
     mat <- matrix(vec, boxDim[1], boxDim[2])
     rownames(mat) <- LETTERS[1:boxDim[1]]
@@ -32,7 +32,7 @@ printLayout <- function(selectedSamples, boxDim = c(8, 10), by = "row", chk = FA
     print(mat %>%
             addHtmlTableStyle(col.rgroup = c("none", "#CBD3F2"), col.columns = c("none", "#D17DF2")) %>%
             htmlTable(cgroup = c(paste0("", plateList[plate], "")),
-                      n.cgroup = c(10)))
+                      n.cgroup = c(boxDim[2])))
 
     if (plate %% 2 == 0) {
       cat("<p style=\"page-break-before: always\">")
