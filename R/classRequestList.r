@@ -51,9 +51,10 @@ setMethod("printRequest",
                 # path <- "D:\\Data\\AA Methods\\Amino Acid\\"
                 path <- paste0("D:\\lims\\", i@projectName, "\\Amino Acid\\")
                 # methSet <- "D:\\Methods\\Amino Acid VALIDATED\\Amino acid MethodSet VALIDATED.m"
-                sepMeth <- "Amino acid MethodSet VALIDATED"
-                MSMeth <- "Amino acid MethodSet VALIDATED"
+                sepMeth <- "Amino acid LC method VALIDATED"
+                MSMeth <- "Amino acid MS method VALIDATED"
                 procMeth <- "NaFA pos recal readout"
+                injMeth <- "Standard"
                 calLev <- switch(i@sampleID,
                                  "CAL08" = 1,
                                  "CAL07" = 2,
@@ -82,6 +83,7 @@ setMethod("printRequest",
                                          "Separation Method" = sepMeth,
                                          "MS Method" = MSMeth,
                                          "Processing Method" = procMeth,
+                                         "injMeth" = injMeth,
                                          "Sample Type" = i@sampleType,
                                          "Calib. Level" = calLev,
                                          "Inj." = 1,
@@ -426,8 +428,8 @@ setMethod("printRequest",
               cat(crayon::blue("request >> classRequestList >> ", last, " samples were added \n"))
               path <- "D:\\Methods\\System startup\\LC Methods\\"
               methSet <- "D:\\Methods\\Amino Acid VALIDATED\\Amino acid LC method SHUTDOWN.m"
-              sepMeth <- paste0(path, "Amino acid LC method SHUTDOWN.m")
-              injMeth <- paste0(path, "A1B1_600ulmin_10min_shutdown.m?HyStar_Autosampler")
+              sepMeth <- "Amino acid LC method SHUTDOWN"
+              injMeth <- "Standard"
               MSMeth <- ""
               procMeth <- ""
               df$`Sample ID`[last] <- paste0(i@runName, "_Blank Shutdown_", last)
