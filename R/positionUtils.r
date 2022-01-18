@@ -29,8 +29,14 @@ posToRC <- function(pos, collapse = FALSE) {
   # rowIdx <- LETTERS[1:boxDim[1]]
   row <- col <- c()
   for (i in pos) {
-    row <- c(row, as.numeric(which(LETTERS == substr(i, 1, 1))))
-    col <- c(col, as.numeric(substr(i, 2, nchar(i))))
+      if(is.na(i)) {
+        row <- c(row, NA)
+        col <- c(col, NA)
+        cat(crayon::yellow("request >> posToRC: NA founds in positions"))
+      } else {
+        row <- c(row, as.numeric(which(LETTERS == substr(i, 1, 1))))
+        col <- c(col, as.numeric(substr(i, 2, nchar(i))))
+      }
   }
   if (collapse) {
     return(paste0("R", row, "C", col))

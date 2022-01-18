@@ -45,8 +45,12 @@ getRun <- function(selectedSamples,
                    methodName,
                    deviceName,
                    sep = "_")
+  if (type == "NMR" && matrixName == "SER") {
+    LTR_NAME <- "LTR-PLA"
+  } else {
+    LTR_NAME <- paste0("LTR-", matrixName)
+  }
 
-  LTR_NAME <- paste0("LTR-", matrixName)
 
   if ("date" %in% names(options)) {
     date <- options$date
