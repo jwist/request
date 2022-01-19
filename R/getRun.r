@@ -1284,6 +1284,7 @@ runCYT <- function(selectedSamples, runName, projectName, matrixID, deviceID, me
 #' @return a list
 runNMR <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
   LTR <- 4
+  # LTR <- 8
 
   plateList <- levels(factor(selectedSamples$plateID))
   req <- list()
@@ -1307,7 +1308,8 @@ runNMR <- function(selectedSamples, runName, projectName, matrixID, deviceID, me
     if (plateLength < 51) {
       LTR_positionList <- seq(1,4, by = 1)[1:LTR]
     } else {
-      LTR_positionList <- seq(2,8, by = 2)[1:LTR]
+      LTR_positionList <- seq(2 ,8, by = 2)[1:LTR]
+      # LTR_positionList <- seq(1 ,8, by = 1)[1:LTR] # LTR = 8
     }
 
     plate1S <- data.frame("_sampleID" = paste0(sampleID, "_", tubeLabel),
