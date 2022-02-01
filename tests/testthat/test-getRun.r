@@ -78,5 +78,10 @@
 #   expect_equal(run, nmr)
 # })
 #
+# test_that("get run for GEN", {
+#   run <- getRun(testSet$selectedSamples, "GEN", 8, 48, 47, "cambridgeFollowUP", "covid19", options = list(date = "280221"))
+#   nmr <- testSet$gen
+#   expect_equal(run, nmr)
+# })
 #
 #

@@ -30,7 +30,8 @@ getRun <- function(selectedSamples,
              "MS-MRMSN",
              "TIMS-LIPIDS-P",
              "TIMS-LIPIDS-N",
-             "CYT")
+             "CYT",
+             "GEN")
   choice <- which(type == types)
 
   cat(crayon::blue("request >> getRUN >> running: ", types[choice], "\n"))
@@ -72,7 +73,8 @@ getRun <- function(selectedSamples,
          runMS_MRMSN(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date),
          runTIMS_LIPIDS_P(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date),
          runTIMS_LIPIDS_N(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date),
-         runCYT(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date))
+         runCYT(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date),
+         runGEN(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date))
 }
 
 #' write run file for MS-TRY
@@ -1342,6 +1344,79 @@ runNMR <- function(selectedSamples, runName, projectName, matrixID, deviceID, me
     plate1 <- plate1[F,]
     saveRun(plate1, currentRunName)
     req <- c(req, list(requestList = NA, run = plate1))
+  }
+  return(req)
+}
+
+#' write run file for GEN genomic sequencing
+#' @param selectedSamples - the selected samples for run
+#' @param runName - the name of the run
+#' @param projectName - the name of the project
+#' @param matrixID - the id of the sample matrix
+#' @param deviceID - the id of the device
+#' @param methodID - the id of the method
+#' @param LTR_NAME - the name of LTR sample
+#' @param date - the date of the run
+#' @return void
+runGEN <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
+  
+  plateList <- levels(factor(selectedSamples$plateID))
+  
+  plateCounter <- 0
+  req <- list()
+  for (plate in plateList) {
+    
+    currentRunName <- paste(runName,
+                            plate,
+                            date,
+                            sep = "_")
+    
+    plateNames <- selectedSamples$plateID
+    
+    sampleID <- selectedSamples$sampleID[plateNames == plate]
+    tubeLabel <- selectedSamples$tubeLabel[plateNames == plate]
+    positions <- selectedSamples$wellPos[plateNames == plate]
+    RC <- posToRC(positions)
+    columns <- RC$col
+    rows <- RC$row
+    
+    r <- new("request")
+    runParam <- list("runName" = currentRunName,
+                     "projectName" = projectName,
+                     "methodID" = methodID,
+                     "deviceID" = deviceID,
+                     "matrixID" = matrixID,
+                     "platePosition" = 1 + (plateCounter %% 2))
+    
+    rl <- new("requestList")
+    
+    pcon1 <- fillRequest(r, request = c(runParam, "sampleID" = "PCON01", "row" = 4, "column" = 12, "sampleType" = "Positive Control"))
+    ncon1 <- fillRequest(r, request = c(runParam, "sampleID" = "NCON01", "row" = 2, "column" = 12, "sampleType" = "Negative Control"))
+    
+    ### header
+    rl <- addRequest(rl, list(ncon1))
+    rl <- addRequest(rl, list(pcon1))
+    
+    #    qcList <- list(QC1)
+    chunkSize <- floor(length(rows)/8)
+    for (i in 1:length(rows)) {
+      rlist <- fillRequest(r, request = c(runParam,
+                                          "sampleType" = "Sample",
+                                          "sampleID" = paste0(sampleID[i], "_", tubeLabel[i]),
+                                          "row" = as.numeric(rows[i]),
+                                          "column" = as.numeric(columns[i])))
+      if (i %% chunkSize == 0) {
+        rl <- addRequest(rl,
+                         list(rlist))
+      } else {
+        rl <- addRequest(rl, list(rlist))
+      }
+    }
+    
+    run <- printRequest(rl, list("assay" = "GEN"))
+    saveRun(run, currentRunName)
+    plateCounter <- plateCounter + 1
+    req <- c(req, list(requestList = rl, run = run))
   }
   return(req)
 }
