@@ -6,7 +6,7 @@
 #' @examples
 #' g <- getPlatePos(by = "col")
 #' @export
-getPlatePos <- function(boxDim = c(8, 12), by = "row"){
+getPlatePos <- function(boxDim = c(8, 12), by = "row", exclude = c()){
   rowMax = boxDim[1]
   colMax = boxDim[2]
   if (by == "row") {
@@ -17,6 +17,8 @@ getPlatePos <- function(boxDim = c(8, 12), by = "row"){
     col <- rep(c(1:colMax), each = rowMax)
   }
   pos <- RCToPos(row, col)
+  fi <- pos %in% exclude
+  pos <- pos[!fi]
   return(pos)
 }
 
@@ -98,8 +100,8 @@ numToPos <- function(num, boxDim = c(8, 12)){
 #' @param by - the margin
 #' @return empty positions
 #' @export
-findEmptyPositions <- function(positions, boxDim = c(8, 10), by = "col") {
-  g <- getPlatePos(boxDim, by = by)
+findEmptyPositions <- function(positions, boxDim = c(8, 10), by = "col", exclude = c()) {
+  g <- getPlatePos(boxDim, by = by, exclude = exclude)
   diff <- setdiff(g, positions)
   return(diff)
 }
@@ -110,12 +112,15 @@ findEmptyPositionsOn <- function(selectedSamples, plate, boxDim = c(8, 10), by =
   return(findEmptyPositions(positions, boxDim = boxDim, by = by))
 }
 
-findAllEmptyPositions <- function(selectedSamples, boxDim = c(8, 10), by = "col") {
+findAllEmptyPositions <- function(selectedSamples,
+                                  boxDim = c(8, 10),
+                                  by = "col",
+                                  exclude =c()) {
   emptyPositions <- data.frame()
   for (plate in levels(factor(selectedSamples$plateID))) {
     F <- selectedSamples$plateID == plate
     positions <- selectedSamples$wellPos[F]
-    empty <- findEmptyPositions(positions, boxDim = boxDim, by = by)
+    empty <- findEmptyPositions(positions, boxDim = boxDim, by = by, exclude = exclude)
     empty <- data.frame(position = empty, plateID = rep(plate, length(empty)))
     emptyPositions <- rbind(emptyPositions, empty)
   }
