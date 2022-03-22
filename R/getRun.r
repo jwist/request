@@ -1040,7 +1040,8 @@ runMS_URPP <- function(selectedSamples, runName, projectName, matrixID, deviceID
                      "methodID" = methodID,
                      "deviceID" = deviceID,
                      "matrixID" = matrixID,
-                     "platePosition" = plateCounter)
+                     "platePosition" = plateCounter,
+                     "sampleType" = "Sample")
 
     rl <- new("requestList")
 

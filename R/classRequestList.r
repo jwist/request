@@ -92,7 +92,7 @@ setMethod("printRequest",
                                          "Data Path" = path,
                                          "Run Automated Processing" = "true", check.names = FALSE)
               } else if (options$assay == "MSWaters") {
-                msFile <- "Tryptophan_v5_0_AD"
+                msFile <- "2020_Tryptophan_v5_0_AD"
                 msTunFile <- "2020_Tryptophan_v1_0"
                 inletFile <- "2020_Tryptophan_v1_0"
                 injVol <- 10
