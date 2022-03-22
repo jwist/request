@@ -21,18 +21,40 @@ printLayout <- function(selectedSamples, boxDim = c(8, 10), by = "row", chk = FA
     F <- sort(as.numeric(position[,2]), index.return = TRUE)$ix
     ss <- ss[F,]
 
+    # prepare coloring
+    # color <- sapply(ss$sampleID,
+    #                   function(i) ifelse(i == " ",
+    #                                      "background-color:#333333",
+    #                                      "background-color:#ffffff"))
+    # coloring LTRs
+    color <- list()
+    for (i in 1:nrow(ss)) {
+      if(ss[i,]$sampleID == " ") {
+        color[[i]] <- "background-color:#333333"
+      } else {
+        color[[i]] <- "background-color:#ffffff"
+      }
+      if (ss[i,]$wellPos %in% c("B3", "G3", "B8", "G8")) {
+        color[[i]] <- "background-color:#99ffff;opacity:1"
+      }
+    }
+    color <- unlist(color)
+
     vec <- c(paste0( "", ss$tubeLabel, "",
-                     "<br>", "<b>", ss$plateName, "</b> ",
+                     "<br>", "<b>", ss$plateName, "</b>",
                      ss$tubePos, "(" , ss$wellPos, ")<br>"),
              rep(NA, boxDim[1]*boxDim[2] - nrow(ss)))
 
     mat <- matrix(vec, boxDim[1], boxDim[2])
+    css.cell <- matrix(color, boxDim[1], boxDim[2])
+
     rownames(mat) <- LETTERS[1:boxDim[1]]
     colnames(mat) <- c(1:boxDim[2])
     print(mat %>%
-            addHtmlTableStyle(col.rgroup = c("none", "#CBD3F2"), col.columns = c("none", "#D17DF2")) %>%
+            addHtmlTableStyle(col.rgroup = c("none", "#CBD3F2"),
+                              col.columns = c("none", "#D17DF2")) %>%
             htmlTable(cgroup = c(paste0("", plateList[plate], "")),
-                      n.cgroup = c(boxDim[2])))
+                      n.cgroup = c(boxDim[2]), css.cell = css.cell))
 
     if (plate %% 2 == 0) {
       cat("<p style=\"page-break-before: always\">")
