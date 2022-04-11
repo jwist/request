@@ -51,9 +51,9 @@ setMethod("printRequest",
                 # path <- "D:\\Data\\AA Methods\\Amino Acid\\"
                 path <- paste0("D:\\lims\\", i@projectName, "\\Amino Acid\\")
                 # methSet <- "D:\\Methods\\Amino Acid VALIDATED\\Amino acid MethodSet VALIDATED.m"
-                sepMeth <- "Amino acid LC method VALIDATED"
-                MSMeth <- "Amino acid MS method VALIDATED"
-                procMeth <- "NaFA pos recal readout"
+                sepMeth <- "D:\\Methods\\Amino Acid VALIDATED\\Amino acid LC method VALIDATED.m?HyStar_LC"
+                MSMeth <- "D:\\Methods\\Amino Acid VALIDATED\\Amino acid MS method VALIDATED.m?microTOFQImpactControl"
+                procMeth <- "D:\\Methods\\Amino Acid VALIDATED\\NaFA pos recal readout.m?DataAnalysis"
                 injMeth <- "Standard"
                 calLev <- switch(i@sampleID,
                                  "CAL08" = 1,
@@ -177,9 +177,9 @@ setMethod("printRequest",
                                          "Comment" = NA,
                                          "Dilution" = 1, check.names = FALSE)
               } else if (options$assay == "MS-BILE") {
-                msFile <- "Bile_acids_2021-ver5"
-                msTunFile <- "BileAcidsTune-2_0kv"
-                inletFile <- "BileAcids_2021-ver2"
+                msFile <- "BileAcids_MS_2022"
+                msTunFile <- "BileAcids_Tune_2022"
+                inletFile <- "BileAcids_LC_2022"
                 injVol <- 10
 
                 if (i@row == 0){
