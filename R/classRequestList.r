@@ -180,10 +180,10 @@ setMethod("printRequest",
                 msFile <- "BileAcids_MS_2022"
                 msTunFile <- "BileAcids_Tune_2022"
                 inletFile <- "BileAcids_LC_2022"
-                injVol <- 10
+                injVol <- 5
 
                 if (i@row == 0){
-                  sampleLocation <- "V:1"
+                  sampleLocation <- "2:F,8"
                 } else if (i@row == -1) {
                   sampleLocation <- "V:4"
                 } else {
@@ -191,18 +191,18 @@ setMethod("printRequest",
                 }
 
                 calLev <- switch(i@sampleID,
-                                 "CAL08" = 0.5,
-                                 "CAL07" = 2,
-                                 "CAL06" = 10,
-                                 "CAL05" = 50,
+                                 "CAL08" = 5,
+                                 "CAL07" = 15,
+                                 "CAL06" = 25,
+                                 "CAL05" = 75,
                                  "CAL04" = 150,
-                                 "CAL03" = 600,
-                                 "CAL02" = 1200,
-                                 "CAL01" = 2000,
-                                 "QC04" = 5,
-                                 "QC03" = 80,
-                                 "QC02" = 800,
-                                 "QC01" = 2000)
+                                 "CAL03" = 300,
+                                 "CAL02" = 600,
+                                 "CAL01" = 1000,
+                                 "QC04" = 8,
+                                 "QC03" = 32,
+                                 "QC02" = 320,
+                                 "QC01" = 800)
                 if (is.null(calLev)) { calLev <- 0}
 
                 rlist[[j]] <- data.frame("File Name" = paste0(i@runName,
