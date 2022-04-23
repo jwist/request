@@ -34,7 +34,7 @@ posToRC <- function(pos, collapse = FALSE) {
       if(is.na(i)) {
         row <- c(row, NA)
         col <- c(col, NA)
-        cat(crayon::yellow("request >> posToRC: NA founds in positions"))
+        cat(crayon::yellow("request >> posToRC: NA found"))
       } else {
         row <- c(row, as.numeric(which(LETTERS == substr(i, 1, 1))))
         col <- c(col, as.numeric(substr(i, 2, nchar(i))))
