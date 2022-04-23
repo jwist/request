@@ -10,12 +10,11 @@ printLayoutHelper <- function(selectedSamples) {
   boxList <- levels(factor(selectedSamples$boxName))
   for (box in boxList) {
     fi <- selectedSamples$boxName == box
-    mat <- data.frame(oldRC = selectedSamples$tubeRC[fi],
+    mat <- data.frame(oldRC = posToRC(selectedSamples$tubePosition[fi], collapse = TRUE),
                       oldPos = selectedSamples$tubePosition[fi],
                       tubeLabel = selectedSamples$tubeLabel[fi],
-                      plateName = selectedSamples$plateID[fi],
-                      position = selectedSamples$wellPos[fi],
-                      RC = selectedSamples$wellRC[fi])
+                      plateID = selectedSamples$plateID[fi],
+                      wellPos = selectedSamples$wellPos[fi])
 
     if (nrow(mat) %% 2 != 0) {
       mat <- rbind(mat, rep(NA, 5))
@@ -24,10 +23,15 @@ printLayoutHelper <- function(selectedSamples) {
     newMat <- cbind(mat[1:(l %/% 2),],
                     " " = rep("   ", l %/% 2),
                     mat[(l %/% 2 + 1):l,])
+    caption <- paste("Number of tubes:", sum(fi))
     print(newMat %>%
-            addHtmlTableStyle(col.rgroup = c("none", "#CBD3F2")) %>%
-            htmlTable(cgroup = c(paste0("<h2>", box, "</h2>")),
-                      n.cgroup = c(13)))
+            addHtmlTableStyle(col.rgroup = c("none", "#FFBFBC")) %>%
+            htmlTable(cgroup = rbind(c(paste0("<h3>", box, "</h3>"), rep(NA, 6)),
+                                    c("box", "", "plate", "", "box", "", "plate")),
+                      n.cgroup = rbind(c(7, rep(NA, 6)), c(2,1,2,1,2,1,2)),
+                      rnames = FALSE,
+                      caption = caption))
+
     cat("<p style=\"page-break-before: always\">")
   }
 }
