@@ -5,11 +5,10 @@
 #' @importFrom utils read.table
 getDevice <- function(what) {
 
-  deviceListURL <- "https://docs.google.com/spreadsheets/d/e/2PACX-1vQs_oa0dMN6RE837QQ6GgQHFQr85SnjJZExxBarrWhEClCqHWEjEEp_bhtNwpbAlWpucbda9RhrkWTp/pub?gid=1146951709&single=true&output=tsv"
-  methodListURL <- "https://docs.google.com/spreadsheets/d/e/2PACX-1vQs_oa0dMN6RE837QQ6GgQHFQr85SnjJZExxBarrWhEClCqHWEjEEp_bhtNwpbAlWpucbda9RhrkWTp/pub?gid=1000620284&single=true&output=tsv"
-  matrixListURL <- "https://docs.google.com/spreadsheets/d/e/2PACX-1vQs_oa0dMN6RE837QQ6GgQHFQr85SnjJZExxBarrWhEClCqHWEjEEp_bhtNwpbAlWpucbda9RhrkWTp/pub?gid=481322438&single=true&output=tsv"
   res = list()
   if("deviceID" %in% names(what)) {
+    deviceListURL <- "https://docs.google.com/spreadsheets/d/e/2PACX-1vQs_oa0dMN6RE837QQ6GgQHFQr85SnjJZExxBarrWhEClCqHWEjEEp_bhtNwpbAlWpucbda9RhrkWTp/pub?gid=1146951709&single=true&output=tsv"
+
     url <- deviceListURL
     ID <- what[which(names(what)=="deviceID")]
     if (!is.numeric(ID)) {stop("request >> getDevice >> ID should be numeric")}
@@ -27,6 +26,8 @@ getDevice <- function(what) {
     }
   }
   if("methodID" %in% names(what)) {
+    methodListURL <- "https://docs.google.com/spreadsheets/d/e/2PACX-1vQs_oa0dMN6RE837QQ6GgQHFQr85SnjJZExxBarrWhEClCqHWEjEEp_bhtNwpbAlWpucbda9RhrkWTp/pub?gid=1000620284&single=true&output=tsv"
+
     url <- methodListURL
     ID <- what[which(names(what)=="methodID")]
     if (!is.numeric(ID)) {stop("request >> getDevice >> ID should be numeric")}
@@ -44,6 +45,8 @@ getDevice <- function(what) {
     }
   }
   if("matrixID" %in% names(what)) {
+    matrixListURL <- "https://docs.google.com/spreadsheets/d/e/2PACX-1vQs_oa0dMN6RE837QQ6GgQHFQr85SnjJZExxBarrWhEClCqHWEjEEp_bhtNwpbAlWpucbda9RhrkWTp/pub?gid=481322438&single=true&output=tsv"
+
     url <- matrixListURL
     ID <- what[which(names(what)=="matrixID")]
     if (!is.numeric(ID)) {stop("request >> getDevice >> ID should be numeric")}
