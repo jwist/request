@@ -21,6 +21,20 @@ cleanNames <- function(names) {
 }
 
 
+checkForWeirdCharacters <- function(df) {
+  df <- as.data.frame(df) # [,i] don't work for tibbles
+  for (i in 1:ncol(df)) {
+    wc <- grep("[^A-Za-z0-9\\W#_-]", df[,i])
+    # wc <- grep("[^A-Za-z0-9-_]", df[,i])
+    # print(wc)
+    if (length(wc) == 0) {
+      # cat(crayon::green("no weird characters found\n"))
+    } else {
+      cat(crayon::yellow(paste("weird character found in", colnames(df)[i], "\n")))
+    }
+  }
+}
+
 # cleanNames <- function(names) {
 #   # names <- tolower(names)
 #   make.unique(names, sep = "#")
