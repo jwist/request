@@ -12,6 +12,7 @@ printLayout <- function(selectedSamples, boxDim = c(8, 10), by = "row", chk = FA
     ss <- selectedSamples[selectedSamples$plateID == plateList[plate],]
     n <- nrow(ss)
     sn <- sample(n, 3)
+    mtrx <- ss$sampleMatrixType[1]
     if (chk) { # sample for checking function
       ss <- ss[sample(n, 3), ]
     }
@@ -38,7 +39,7 @@ printLayout <- function(selectedSamples, boxDim = c(8, 10), by = "row", chk = FA
       if (grepl("2|4|6|8|10", ss[i,]$wellPos)) {
         color[[i]] <- color[[i]] + c(0, 0, 0, 0.1)
       }
-      if (ss[i,]$wellPos %in% c("B3", "G3", "B8", "G8")) {
+      if (ss[i,]$sampleID == "SLTR")  {
         color[[i]] <- c(255, 0, 0, 0.7)
       }
       if (ss[i,]$sampleID == "") {
@@ -78,7 +79,7 @@ printLayout <- function(selectedSamples, boxDim = c(8, 10), by = "row", chk = FA
     print(mat %>%
             # addHtmlTableStyle(col.rgroup = c("none", "#CBD3F2"),
             #                   col.columns = c("none", "#D17DF2")) %>%
-            htmlTable(cgroup = c(paste0("<h3>", plateList[plate], "</h3>")),
+            htmlTable(cgroup = c(paste0("<h3>", plateList[plate], " matrix:" ,mtrx, "</h3>")),
                       n.cgroup = c(boxDim[2]),
                       css.cell = css.cell,
                       caption = caption))
