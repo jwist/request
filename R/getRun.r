@@ -17,6 +17,9 @@ getRun <- function(selectedSamples,
                    cohortName,
                    projectName,
                    options = list()) {
+  dups <- sum(duplicated(paste0(selectedSamples$plateID, selectedSamples$wellPos)))
+  ifelse(dups != 0, stop("duplicated positions"), 1)
+
   types <- c("NMR",
              "MS-TRY",
              "MS-TRY-EVOQ",
@@ -35,9 +38,12 @@ getRun <- function(selectedSamples,
 
   cat(crayon::blue("request >> getRUN >> running: ", types[choice], "\n"))
 
-  deviceName <- getDevice(c(deviceID = deviceID))[[1]]
-  methodName <- getDevice(c(methodID = methodID))[[1]]
-  matrixName <- getDevice(c(matrixID = matrixID))[[1]]
+  qry <- getDevice(c(deviceID = deviceID,
+                            methodID = methodID,
+                            matrixID = matrixID))
+  deviceName <- qry[[1]]
+  methodName <- qry[[2]]
+  matrixName <- qry[[3]]
 
   runName <- paste(projectName,
                    cohortName,
@@ -1287,6 +1293,12 @@ runNMR <- function(selectedSamples, runName, projectName, matrixID, deviceID, me
   LTR <- 4
   # LTR <- 8
 
+  if ("title" %in% colnames(selectedSamples)) {
+    title <- selectedSamples$title
+  } else {
+    title <- rep("", nrow(selectedSamples))
+  }
+
   plateList <- levels(factor(selectedSamples$plateID))
   req <- list()
   for (plate in plateList) {
@@ -1322,7 +1334,8 @@ runNMR <- function(selectedSamples, runName, projectName, matrixID, deviceID, me
                           "_projectName" = rep(projectName, plateLength),
                           "_platePosition" = rep(1, plateLength),
                           "row" = rows,
-                          "column" = columns, check.names = FALSE)
+                          "column" = columns,
+                          "_title" = "", check.names = FALSE)
 
     plate1LTR <- data.frame("_sampleID" = rep(LTR_NAME, LTR),
                             "_matrixID" = rep(matrixID, LTR),
@@ -1333,7 +1346,8 @@ runNMR <- function(selectedSamples, runName, projectName, matrixID, deviceID, me
                             "_projectName" = rep(projectName, LTR),
                             "_platePosition" = rep(1, LTR),
                             "row" = LTR_positionList,
-                            "column" = rep(c(12), LTR), check.names = FALSE)
+                            "column" = rep(c(12), LTR),
+                            "_title" = "", check.names = FALSE)
 
     plate1 <- rbind(plate1S, plate1LTR)
     # ordering plate by row
