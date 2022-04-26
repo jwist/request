@@ -17,6 +17,8 @@ cleanNames <- function(names) {
   names <-gsub("[^A-Za-z0-9\\W#]", "-", names)
   # names <-gsub("[\\W_]", "-", names)
   # names <-gsub("[\\W ]", "-", names)
+  names <- gsub("-+", "-", names)
+  names <- gsub("^-", "", names)
   return(names)
 }
 
