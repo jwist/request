@@ -1291,13 +1291,6 @@ runCYT <- function(selectedSamples, runName, projectName, matrixID, deviceID, me
 #' @return a list
 runNMR <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
   LTR <- 4
-  # LTR <- 8
-
-  if ("title" %in% colnames(selectedSamples)) {
-    title <- selectedSamples$title
-  } else {
-    title <- rep("", nrow(selectedSamples))
-  }
 
   plateList <- levels(factor(selectedSamples$plateID))
   req <- list()
@@ -1325,6 +1318,12 @@ runNMR <- function(selectedSamples, runName, projectName, matrixID, deviceID, me
       # LTR_positionList <- seq(1 ,8, by = 1)[1:LTR] # LTR = 8
     }
 
+    if ("title" %in% colnames(selectedSamples)) {
+      title <- selectedSamples$title[plateNames == plate]
+    } else {
+      title <- rep("", plateLength)
+    }
+
     plate1S <- data.frame("_sampleID" = paste0(sampleID, "_", tubeLabel),
                           "_matrixID" = rep(matrixID, plateLength),
                           "_runName" = rep(currentRunName, plateLength),
@@ -1335,7 +1334,7 @@ runNMR <- function(selectedSamples, runName, projectName, matrixID, deviceID, me
                           "_platePosition" = rep(1, plateLength),
                           "row" = rows,
                           "column" = columns,
-                          "_title" = "", check.names = FALSE)
+                          "_title" = title, check.names = FALSE)
 
     plate1LTR <- data.frame("_sampleID" = rep(LTR_NAME, LTR),
                             "_matrixID" = rep(matrixID, LTR),
@@ -1347,7 +1346,7 @@ runNMR <- function(selectedSamples, runName, projectName, matrixID, deviceID, me
                             "_platePosition" = rep(1, LTR),
                             "row" = LTR_positionList,
                             "column" = rep(c(12), LTR),
-                            "_title" = "", check.names = FALSE)
+                            "_title" = rep("", LTR), check.names = FALSE)
 
     plate1 <- rbind(plate1S, plate1LTR)
     # ordering plate by row
