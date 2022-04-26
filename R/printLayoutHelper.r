@@ -7,6 +7,17 @@
 printLayoutHelper <- function(selectedSamples) {
   cat("<p style=\"page-break-before: always\">")
 
+  minHeaders <- c("boxName",
+                  "tubePosition",
+                  "tubeLabel",
+                  "plateID",
+                  "wellPos")
+
+  fi <- minHeaders %in% colnames(selectedSamples)
+  if (sum(fi) < length(minHeaders)) {
+    stop(paste("request >> printLayoutHelper >> missing headers", minHeaders[!fi], "\n"))
+  }
+
   boxList <- levels(factor(selectedSamples$boxName))
   for (box in boxList) {
     fi <- selectedSamples$boxName == box
