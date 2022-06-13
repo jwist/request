@@ -176,6 +176,50 @@ setMethod("printRequest",
                                          "Plate" = plateLocation,
                                          "Comment" = NA,
                                          "Dilution" = 1, check.names = FALSE)
+              } else if (options$assay == "MS-BILEE") {
+                methodName <- "1062022_BileAcids_direct_compare"
+                injVol <- 20
+
+                # if (i@row == 0){
+                #   sampleLocation <- "V:1"
+                # } else if (i@row == -1) {
+                #   sampleLocation <- "V:4"
+                # } else {
+                sampleLocation <- RCToPos(i@row, i@column) #paste0(i@platePosition, ":", row[i@row], ",", i@column)
+                # }
+                if (i@platePosition == 1) {
+                  plateLocation <- "Left"
+                } else if (i@platePosition == 2) {
+                  plateLocation <- "Right"
+                }
+
+                calLev <- switch(i@sampleID,
+                                 "CAL08" = 0.5,
+                                 "CAL07" = 2,
+                                 "CAL06" = 10,
+                                 "CAL05" = 50,
+                                 "CAL04" = 150,
+                                 "CAL03" = 600,
+                                 "CAL02" = 1200,
+                                 "CAL01" = 2000,
+                                 "QC04" = 5,
+                                 "QC03" = 80,
+                                 "QC02" = 800,
+                                 "QC01" = 2000)
+                if (is.null(calLev)) { calLev <- 0}
+
+                rlist[[j]] <- data.frame("Sample Position" = sampleLocation,
+                                         "Sample Name" = paste0(i@runName,
+                                                                "_",
+                                                                gsub("\\.", "_", i@sampleID), "_",
+                                                                j),
+                                         "Sample Type" = i@sampleType,
+                                         "Concentration Level" = calLev,
+                                         "Injection Volume" = injVol,
+                                         "Method Name" = methodName,
+                                         "Plate" = plateLocation,
+                                         "Comment" = NA,
+                                         "Dilution" = 1, check.names = FALSE)
               } else if (options$assay == "MS-BILE") {
                 msFile <- "BileAcids_MS_2022"
                 msTunFile <- "BileAcids_Tune_2022"
