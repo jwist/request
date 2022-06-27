@@ -7,11 +7,12 @@
 getRun(
   selectedSamples,
   type,
-  matrixID,
-  deviceID,
-  methodID,
+  matrixName,
+  deviceName,
+  methodName,
   cohortName,
   projectName,
+  runID,
   options = list()
 )
 }
@@ -24,15 +25,15 @@ getRun(
 \item the type of run
 }}
 
-\item{matrixID}{\itemize{
+\item{matrixName}{\itemize{
 \item the id of the samples matrix
 }}
 
-\item{deviceID}{\itemize{
+\item{deviceName}{\itemize{
 \item the id of the device to run the experiments
 }}
 
-\item{methodID}{\itemize{
+\item{methodName}{\itemize{
 \item the id of the method to be run
 }}
 
@@ -42,6 +43,10 @@ getRun(
 
 \item{projectName}{\itemize{
 \item the name of the project
+}}
+
+\item{runID}{\itemize{
+\item the name of the run
 }}
 
 \item{options}{\itemize{

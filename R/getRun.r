@@ -1,21 +1,23 @@
 #' create configuration files
 #' @param selectedSamples - the selected samples for run
 #' @param type - the type of run
-#' @param matrixID - the id of the samples matrix
-#' @param deviceID - the id of the device to run the experiments
-#' @param methodID - the id of the method to be run
+#' @param matrixName - the id of the samples matrix
+#' @param deviceName - the id of the device to run the experiments
+#' @param methodName - the id of the method to be run
 #' @param cohortName - the name of the cohort to run
 #' @param projectName - the name of the project
+#' @param runID - the name of the run
 #' @param options - options
 #' @return the name of the device
 #' @export
 getRun <- function(selectedSamples,
                    type,
-                   matrixID,
-                   deviceID,
-                   methodID,
+                   matrixName,
+                   deviceName,
+                   methodName,
                    cohortName,
                    projectName,
+                   runID,
                    options = list()) {
   dups <- sum(duplicated(paste0(selectedSamples$plateID, selectedSamples$wellPos)))
   ifelse(dups != 0, stop("duplicated positions"), 1)
@@ -39,19 +41,22 @@ getRun <- function(selectedSamples,
 
   cat(crayon::blue("request >> getRUN >> running: ", types[choice], "\n"))
 
-  qry <- getDevice(c(deviceID = deviceID,
-                            methodID = methodID,
-                            matrixID = matrixID))
-  deviceName <- qry[[1]]
-  methodName <- qry[[2]]
-  matrixName <- qry[[3]]
+  # qry <- getDevice(c(deviceName = deviceName,
+  #                           methodName = methodName,
+  #                           matrixName = matrixName))
+  # deviceName <- qry[[1]]
+  # methodName <- qry[[2]]
+  # matrixName <- qry[[3]]
+
 
   runName <- paste(projectName,
                    cohortName,
                    matrixName,
                    methodName,
                    deviceName,
+                   runID,
                    sep = "_")
+
   if (type == "NMR" && matrixName == "SER") {
     LTR_NAME <- "LTR-PLA"
   } else {
@@ -66,34 +71,35 @@ getRun <- function(selectedSamples,
   }
 
   switch(choice,
-         runNMR(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date),
-         runMS_TRY(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date),
-         runMS_TRYE(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date),
-         runMS_BILEE(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date),
-         runMS_Q300(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date),
-         runMS_BILE(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date),
-         runMS_AA(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date),
-         runMS_EICOS(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date),
-         runMS_URPP(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date),
-         runMS_LIPIDS(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date),
-         runMS_MRMSP(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date),
-         runMS_MRMSN(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date),
-         runTIMS_LIPIDS_P(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date),
-         runTIMS_LIPIDS_N(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date),
-         runCYT(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date))
+         runNMR(selectedSamples, runName, projectName, matrixName, deviceName, methodName, LTR_NAME, date),
+         runMS_TRY(selectedSamples, runName, projectName, matrixName, deviceName, methodName, LTR_NAME, date),
+         runMS_TRYE(selectedSamples, runName, projectName, matrixName, deviceName, methodName, LTR_NAME, date),
+         runMS_BILEE(selectedSamples, runName, projectName, matrixName, deviceName, methodName, LTR_NAME, date),
+         runMS_Q300(selectedSamples, runName, projectName, matrixName, deviceName, methodName, LTR_NAME, date),
+         runMS_BILE(selectedSamples, runName, projectName, matrixName, deviceName, methodName, LTR_NAME, date),
+         runMS_AA(selectedSamples, runName, projectName, matrixName, deviceName, methodName, LTR_NAME, date),
+         runMS_EICOS(selectedSamples, runName, projectName, matrixName, deviceName, methodName, LTR_NAME, date),
+         runMS_URPP(selectedSamples, runName, projectName, matrixName, deviceName, methodName, LTR_NAME, date),
+         runMS_LIPIDS(selectedSamples, runName, projectName, matrixName, deviceName, methodName, LTR_NAME, date),
+         runMS_MRMSP(selectedSamples, runName, projectName, matrixName, deviceName, methodName, LTR_NAME, date),
+         runMS_MRMSN(selectedSamples, runName, projectName, matrixName, deviceName, methodName, LTR_NAME, date),
+         runTIMS_LIPIDS_P(selectedSamples, runName, projectName, matrixName, deviceName, methodName, LTR_NAME, date),
+         runTIMS_LIPIDS_N(selectedSamples, runName, projectName, matrixName, deviceName, methodName, LTR_NAME, date),
+         runCYT(selectedSamples, runName, projectName, matrixName, deviceName, methodName, LTR_NAME, date))
+  return(runName)
 }
 
 #' write run file for MS-TRY
 #' @param selectedSamples - the selected samples for run
 #' @param runName - the name of the run
 #' @param projectName - the name of the project
-#' @param matrixID - the id of the sample matrix
-#' @param deviceID - the id of the device
-#' @param methodID - the id of the method
+#' @param matrixName - the id of the sample matrix
+#' @param deviceName - the id of the device
+#' @param methodName - the id of the method
 #' @param LTR_NAME - the name of LTR sample
 #' @param date - the date of the run
 #' @return void
-runMS_TRY <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
+runMS_TRY <- function(selectedSamples, runName, projectName, matrixName, deviceName, methodName, LTR_NAME, date) {
 
   plateList <- levels(factor(selectedSamples$plateID))
 
@@ -118,9 +124,9 @@ runMS_TRY <- function(selectedSamples, runName, projectName, matrixID, deviceID,
     r <- new("request")
     runParam <- list("runName" = currentRunName,
                      "projectName" = projectName,
-                     "methodID" = methodID,
-                     "deviceID" = deviceID,
-                     "matrixID" = matrixID,
+                     "methodName" = methodName,
+                     "deviceName" = deviceName,
+                     "matrixName" = matrixName,
                      "platePosition" =  1 + plateCounter %% 2)
     rl <- new("requestList")
 
@@ -184,13 +190,13 @@ runMS_TRY <- function(selectedSamples, runName, projectName, matrixID, deviceID,
 #' @param selectedSamples - the selected samples for run
 #' @param runName - the name of the run
 #' @param projectName - the name of the project
-#' @param matrixID - the id of the sample matrix
-#' @param deviceID - the id of the device
-#' @param methodID - the id of the method
+#' @param matrixName - the id of the sample matrix
+#' @param deviceName - the id of the device
+#' @param methodName - the id of the method
 #' @param LTR_NAME - the name of LTR sample
 #' @param date - the date of the run
 #' @return void
-runMS_TRYE <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
+runMS_TRYE <- function(selectedSamples, runName, projectName, matrixName, deviceName, methodName, LTR_NAME, date) {
 
   plateList <- levels(factor(selectedSamples$plateID))
 
@@ -215,9 +221,9 @@ runMS_TRYE <- function(selectedSamples, runName, projectName, matrixID, deviceID
     r <- new("request")
     runParam <- list("runName" = currentRunName,
                      "projectName" = projectName,
-                     "methodID" = methodID,
-                     "deviceID" = deviceID,
-                     "matrixID" = matrixID,
+                     "methodName" = methodName,
+                     "deviceName" = deviceName,
+                     "matrixName" = matrixName,
                      "platePosition" =  1 + plateCounter %% 2)
     rl <- new("requestList")
 
@@ -280,13 +286,13 @@ runMS_TRYE <- function(selectedSamples, runName, projectName, matrixID, deviceID
 #' @param selectedSamples - the selected samples for run
 #' @param runName - the name of the run
 #' @param projectName - the name of the project
-#' @param matrixID - the id of the sample matrix
-#' @param deviceID - the id of the device
-#' @param methodID - the id of the method
+#' @param matrixName - the id of the sample matrix
+#' @param deviceName - the id of the device
+#' @param methodName - the id of the method
 #' @param LTR_NAME - the name of LTR sample
 #' @param date - the date of the run
 #' @return void
-runMS_BILEE <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
+runMS_BILEE <- function(selectedSamples, runName, projectName, matrixName, deviceName, methodName, LTR_NAME, date) {
 
   plateList <- levels(factor(selectedSamples$plateID))
   blkPos <- getPlatePos(by = "col")
@@ -311,9 +317,9 @@ runMS_BILEE <- function(selectedSamples, runName, projectName, matrixID, deviceI
     r <- new("request")
     runParam <- list("runName" = currentRunName,
                      "projectName" = projectName,
-                     "methodID" = methodID,
-                     "deviceID" = deviceID,
-                     "matrixID" = matrixID)
+                     "methodName" = methodName,
+                     "deviceName" = deviceName,
+                     "matrixName" = matrixName)
                      #"platePosition" =  1 + plateCounter %% 2)
     rl <- new("requestList")
 
@@ -379,13 +385,13 @@ runMS_BILEE <- function(selectedSamples, runName, projectName, matrixID, deviceI
 #' @param selectedSamples - the selected samples for run
 #' @param runName - the name of the run
 #' @param projectName - the name of the project
-#' @param matrixID - the id of the sample matrix
-#' @param deviceID - the id of the device
-#' @param methodID - the id of the method
+#' @param matrixName - the id of the sample matrix
+#' @param deviceName - the id of the device
+#' @param methodName - the id of the method
 #' @param LTR_NAME - the name of LTR sample
 #' @param date - the date of the run
 #' @return void
-runMS_Q300 <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
+runMS_Q300 <- function(selectedSamples, runName, projectName, matrixName, deviceName, methodName, LTR_NAME, date) {
 
   plateList <- levels(factor(selectedSamples$plateID))
 
@@ -410,9 +416,9 @@ runMS_Q300 <- function(selectedSamples, runName, projectName, matrixID, deviceID
     r <- new("request")
     runParam <- list("runName" = currentRunName,
                      "projectName" = projectName,
-                     "methodID" = methodID,
-                     "deviceID" = deviceID,
-                     "matrixID" = matrixID,
+                     "methodName" = methodName,
+                     "deviceName" = deviceName,
+                     "matrixName" = matrixName,
                      "platePosition" =  1 + plateCounter %% 2)
     rl <- new("requestList")
 
@@ -476,13 +482,13 @@ runMS_Q300 <- function(selectedSamples, runName, projectName, matrixID, deviceID
 #' @param selectedSamples - the selected samples for run
 #' @param runName - the name of the run
 #' @param projectName - the name of the project
-#' @param matrixID - the id of the sample matrix
-#' @param deviceID - the id of the device
-#' @param methodID - the id of the method
+#' @param matrixName - the id of the sample matrix
+#' @param deviceName - the id of the device
+#' @param methodName - the id of the method
 #' @param LTR_NAME - the name of LTR sample
 #' @param date - the date of the run
 #' @return void
-runMS_BILE <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
+runMS_BILE <- function(selectedSamples, runName, projectName, matrixName, deviceName, methodName, LTR_NAME, date) {
 
   plateList <- levels(factor(selectedSamples$plateID))
 
@@ -507,9 +513,9 @@ runMS_BILE <- function(selectedSamples, runName, projectName, matrixID, deviceID
     r <- new("request")
     runParam <- list("runName" = currentRunName,
                      "projectName" = projectName,
-                     "methodID" = methodID,
-                     "deviceID" = deviceID,
-                     "matrixID" = matrixID,
+                     "methodName" = methodName,
+                     "deviceName" = deviceName,
+                     "matrixName" = matrixName,
                      "platePosition" = 1 + (plateCounter %% 2))
     rl <- new("requestList")
 
@@ -571,13 +577,13 @@ runMS_BILE <- function(selectedSamples, runName, projectName, matrixID, deviceID
 #' @param selectedSamples - the selected samples for run
 #' @param runName - the name of the run
 #' @param projectName - the name of the project
-#' @param matrixID - the id of the sample matrix
-#' @param deviceID - the id of the device
-#' @param methodID - the id of the method
+#' @param matrixName - the id of the sample matrix
+#' @param deviceName - the id of the device
+#' @param methodName - the id of the method
 #' @param LTR_NAME - the name of LTR sample
 #' @param date - the date of the run
 #' @return void
-runMS_AA <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
+runMS_AA <- function(selectedSamples, runName, projectName, matrixName, deviceName, methodName, LTR_NAME, date) {
 
   plateList <- levels(factor(selectedSamples$plateID))
 
@@ -602,9 +608,9 @@ runMS_AA <- function(selectedSamples, runName, projectName, matrixID, deviceID, 
     r <- new("request")
     runParam <- list("runName" = currentRunName,
                      "projectName" = projectName,
-                     "methodID" = methodID,
-                     "deviceID" = deviceID,
-                     "matrixID" = matrixID,
+                     "methodName" = methodName,
+                     "deviceName" = deviceName,
+                     "matrixName" = matrixName,
                      "platePosition" = 1 + (plateCounter %% 2))
 
     rl <- new("requestList")
@@ -659,7 +665,7 @@ runMS_AA <- function(selectedSamples, runName, projectName, matrixID, deviceID, 
     rl <- addRequest(rl, list(doubleBlk, doubleBlk))
 
     run <- printRequest(rl, list("assay" = "MSBruker"))
-    saveRun(run, currentRunName)
+    saveRun(run, currentRunName, methodName)
     plateCounter <- plateCounter + 1
     req <- c(req, list(requestList = rl, run = run))
   }
@@ -670,13 +676,13 @@ runMS_AA <- function(selectedSamples, runName, projectName, matrixID, deviceID, 
 #' @param selectedSamples - the selected samples for run
 #' @param runName - the name of the run
 #' @param projectName - the name of the project
-#' @param matrixID - the id of the sample matrix
-#' @param deviceID - the id of the device
-#' @param methodID - the id of the method
+#' @param matrixName - the id of the sample matrix
+#' @param deviceName - the id of the device
+#' @param methodName - the id of the method
 #' @param LTR_NAME - the name of LTR sample
 #' @param date - the date of the run
 #' @return void
-runMS_MRMSP <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
+runMS_MRMSP <- function(selectedSamples, runName, projectName, matrixName, deviceName, methodName, LTR_NAME, date) {
   plateList <- levels(factor(selectedSamples$plateID))
   req <- list()
   for (plate in plateList) {
@@ -698,9 +704,9 @@ runMS_MRMSP <- function(selectedSamples, runName, projectName, matrixID, deviceI
     r <- new("request")
     runParam <- list("runName" = currentRunName,
                      "projectName" = projectName,
-                     "methodID" = methodID,
-                     "deviceID" = deviceID,
-                     "matrixID" = matrixID,
+                     "methodName" = methodName,
+                     "deviceName" = deviceName,
+                     "matrixName" = matrixName,
                      "sampleType" = "Sample")
 
     rl <- new("requestList")
@@ -758,13 +764,13 @@ runMS_MRMSP <- function(selectedSamples, runName, projectName, matrixID, deviceI
 #' @param selectedSamples - the selected samples for run
 #' @param runName - the name of the run
 #' @param projectName - the name of the project
-#' @param matrixID - the id of the sample matrix
-#' @param deviceID - the id of the device
-#' @param methodID - the id of the method
+#' @param matrixName - the id of the sample matrix
+#' @param deviceName - the id of the device
+#' @param methodName - the id of the method
 #' @param LTR_NAME - the name of LTR sample
 #' @param date - the date of the run
 #' @return void
-runMS_MRMSN <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
+runMS_MRMSN <- function(selectedSamples, runName, projectName, matrixName, deviceName, methodName, LTR_NAME, date) {
   plateList <- levels(factor(selectedSamples$plateID))
   req <- list()
   for (plate in plateList) {
@@ -786,9 +792,9 @@ runMS_MRMSN <- function(selectedSamples, runName, projectName, matrixID, deviceI
     r <- new("request")
     runParam <- list("runName" = currentRunName,
                      "projectName" = projectName,
-                     "methodID" = methodID,
-                     "deviceID" = deviceID,
-                     "matrixID" = matrixID,
+                     "methodName" = methodName,
+                     "deviceName" = deviceName,
+                     "matrixName" = matrixName,
                      "sampleType" = "Sample")
 
     rl <- new("requestList")
@@ -846,13 +852,13 @@ runMS_MRMSN <- function(selectedSamples, runName, projectName, matrixID, deviceI
 #' @param selectedSamples - the selected samples for run
 #' @param runName - the name of the run
 #' @param projectName - the name of the project
-#' @param matrixID - the id of the sample matrix
-#' @param deviceID - the id of the device
-#' @param methodID - the id of the method
+#' @param matrixName - the id of the sample matrix
+#' @param deviceName - the id of the device
+#' @param methodName - the id of the method
 #' @param LTR_NAME - the name of LTR sample
 #' @param date - the date of the run
 #' @return void
-runMS_EICOS <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
+runMS_EICOS <- function(selectedSamples, runName, projectName, matrixName, deviceName, methodName, LTR_NAME, date) {
   plateList <- levels(factor(selectedSamples$plateID))
 
   plateCounter <- 0
@@ -875,9 +881,9 @@ runMS_EICOS <- function(selectedSamples, runName, projectName, matrixID, deviceI
 
     r <- new("request")
     runParam <- list("runName" = runName,
-                     "methodID" = methodID,
-                     "deviceID" = deviceID,
-                     "matrixID" = matrixID,
+                     "methodName" = methodName,
+                     "deviceName" = deviceName,
+                     "matrixName" = matrixName,
                      "platePosition" = 1 + (plateCounter %% 2))
 
     rl <- new("requestList")
@@ -949,13 +955,13 @@ runMS_EICOS <- function(selectedSamples, runName, projectName, matrixID, deviceI
 #' @param selectedSamples - the selected samples for run
 #' @param runName - the name of the run
 #' @param projectName - the name of the project
-#' @param matrixID - the id of the sample matrix
-#' @param deviceID - the id of the device
-#' @param methodID - the id of the method
+#' @param matrixName - the id of the sample matrix
+#' @param deviceName - the id of the device
+#' @param methodName - the id of the method
 #' @param LTR_NAME - the name of LTR sample
 #' @param date - the date of the run
 #' @return void
-runTIMS_LIPIDS_P <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
+runTIMS_LIPIDS_P <- function(selectedSamples, runName, projectName, matrixName, deviceName, methodName, LTR_NAME, date) {
   plateList <- levels(factor(selectedSamples$plateID))
   req <- list()
   for (plate in plateList) {
@@ -977,9 +983,9 @@ runTIMS_LIPIDS_P <- function(selectedSamples, runName, projectName, matrixID, de
     r <- new("request")
     runParam <- list("runName" = currentRunName,
                      "projectName" = projectName,
-                     "methodID" = methodID,
-                     "deviceID" = deviceID,
-                     "matrixID" = matrixID,
+                     "methodName" = methodName,
+                     "deviceName" = deviceName,
+                     "matrixName" = matrixName,
                      "sampleType" = "Sample")
 
     rl <- new("requestList")
@@ -1031,13 +1037,13 @@ runTIMS_LIPIDS_P <- function(selectedSamples, runName, projectName, matrixID, de
 #' @param selectedSamples - the selected samples for run
 #' @param runName - the name of the run
 #' @param projectName - the name of the project
-#' @param matrixID - the id of the sample matrix
-#' @param deviceID - the id of the device
-#' @param methodID - the id of the method
+#' @param matrixName - the id of the sample matrix
+#' @param deviceName - the id of the device
+#' @param methodName - the id of the method
 #' @param LTR_NAME - the name of LTR sample
 #' @param date - the date of the run
 #' @return void
-runTIMS_LIPIDS_N <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
+runTIMS_LIPIDS_N <- function(selectedSamples, runName, projectName, matrixName, deviceName, methodName, LTR_NAME, date) {
   plateList <- levels(factor(selectedSamples$plateID))
   req <- list()
   for (plate in plateList) {
@@ -1059,9 +1065,9 @@ runTIMS_LIPIDS_N <- function(selectedSamples, runName, projectName, matrixID, de
     r <- new("request")
     runParam <- list("runName" = currentRunName,
                      "projectName" = projectName,
-                     "methodID" = methodID,
-                     "deviceID" = deviceID,
-                     "matrixID" = matrixID,
+                     "methodName" = methodName,
+                     "deviceName" = deviceName,
+                     "matrixName" = matrixName,
                      "sampleType" = "Sample")
 
     rl <- new("requestList")
@@ -1113,13 +1119,13 @@ runTIMS_LIPIDS_N <- function(selectedSamples, runName, projectName, matrixID, de
 #' @param selectedSamples - the selected samples for run
 #' @param runName - the name of the run
 #' @param projectName - the name of the project
-#' @param matrixID - the id of the sample matrix
-#' @param deviceID - the id of the device
-#' @param methodID - the id of the method
+#' @param matrixName - the id of the sample matrix
+#' @param deviceName - the id of the device
+#' @param methodName - the id of the method
 #' @param LTR_NAME - the name of LTR sample
 #' @param date - the date of the run
 #' @return void
-runMS_URPP <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
+runMS_URPP <- function(selectedSamples, runName, projectName, matrixName, deviceName, methodName, LTR_NAME, date) {
 
   plateList <- levels(factor(selectedSamples$plateID))
 
@@ -1144,9 +1150,9 @@ runMS_URPP <- function(selectedSamples, runName, projectName, matrixID, deviceID
     r <- new("request")
     runParam <- list("runName" = currentRunName,
                      "projectName" = projectName,
-                     "methodID" = methodID,
-                     "deviceID" = deviceID,
-                     "matrixID" = matrixID,
+                     "methodName" = methodName,
+                     "deviceName" = deviceName,
+                     "matrixName" = matrixName,
                      "platePosition" = plateCounter,
                      "sampleType" = "Sample")
 
@@ -1199,13 +1205,13 @@ runMS_URPP <- function(selectedSamples, runName, projectName, matrixID, deviceID
 #' @param selectedSamples - the selected samples for run
 #' @param runName - the name of the run
 #' @param projectName - the name of the project
-#' @param matrixID - the id of the sample matrix
-#' @param deviceID - the id of the device
-#' @param methodID - the id of the method
+#' @param matrixName - the id of the sample matrix
+#' @param deviceName - the id of the device
+#' @param methodName - the id of the method
 #' @param LTR_NAME - the name of LTR sample
 #' @param date - the date of the run
 #' @return void
-runMS_LIPIDS <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
+runMS_LIPIDS <- function(selectedSamples, runName, projectName, matrixName, deviceName, methodName, LTR_NAME, date) {
 
   plateList <- levels(factor(selectedSamples$plateID))
 
@@ -1229,9 +1235,9 @@ runMS_LIPIDS <- function(selectedSamples, runName, projectName, matrixID, device
 
     r <- new("request")
     runParam <- list("runName" = currentRunName,
-                     "methodID" = methodID,
-                     "deviceID" = deviceID,
-                     "matrixID" = matrixID,
+                     "methodName" = methodName,
+                     "deviceName" = deviceName,
+                     "matrixName" = matrixName,
                      "platePosition" = 1 + (plateCounter %% 5))
 
     rl <- new("requestList")
@@ -1292,13 +1298,13 @@ runMS_LIPIDS <- function(selectedSamples, runName, projectName, matrixID, device
 #' @param selectedSamples - the selected samples for run
 #' @param runName - the name of the run
 #' @param projectName - the name of the project
-#' @param matrixID - the id of the sample matrix
-#' @param deviceID - the id of the device
-#' @param methodID - the id of the method
+#' @param matrixName - the id of the sample matrix
+#' @param deviceName - the id of the device
+#' @param methodName - the id of the method
 #' @param LTR_NAME - the name of LTR sample
 #' @param date - the date of the run
 #' @return void
-runCYT <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
+runCYT <- function(selectedSamples, runName, projectName, matrixName, deviceName, methodName, LTR_NAME, date) {
 
   plateList <- levels(factor(selectedSamples$plateID))
 
@@ -1322,9 +1328,9 @@ runCYT <- function(selectedSamples, runName, projectName, matrixID, deviceID, me
 
     r <- new("request")
     runParam <- list("runName" = currentRunName,
-                     "methodID" = methodID,
-                     "deviceID" = deviceID,
-                     "matrixID" = matrixID,
+                     "methodName" = methodName,
+                     "deviceName" = deviceName,
+                     "matrixName" = matrixName,
                      "platePosition" = 1 + (plateCounter %% 5))
 
     rl <- new("requestList")
@@ -1385,12 +1391,12 @@ runCYT <- function(selectedSamples, runName, projectName, matrixID, deviceID, me
 #' @param selectedSamples - the selected samples for run
 #' @param runName - the name of the run
 #' @param projectName - the name of the project
-#' @param matrixID - the id of the sample matrix
-#' @param deviceID - the id of the device
-#' @param methodID - the id of the method
+#' @param matrixName - the id of the sample matrix
+#' @param deviceName - the id of the device
+#' @param methodName - the id of the method
 #' @param date - the date of the run
 #' @return a list
-runNMR <- function(selectedSamples, runName, projectName, matrixID, deviceID, methodID, LTR_NAME, date) {
+runNMR <- function(selectedSamples, runName, projectName, matrixName, deviceName, methodName, LTR_NAME, date) {
   LTR <- 4
 
   plateList <- levels(factor(selectedSamples$plateID))
@@ -1426,11 +1432,11 @@ runNMR <- function(selectedSamples, runName, projectName, matrixID, deviceID, me
     }
 
     plate1S <- data.frame("_sampleID" = paste0(sampleID, "_", tubeLabel),
-                          "_matrixID" = rep(matrixID, plateLength),
+                          "_matrixName" = rep(matrixName, plateLength),
                           "_runName" = rep(currentRunName, plateLength),
                           "_sampleType" = rep("S", plateLength),
-                          "_methodID" = rep(methodID, plateLength),
-                          "_deviceID" = rep(deviceID, plateLength),
+                          "_methodName" = rep(methodName, plateLength),
+                          "_deviceName" = rep(deviceName, plateLength),
                           "_projectName" = rep(projectName, plateLength),
                           "_platePosition" = rep(1, plateLength),
                           "row" = rows,
@@ -1438,11 +1444,11 @@ runNMR <- function(selectedSamples, runName, projectName, matrixID, deviceID, me
                           "_title" = title, check.names = FALSE)
 
     plate1LTR <- data.frame("_sampleID" = rep(LTR_NAME, LTR),
-                            "_matrixID" = rep(matrixID, LTR),
+                            "_matrixName" = rep(matrixName, LTR),
                             "_runName" = rep(currentRunName, LTR),
                             "_sampleType" = rep("LTR", LTR),
-                            "_methodID" = rep(methodID, LTR),
-                            "_deviceID" = rep(deviceID, LTR),
+                            "_methodName" = rep(methodName, LTR),
+                            "_deviceName" = rep(deviceName, LTR),
                             "_projectName" = rep(projectName, LTR),
                             "_platePosition" = rep(1, LTR),
                             "row" = LTR_positionList,
@@ -1455,10 +1461,47 @@ runNMR <- function(selectedSamples, runName, projectName, matrixID, deviceID, me
     plate1 <- plate1[F,]
     F <- sort(plate1$row, index.return = TRUE)$ix
     plate1 <- plate1[F,]
-    saveRun(plate1, currentRunName)
+    plate1 <- makeBruker(plate1, methodName, deviceName)
+    saveRun(plate1, currentRunName, methodName)
     req <- c(req, list(requestList = NA, run = plate1))
   }
   return(req)
+}
+
+makeBruker <- function(conf, methodName, deviceName) {
+  method <- dbGetQuery(con, paste0("select * from methods
+                       where method_name = '", methodName, "'"))
+  method_request <- fromJSON(method$method_request)
+  device <- dbGetQuery(con, paste0("select * from devices
+                       where dev_name = '", deviceName, "'"))
+  res <- list()
+  counter = 1
+  for (i in 1:nrow(conf)) {
+    for (j in 1:length(method_request$experiments)) {
+      res[[counter]] <- data.frame(HOLDER = 100 + counter,
+                                   USER = method_request$user,
+                                   NAME = conf$`_runName`[i],
+                                   TITLE = paste(conf$`_projectName`[i],
+                                                 method$method_name,
+                                                 conf$`_deviceName`[i],
+                                                 conf$`_matrixName`[i],
+                                                 conf$`_sampleID`[i],
+                                                 paste0("R", conf$row[i],
+                                                        "C", conf$column[i],
+                                                        "\\n"),
+                                                 sep = "_"),
+                                   EXPNO = paste0(i, j - 1),
+                                   SOLVENT = method_request$solvent,
+                                   EXPERIMENT = method_request$experiments[j],
+                                   PARAMETERS = paste0("usera2,",
+                                                       conf$`_sampleID`[i]),
+                                   DISK = device$dev_path
+      )
+      counter = counter + 1
+    }
+  }
+  p <- data.frame(do.call("rbind", res))
+  return(p)
 }
 
 #' write run file
@@ -1466,15 +1509,43 @@ runNMR <- function(selectedSamples, runName, projectName, matrixID, deviceID, me
 #' @param runName - the run name
 #' @return write the file
 #' @importFrom utils write.table
-saveRun <- function(run, runName){
+#' @importFrom DBI dbGetQuery dbDisconnect
+#' @importFrom rolodex.samples openDb
+saveRun <- function(run, runName, methodName){
+  con <- rolodex.samples::openDb()
+  method <- dbGetQuery(con, paste0("select * from methods
+                       where method_name = '", methodName, "'"))
+  dbDisconnect(con)
+  fileFormat <- fromJSON(method$method_options)$fileFormat
+  fileExtension <- fromJSON(method$method_options)$fileExtension
+  if (fileFormat == "tsv") {
+    sep = "\t"
+  } else if (fileFormat == "csv") {
+    sep = ","
+  } else {
+    stop("request >> getRun: unknown file extension")
+  }
+
   file <- paste0("configurationFiles/",
-                 runName,
-                 ".tsv")
+                 runName, ".",
+                 fileExtension)
   write.table(run,
               file = file,
-              sep = "\t",
+              sep = sep,
               dec = ".",
               row.names = FALSE,
-              quote = FALSE)
+              quote = TRUE)
+  # if (grepl("_NMR-", runName)) {
+  #     txt <- system(
+  #       paste0(
+  #         "~/git/cheminfo-js/getRunOrder/build/toNMR-macos -r configurationFiles/",
+  #         runName,
+  #         ".tsv"),
+  #       intern = TRUE
+  #       )
+  #     fileConn <- file(paste0("configurationFiles/", runName, ".csv"))
+  #     writeLines(txt, fileConn)
+  #     close(fileConn)
+  # }
   cat(crayon::green("request >> getRUN >> ", file, " written\n"))
 }

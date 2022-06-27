@@ -4,7 +4,7 @@
 \alias{saveRun}
 \title{write run file}
 \usage{
-saveRun(run, runName)
+saveRun(run, runName, methodName)
 }
 \arguments{
 \item{run}{\itemize{

@@ -8,9 +8,9 @@ runMS_TRY(
   selectedSamples,
   runName,
   projectName,
-  matrixID,
-  deviceID,
-  methodID,
+  matrixName,
+  deviceName,
+  methodName,
   LTR_NAME,
   date
 )
@@ -28,15 +28,15 @@ runMS_TRY(
 \item the name of the project
 }}
 
-\item{matrixID}{\itemize{
+\item{matrixName}{\itemize{
 \item the id of the sample matrix
 }}
 
-\item{deviceID}{\itemize{
+\item{deviceName}{\itemize{
 \item the id of the device
 }}
 
-\item{methodID}{\itemize{
+\item{methodName}{\itemize{
 \item the id of the method
 }}
 

@@ -4,7 +4,7 @@
 \alias{getPlatePos}
 \title{create array of positions}
 \usage{
-getPlatePos(boxDim = c(8, 12), by = "row")
+getPlatePos(boxDim = c(8, 12), by = "row", exclude = c())
 }
 \arguments{
 \item{boxDim}{\itemize{

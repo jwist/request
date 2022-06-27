@@ -4,7 +4,7 @@
 \alias{findEmptyPositions}
 \title{find empty positions}
 \usage{
-findEmptyPositions(positions, boxDim = c(8, 10), by = "col")
+findEmptyPositions(positions, boxDim = c(8, 10), by = "col", exclude = c())
 }
 \arguments{
 \item{positions}{\itemize{

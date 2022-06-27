@@ -13,8 +13,8 @@ sdlHeaders <-  c("sampleID",
                  "boxName",
                  "boxType",
                  "tubePosition",
-                 "row",
-                 "col",
+                 "tubeRow",
+                 "tubeCol",
                  "collectionTube",
                  "comments")
 
