@@ -53,7 +53,6 @@ getRun <- function(selectedSamples,
                    cohortName,
                    matrixName,
                    methodName,
-                   deviceName,
                    runID,
                    sep = "_")
 
@@ -1483,7 +1482,6 @@ makeBruker <- function(conf, methodName, deviceName) {
                                    NAME = conf$`_runName`[i],
                                    TITLE = paste(conf$`_projectName`[i],
                                                  method$method_name,
-                                                 conf$`_deviceName`[i],
                                                  conf$`_matrixName`[i],
                                                  conf$`_sampleID`[i],
                                                  paste0("R", conf$row[i],
@@ -1512,7 +1510,7 @@ makeBruker <- function(conf, methodName, deviceName) {
 #' @importFrom DBI dbGetQuery dbDisconnect
 #' @importFrom rolodex.samples openDb
 saveRun <- function(run, runName, methodName){
-  con <- rolodex.samples::openDb()
+  con <- openDb()
   method <- dbGetQuery(con, paste0("select * from methods
                        where method_name = '", methodName, "'"))
   dbDisconnect(con)

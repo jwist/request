@@ -22,6 +22,7 @@ Imports:
     htmlTable,
     crayon,
     methods,
-    magrittr
+    magrittr,
+    rolodex.samples
 Depends: 
     R (>= 2.10)
