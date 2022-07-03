@@ -33,6 +33,7 @@ checkForWeirdCharacters <- function(df) {
       # cat(crayon::green("no weird characters found\n"))
     } else {
       cat(crayon::yellow(paste("weird character found in", colnames(df)[i], "\n")))
+      print(df[wc,i])
     }
   }
 }
