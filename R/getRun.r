@@ -108,7 +108,6 @@ runMS_TRY <- function(selectedSamples, runName, projectName, matrixName, deviceN
 
     currentRunName <- paste(runName,
                      plate,
-                     date,
                      sep = "_")
 
     plateNames <- selectedSamples$plateID
@@ -205,7 +204,6 @@ runMS_TRYE <- function(selectedSamples, runName, projectName, matrixName, device
 
     currentRunName <- paste(runName,
                             plate,
-                            date,
                             sep = "_")
 
     plateNames <- selectedSamples$plateID
@@ -301,7 +299,6 @@ runMS_BILEE <- function(selectedSamples, runName, projectName, matrixName, devic
 
     currentRunName <- paste(runName,
                             plate,
-                            date,
                             sep = "_")
 
     plateNames <- selectedSamples$plateID
@@ -400,7 +397,6 @@ runMS_Q300 <- function(selectedSamples, runName, projectName, matrixName, device
 
     currentRunName <- paste(runName,
                             plate,
-                            date,
                             sep = "_")
 
     plateNames <- selectedSamples$plateID
@@ -497,7 +493,6 @@ runMS_BILE <- function(selectedSamples, runName, projectName, matrixName, device
 
     currentRunName <- paste(runName,
                             plate,
-                            date,
                             sep = "_")
 
     plateNames <- selectedSamples$plateID
@@ -592,7 +587,6 @@ runMS_AA <- function(selectedSamples, runName, projectName, matrixName, deviceNa
 
     currentRunName <- paste(runName,
                      plate,
-                     date,
                      sep = "_")
 
     plateNames <- selectedSamples$plateID
@@ -688,7 +682,6 @@ runMS_MRMSP <- function(selectedSamples, runName, projectName, matrixName, devic
 
     currentRunName <- paste(runName,
                             plate,
-                            date,
                             sep = "_")
 
     plateNames <- selectedSamples$plateID
@@ -776,7 +769,6 @@ runMS_MRMSN <- function(selectedSamples, runName, projectName, matrixName, devic
 
     currentRunName <- paste(runName,
                             plate,
-                            date,
                             sep = "_")
 
     plateNames <- selectedSamples$plateID
@@ -866,7 +858,6 @@ runMS_EICOS <- function(selectedSamples, runName, projectName, matrixName, devic
 
     currentRunName <- paste(runName,
                             plate,
-                            date,
                             sep = "_")
 
     plateNames <- selectedSamples$plateID
@@ -967,7 +958,6 @@ runTIMS_LIPIDS_P <- function(selectedSamples, runName, projectName, matrixName, 
 
     currentRunName <- paste(runName,
                             plate,
-                            date,
                             sep = "_")
 
     plateNames <- selectedSamples$plateID
@@ -1049,7 +1039,6 @@ runTIMS_LIPIDS_N <- function(selectedSamples, runName, projectName, matrixName, 
 
     currentRunName <- paste(runName,
                             plate,
-                            date,
                             sep = "_")
 
     plateNames <- selectedSamples$plateID
@@ -1134,7 +1123,6 @@ runMS_URPP <- function(selectedSamples, runName, projectName, matrixName, device
 
     currentRunName <- paste(runName,
                             plate,
-                            date,
                             sep = "_")
 
     plateNames <- selectedSamples$plateID
@@ -1220,7 +1208,6 @@ runMS_LIPIDS <- function(selectedSamples, runName, projectName, matrixName, devi
 
     currentRunName <- paste(runName,
                             plate,
-                            date,
                             sep = "_")
 
     plateNames <- selectedSamples$plateID
@@ -1313,7 +1300,6 @@ runCYT <- function(selectedSamples, runName, projectName, matrixName, deviceName
 
     currentRunName <- paste(runName,
                             plate,
-                            date,
                             sep = "_")
 
     plateNames <- selectedSamples$plateID
@@ -1403,7 +1389,6 @@ runNMR <- function(selectedSamples, runName, projectName, matrixName, deviceName
   for (plate in plateList) {
     currentRunName <- paste(runName,
                      plate,
-                     date,
                      sep = "_")
 
     plateNames <- selectedSamples$plateID
