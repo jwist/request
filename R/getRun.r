@@ -1460,9 +1460,10 @@ makeBruker <- function(conf, methodName, deviceName) {
                        where dev_name = '", deviceName, "'"))
   res <- list()
   counter = 1
+  holder = 101
   for (i in 1:nrow(conf)) {
     for (j in 1:length(method_request$experiments)) {
-      res[[counter]] <- data.frame(HOLDER = 100 + counter,
+      res[[counter]] <- data.frame(HOLDER = holder,
                                    USER = method_request$user,
                                    NAME = conf$`_runName`[i],
                                    TITLE = paste(conf$`_projectName`[i],
@@ -1482,6 +1483,7 @@ makeBruker <- function(conf, methodName, deviceName) {
       )
       counter = counter + 1
     }
+    holder = holder + 1
   }
   p <- data.frame(do.call("rbind", res))
   return(p)
