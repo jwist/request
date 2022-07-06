@@ -177,7 +177,7 @@ runMS_TRY <- function(selectedSamples, runName, projectName, matrixName, deviceN
     rl <- addRequest(rl, list(doubleBlk, doubleBlk))
 
     run <- printRequest(rl, list("assay" = "MSWaters"))
-    saveRun(run, currentRunName)
+    saveRun(run, currentRunName, methodName)
     plateCounter <- plateCounter + 1
     req <- c(req, list(requestList = rl, run = run))
   }
@@ -272,7 +272,7 @@ runMS_TRYE <- function(selectedSamples, runName, projectName, matrixName, device
     rl <- addRequest(rl, list(doubleBlk, doubleBlk))
 
     run <- printRequest(rl, list("assay" = "MS-TRYE"))
-    saveRun(run, currentRunName)
+    saveRun(run, currentRunName, methodName)
     plateCounter <- plateCounter + 1
     req <- c(req, list(requestList = rl, run = run))
   }
@@ -370,7 +370,7 @@ runMS_BILEE <- function(selectedSamples, runName, projectName, matrixName, devic
                               doubleBlk <- setPosition(doubleBlk, blkPos[7 + (plateCounter * 7)])))
 
     run <- printRequest(rl, list("assay" = "MS-BILEE"))
-    saveRun(run, currentRunName)
+    saveRun(run, currentRunName, methodName)
     plateCounter <- plateCounter + 1
     req <- c(req, list(requestList = rl, run = run))
   }
@@ -465,7 +465,7 @@ runMS_Q300 <- function(selectedSamples, runName, projectName, matrixName, device
     rl <- addRequest(rl, list(doubleBlk, doubleBlk))
 
     run <- printRequest(rl, list("assay" = "MS-Q300"))
-    saveRun(run, currentRunName)
+    saveRun(run, currentRunName, methodName)
     plateCounter <- plateCounter + 1
     req <- c(req, list(requestList = rl, run = run))
   }
@@ -560,7 +560,7 @@ runMS_BILE <- function(selectedSamples, runName, projectName, matrixName, device
 
 
     run <- printRequest(rl, list("assay" = "MS-BILE"))
-    saveRun(run, currentRunName)
+    saveRun(run, currentRunName, methodName)
     plateCounter <- plateCounter + 1
     req <- c(req, list(requestList = rl, run = run))
   }
@@ -746,7 +746,7 @@ runMS_MRMSP <- function(selectedSamples, runName, projectName, matrixName, devic
                               LTR <- setPosition(LTR, "D11")))
 
     run <- printRequest(rl, list("assay" = "MS_MRMSP"))
-    saveRun(run, currentRunName)
+    saveRun(run, currentRunName, methodName)
     req <- c(req, list(requestList = rl, run = run))
   }
   return(req)
@@ -833,7 +833,7 @@ runMS_MRMSN <- function(selectedSamples, runName, projectName, matrixName, devic
                               LTR <- setPosition(LTR, "D11")))
 
     run <- printRequest(rl, list("assay" = "MS_MRMSN"))
-    saveRun(run, currentRunName)
+    saveRun(run, currentRunName, methodName)
     req <- c(req, list(requestList = rl, run = run))
   }
   return(req)
@@ -934,7 +934,7 @@ runMS_EICOS <- function(selectedSamples, runName, projectName, matrixName, devic
     # footer
     rl <- addRequest(rl, list(LTR4, LTR4, doubleBlk))
     run <- printRequest(rl, list("assay" = "MS_EICOS"))
-    saveRun(run, currentRunName)
+    saveRun(run, currentRunName, methodName)
     plateCounter <- plateCounter + 1
     req <- c(req, list(requestList = rl, run = run))
   }
@@ -1016,7 +1016,7 @@ runTIMS_LIPIDS_P <- function(selectedSamples, runName, projectName, matrixName, 
                               blk, blk, blk))
 
     run <- printRequest(rl, list("assay" = "TIMS_LIPIDS_P"))
-    saveRun(run, currentRunName)
+    saveRun(run, currentRunName, methodName)
     req <- c(req, list(requestList = rl, run = run))
   }
   return(req)
@@ -1097,7 +1097,7 @@ runTIMS_LIPIDS_N <- function(selectedSamples, runName, projectName, matrixName, 
                               blk, blk, blk))
 
     run <- printRequest(rl, list("assay" = "TIMS_LIPIDS_N"))
-    saveRun(run, currentRunName)
+    saveRun(run, currentRunName, methodName)
     req <- c(req, list(requestList = rl, run = run))
   }
   return(req)
@@ -1181,7 +1181,7 @@ runMS_URPP <- function(selectedSamples, runName, projectName, matrixName, device
     }
 
     run <- printRequest(rl, list("assay" = "MS_URPP"))
-    saveRun(run, currentRunName)
+    saveRun(run, currentRunName, methodName)
     plateCounter <- plateCounter + 1
     req <- c(req, list(requestList = rl, run = run))
   }
@@ -1273,7 +1273,7 @@ runMS_LIPIDS <- function(selectedSamples, runName, projectName, matrixName, devi
     rl <- addRequest(rl, list(LTR))
 
     run <- printRequest(rl, list("assay" = "MSSciex"))
-    saveRun(run, currentRunName)
+    saveRun(run, currentRunName, methodName)
     plateCounter <- plateCounter + 1
     req <- c(req, list(requestList = rl, run = run))
   }
@@ -1365,7 +1365,7 @@ runCYT <- function(selectedSamples, runName, projectName, matrixName, deviceName
     rl <- addRequest(rl, list(LTR))
 
     run <- printRequest(rl, list("assay" = "MSSciex"))
-    saveRun(run, currentRunName)
+    saveRun(run, currentRunName, methodName)
     plateCounter <- plateCounter + 1
     req <- c(req, list(requestList = rl, run = run))
   }
