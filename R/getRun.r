@@ -1386,6 +1386,7 @@ runNMR <- function(selectedSamples, runName, projectName, matrixName, deviceName
 
   plateList <- levels(factor(selectedSamples$plateID))
   req <- list()
+  plateCounter <- 1
   for (plate in plateList) {
     currentRunName <- paste(runName,
                      plate,
@@ -1445,14 +1446,15 @@ runNMR <- function(selectedSamples, runName, projectName, matrixName, deviceName
     plate1 <- plate1[F,]
     F <- sort(plate1$row, index.return = TRUE)$ix
     plate1 <- plate1[F,]
-    plate1 <- makeBruker(plate1, methodName, deviceName)
+    plate1 <- makeBruker(plate1, methodName, deviceName, plateCounter)
     saveRun(plate1, currentRunName, methodName)
     req <- c(req, list(requestList = NA, run = plate1))
+    plateCounter <- plateCounter + 1
   }
   return(req)
 }
 
-makeBruker <- function(conf, methodName, deviceName) {
+makeBruker <- function(conf, methodName, deviceName, plateCounter) {
   method <- dbGetQuery(con, paste0("select * from methods
                        where method_name = '", methodName, "'"))
   method_request <- fromJSON(method$method_request)
@@ -1460,9 +1462,10 @@ makeBruker <- function(conf, methodName, deviceName) {
                        where dev_name = '", deviceName, "'"))
   res <- list()
   counter = 1
-  holder = 101
   for (i in 1:nrow(conf)) {
     for (j in 1:length(method_request$experiments)) {
+      # print(plateCounter)
+      holder <-  RCToNum(conf$row[i], conf$column[i]) + (100 * plateCounter)
       res[[counter]] <- data.frame(HOLDER = holder,
                                    USER = method_request$user,
                                    NAME = conf$`_runName`[i],
@@ -1483,7 +1486,6 @@ makeBruker <- function(conf, methodName, deviceName) {
       )
       counter = counter + 1
     }
-    holder = holder + 1
   }
   p <- data.frame(do.call("rbind", res))
   return(p)
