@@ -13,7 +13,7 @@ cleanNames <- function(names) {
   # second we remove spaces at the beginning of each lines
   names <-gsub("^\\s+", "", names)
   # third we remove double spaces
-  names <-gsub("s+", " ", names)
+  names <-gsub("\\s+", " ", names)
 
   # last we curate from other weird characters
   names <- tolower(names)
