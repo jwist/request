@@ -23,6 +23,10 @@ Imports:
     crayon,
     methods,
     magrittr,
-    rolodex.samples
+    rolodex.samples,
+    templates,
+    DBI,
+    dplyr,
+    data.table
 Depends: 
     R (>= 2.10)

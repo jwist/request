@@ -1464,7 +1464,6 @@ makeBruker <- function(conf, methodName, deviceName, plateCounter) {
   counter = 1
   for (i in 1:nrow(conf)) {
     for (j in 1:length(method_request$experiments)) {
-      # print(plateCounter)
       holder <-  RCToNum(conf$row[i], conf$column[i]) + (100 * plateCounter)
       res[[counter]] <- data.frame(HOLDER = holder,
                                    USER = method_request$user,

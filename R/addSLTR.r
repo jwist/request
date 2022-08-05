@@ -19,6 +19,7 @@ addSLTR <- function(ssl) {
   row$sampleMatrixType <- ssl$sampleMatrixType[1]
   row$sourceID <- ssl$sampleMatrixType[1]
   row$tubeLabel <- "SLTR"
+  row$UUID <- "SLTR_SLTR"
   row$wellPos <- exclude
   row$wellRC <- posToRC(exclude, collapse = TRUE)
   row$plateID <- rep(unique(ssl$plateID), each = length(excludeSLTR))
