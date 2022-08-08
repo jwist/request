@@ -127,3 +127,7 @@ findAllEmptyPositions <- function(selectedSamples,
   return(emptyPositions)
 }
 
+
+# npp <- table(selectedSamples$boxName)
+# plateID <- unname(unlist(mapply(function(x, y) paste0(prefix, "p", substr(as.character(1000 + rep(x, each = y)), 2, 4)), c(1:length(npp)) + fromPlate, npp)))
+
